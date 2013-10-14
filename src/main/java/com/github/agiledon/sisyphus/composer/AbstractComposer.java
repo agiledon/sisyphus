@@ -1,8 +1,5 @@
 package com.github.agiledon.sisyphus.composer;
 
-import com.google.common.base.Joiner;
-
-import java.util.List;
 import java.util.Map;
 
 import static com.github.agiledon.sisyphus.util.ResourceLoader.loadResource;
@@ -28,7 +25,6 @@ public abstract class AbstractComposer implements Composer {
     protected abstract <T> T deserialize(Class<T> tClass);
 
     protected String getContent() {
-        List<String> resource = loadResource(resourceName);
-        return Joiner.on("\n").join(resource);
+        return loadResource(resourceName);
     }
 }
