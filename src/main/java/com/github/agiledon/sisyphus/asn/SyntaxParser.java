@@ -1,13 +1,11 @@
 package com.github.agiledon.sisyphus.asn;
 
-import java.util.List;
-
 public class SyntaxParser {
     public static final String EQUAL_OPERATOR = "=";
 
-    public ClassProperty parseClass(List<String> parsedData) {
+    public ClassProperty parseClass(String content) {
         ClassProperty currentProperty = new ClassProperty();
-        for (String line : parsedData) {
+        for (String line : content.split("\n")) {
             currentProperty = setClassProperty(currentProperty, line);
         }
         return currentProperty;
