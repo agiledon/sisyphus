@@ -1,0 +1,8 @@
+.idea/
+*.iml
+*.ipr
+*.iws
+target/
+src/test/java/com/github/agiledon/sisyphus/asn/
+src/test/resources/asn/
+src/test/java/com/github/agiledon/sisyphus/composer/AsnComposerTest.java

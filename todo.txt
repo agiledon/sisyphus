@@ -1,0 +1,5 @@
+* Support ASN format data and provide the extension point for specific requirement
+    * Support Sequence
+    * Support Choice
+* Support data file template (Introduce Velocity);
+* Support de-serializing multi objects from one data file (Using section splitter)
