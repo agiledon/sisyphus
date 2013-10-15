@@ -11,6 +11,7 @@ import static com.google.common.collect.Lists.newArrayList;
 
 public class ClassProperty {
     private String fieldName;
+    private boolean vector;
     private List<BasicField> basicFields;
     private List<ClassProperty> childClassProperties;
     private ClassProperty parentClassProperty;
@@ -20,9 +21,10 @@ public class ClassProperty {
         childClassProperties = newArrayList();
     }
 
-    public ClassProperty(String fieldName) {
+    public ClassProperty(String fieldName, boolean vector) {
         this();
         this.fieldName = fieldName;
+        this.vector = vector;
     }
 
     public <T> T instantiate(Class<T> aClass) {
@@ -33,8 +35,8 @@ public class ClassProperty {
             for (BasicField basicField : getBasicFields()) {
                 basicField.setField(mainObject, aClass);
             }
-            for (ClassProperty property : getChildClassProperties()) {
-                property.setField(mainObject, aClass);
+            for (ClassProperty classProperty : getChildClassProperties()) {
+                classProperty.setField(mainObject, aClass);
             }
 
         } catch (Throwable t) {
@@ -45,13 +47,13 @@ public class ClassProperty {
     }
 
     private void setField(Object mainObject, Class<?> aClass) throws NoSuchFieldException, IllegalAccessException {
-        if (isClassField()) {
-            Field declaredField = aClass.getDeclaredField(getFieldName());
-            declaredField.set(mainObject, instantiate(declaredField.getType()));
-        } else {
+        if (getParentClassProperty().isVector()) {
             Vector mainObjectVector = (Vector)mainObject;
             Class<?> elementClass = getElementClass(mainObject);
             mainObjectVector.addElement(instantiate(elementClass));
+        } else {
+            Field declaredField = aClass.getDeclaredField(getFieldName());
+            declaredField.set(mainObject, instantiate(declaredField.getType()));
         }
     }
 
@@ -89,7 +91,7 @@ public class ClassProperty {
         return fieldName;
     }
 
-    protected boolean isClassField() {
-        return fieldName != null;
+    public boolean isVector() {
+        return vector;
     }
 }

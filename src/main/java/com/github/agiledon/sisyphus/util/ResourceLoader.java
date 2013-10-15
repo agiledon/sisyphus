@@ -16,8 +16,8 @@ public class ResourceLoader {
     public static String loadResource(String resourceName) {
         try {
             File file = new File(getAbsolutePath(compensatePath(resourceName)));
-            List<String> contents = Files.readLines(file, Charsets.UTF_8);
-            return Joiner.on("\n").join(contents);
+            List<String> resource = Files.readLines(file, Charsets.UTF_8);
+            return Joiner.on("\n").join(resource);
         } catch (IOException e) {
             throw new FailToReadResourceException();
         }

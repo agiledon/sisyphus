@@ -2,6 +2,7 @@ package com.github.agiledon.sisyphus.asn;
 
 public class SyntaxParser {
     public static final String EQUAL_OPERATOR = "=";
+    public static final String VECTOR_INDICATOR = "SEQUENCE OF";
 
     public ClassProperty parseClass(String content) {
         ClassProperty currentProperty = new ClassProperty();
@@ -42,16 +43,20 @@ public class SyntaxParser {
         return new BasicField(getFieldName(split), getFieldValue(split));
     }
 
-    protected boolean isClassField(String line) {
-        return isSequence(line) && line.contains(EQUAL_OPERATOR);
-    }
-
     protected ClassProperty parseClassProperty(String line) {
         if (isNestedClass(line)) {
             return new ClassProperty();
         }
         String fieldName = getFieldName(line.split(EQUAL_OPERATOR));
-        return new ClassProperty(fieldName);
+        return new ClassProperty(fieldName, isVector(line));
+    }
+
+    protected boolean isClassField(String line) {
+        return isSequence(line) && line.contains(EQUAL_OPERATOR);
+    }
+
+    private boolean isVector(String line) {
+        return line.contains(VECTOR_INDICATOR);
     }
 
     private String getFieldValue(String[] split) {
