@@ -41,7 +41,9 @@ public class BasicField {
         Field valueField = fieldType.getField("value");
         if ("String".equals(valueField.getType().getSimpleName())) {
             valueField.set(fieldValue, value);
-        } else {
+        } else if ("byte[]".equals(valueField.getType().getSimpleName())) {
+            valueField.set(fieldValue, value.getBytes());
+        }else {
             valueField.set(fieldValue, BigInteger.valueOf(Integer.parseInt(value)));
         }
     }
