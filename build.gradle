@@ -1,0 +1,101 @@
+apply plugin: 'idea'
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+group = 'com.github.agiledon'
+version = '0.1.0-SNAPSHOT'
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+
+repositories {
+    mavenCentral();
+}
+
+project.ext {
+    guavaVersion = '15.0'
+    snakeyamlVersion = '1.11'
+    jacksonVersion = '1.9.13'
+    gsonVersion = '2.2.4'
+    st4Version = '4.0.7'
+    junitVersion = '4.11'
+}
+
+dependencies {
+    compile(
+            "com.google.guava:guava:$guavaVersion",
+            "org.yaml:snakeyaml:$snakeyamlVersion",
+            "org.codehaus.jackson:jackson-core-asl:$jacksonVersion",
+            "org.codehaus.jackson:jackson-mapper-asl:$jacksonVersion",
+            "com.google.code.gson:gson:$gsonVersion",
+            "org.antlr:ST4:$st4Version"
+    )
+    testCompile(
+            "junit:junit:$junitVersion"
+    )
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: 'sonatypeUsername', password: 'sonatypePassword')
+            }
+            pom.project {
+                name project.name
+                packaging 'jar'
+                description 'Sisyphus is the convenient data provider for unit and integrated test.'
+                url 'https://github.com/agiledon/sisyphus'
+
+                scm {
+                    url 'https://github.com/agiledon/sisyphus'
+                    connection 'https://github.com/agiledon/sisyphus.git'
+                    developerConnection 'git@github.com:agiledon/sisyphus.git'
+                }
+
+                licenses {
+                    license {
+                        name 'MIT Licence'
+                        url 'https://raw.github.com/dreamhead/moco/master/MIT-LICENSE.txt'
+                        distribution 'repo'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'agiledon'
+                        name 'Zhang Yi'
+                    }
+                }
+            }
+        }
+    }
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from 'build/docs/javadoc'
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives jar
+    archives javadocJar
+    archives sourcesJar
+}
+
+signing {
+    required { gradle.taskGraph.hasTask("uploadArchives") }
+    sign configurations.archives
+}
+
+tasks.withType(Compile) {
+    options.compilerArgs << "-Xlint:unchecked"
+}
+
