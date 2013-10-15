@@ -41,7 +41,7 @@ uploadArchives {
             beforeDeployment { deployment -> signing.signPom(deployment) }
 
             repository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: 'sonatypeUsername', password: 'sonatypePassword')
+                authentication(userName: sonatypeUsername, password: sonatypePassword)
             }
             pom.project {
                 name project.name
