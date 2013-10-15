@@ -1,0 +1,12 @@
+* Support the data with Yaml format (Done)
+* Support the data with Json format (Done)
+* Support ASN format data and provide the extension point for specific requirement
+    * Support Sequence (Done)
+    * Support Choice (Done)
+* Provide cache for test data (Done)
+* Refactoring ClassProperty with polymorphism class
+(SequenceClassProperty, ChoiceClassProperty, VectorClassProperty)
+* Support data file template (Introduce StringTemplate);
+* Support de-serializing multi objects from one data file (Using section splitter)
+* Define annotation for JUnit
+* Define annotation for TestNG
