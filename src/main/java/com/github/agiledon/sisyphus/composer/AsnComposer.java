@@ -9,5 +9,4 @@ public class AsnComposer extends AbstractComposer{
         ClassProperty classProperty = new SyntaxParser().parseClass(getContent());
         return classProperty.instantiate(tClass);
     }
-
 }

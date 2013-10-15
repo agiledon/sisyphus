@@ -6,7 +6,7 @@
 * Provide cache for test data (Done)
 * Refactoring ClassProperty with polymorphism class
 (SequenceClassProperty, ChoiceClassProperty, VectorClassProperty)
-* Support data file template (Introduce StringTemplate);
+* Support data file template (Introduce StringTemplate); (Done)
 * Support de-serializing multi objects from one data file (Using section splitter)
 * Define annotation for JUnit
 * Define annotation for TestNG

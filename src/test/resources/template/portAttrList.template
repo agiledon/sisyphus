@@ -1,0 +1,63 @@
+{ -- SEQUENCE --
+  loopNum = <loopNum>,
+  portAttrs = { -- SEQUENCE OF --
+      { -- SEQUENCE --
+      operType = 4,
+      phyPortAddr = { -- SEQUENCE --
+        moduleaddr = { -- SEQUENCE --
+          rackno = <phyPortAddr_moduleaddr_rackno>,
+          shelfno = 1,
+          bdaddr = 256
+        },
+        porttype = 1,
+        portno = 1
+      },
+      activeState = <portAttrs_activeState>,
+      isNegotiation = 0,
+      speed = 3,
+      duplex = 1,
+      crossType = 254,
+      minIPG = 254,
+      jumboSurp = 254,
+      hybridAttr = 1,
+      lanWanAttr = 254,
+      accessMode = 2,
+      isCommbo = 2,
+      userLabel = 3,
+      clockRole = 254,
+      lstEanble = 0,
+      isL3Port = 0,
+      qinqType = 1,
+      flowCtrl = 254,
+      sdEnable = 0,
+      macOffset = 65534,
+      arpDetect = 254,
+      pri = 254,
+      arpProtect = -2,
+      arpTrust = 0,
+      l2mtu = 65534,
+      isFreeBasicCfg = 0,
+      isBridge = 254,
+      description = description,
+      weakOpticalShutForward = 254,
+      bpduEnable = 254,
+      rfTOSF = 254,
+      portDelayUP = -2,
+      shakeRestrain = 254,
+      shakeTime = -2,
+      shakeNum = -2,
+      portDownTime = -2,
+      sdChkMode = 254,
+      zfidEnable = 254,
+      portStKeepTime = -2,
+      portBlock = 254,
+      expMap = 254,
+      encapsulationMode = 65534,
+      fqPMStatistics = 254,
+      opPowerChkToDownPort = 254,
+      closeTimeByOPPower = -2,
+      phyLinkChkToDownPort = 254,
+      closeTimeByPhyLink = -2
+    }
+  }
+}
