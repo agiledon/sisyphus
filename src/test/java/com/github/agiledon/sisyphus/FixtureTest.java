@@ -1,20 +1,15 @@
 package com.github.agiledon.sisyphus;
 
-import com.github.agiledon.sisyphus.asn.domain.EthPhyPortAttr;
-import com.github.agiledon.sisyphus.asn.domain.EthPhyPortAttrList_T;
 import com.github.agiledon.sisyphus.composer.Composer;
 import com.github.agiledon.sisyphus.domain.json.StandardVariable;
 import com.github.agiledon.sisyphus.domain.json.User;
 import com.google.common.base.Objects;
-import org.junit.Assert;
 import org.junit.Test;
 
-import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
 import static com.github.agiledon.sisyphus.Fixture.from;
-import static junit.framework.Assert.assertNotNull;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
