@@ -14,42 +14,38 @@ public class BasicField {
 
     public void setField(Object mainObject, Class<?> aClass) throws NoSuchFieldException, IllegalAccessException, InstantiationException {
         Field field = aClass.getDeclaredField(name);
-        Class<?> fieldType = field.getType();
-        String fieldTypeName = fieldType.getSimpleName();
-        field.set(mainObject, getFieldValue(fieldType, fieldTypeName));
+        field.set(mainObject, getFieldValue(field.getType()));
     }
 
-    private Object getFieldValue(Class<?> fieldType, String fieldTypeName) throws IllegalAccessException, NoSuchFieldException, InstantiationException {
-        Object fieldValue;
-
-        if (!isPrimitiveType(fieldTypeName)) {
-            fieldValue = fieldType.newInstance();
-
-            //for specific type which has value field
-            setInnerValueField(fieldType, fieldValue);
-        } else {
-            if ("BigInteger".equals(fieldTypeName)) {
-                fieldValue = BigInteger.valueOf(Integer.parseInt(value));
-            } else {
-                fieldValue = value;
-            }
+    private Object getFieldValue(Class<?> fieldType) throws IllegalAccessException, NoSuchFieldException, InstantiationException {
+        String fieldTypeName = fieldType.getSimpleName();
+        if (isPrimitiveType(fieldTypeName)) {
+            return parseFieldValue(fieldTypeName);
         }
+        Object fieldValue = fieldType.newInstance();
+        setInnerValueField(fieldType, fieldValue);
         return fieldValue;
     }
 
     private void setInnerValueField(Class<?> fieldType, Object fieldValue) throws NoSuchFieldException, IllegalAccessException {
         Field valueField = fieldType.getField("value");
-        if ("String".equals(valueField.getType().getSimpleName())) {
-            valueField.set(fieldValue, value);
-        } else if ("byte[]".equals(valueField.getType().getSimpleName())) {
-            valueField.set(fieldValue, value.getBytes());
+        valueField.set(fieldValue, parseFieldValue(valueField.getType().getSimpleName()));
+    }
+
+    private Object parseFieldValue(String fieldTypeName) {
+        if ("String".equals(fieldTypeName)) {
+            return value;
+        } else if ("byte[]".equals(fieldTypeName)) {
+            return value.getBytes();
         }else {
-            valueField.set(fieldValue, BigInteger.valueOf(Integer.parseInt(value)));
+            return BigInteger.valueOf(Integer.parseInt(value));
         }
     }
 
     private boolean isPrimitiveType(String fieldTypeName) {
-        return "String".equals(fieldTypeName) || "BigInteger".equals(fieldTypeName);
+        return "String".equals(fieldTypeName)
+                || "BigInteger".equals(fieldTypeName)
+                || "byte[]".equals(fieldTypeName);
     }
 
     @Override
