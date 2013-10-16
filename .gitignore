@@ -4,6 +4,7 @@
 *.ipr
 *.iws
 target/
+out/
 build/
 src/test/java/com/github/agiledon/sisyphus/asn/
 src/test/resources/asn/

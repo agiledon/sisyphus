@@ -7,6 +7,9 @@
 * Refactoring ClassProperty with polymorphism class
 (SequenceClassProperty, ChoiceClassProperty, VectorClassProperty)
 * Support data file template (Introduce StringTemplate); (Done)
+* Handle the case when missing variables
+* Only need configre one element for sequence in the template file
+(generate all elements according to data file)
 * Support de-serializing multi objects from one data file (Using section splitter)
 * Define annotation for JUnit
 * Define annotation for TestNG
