@@ -1,2 +1,2 @@
-$firstName$ = "Joe"
-$lastName$ = "Sixpack"
+firstName = "Joe"
+lastName = "Sixpack"

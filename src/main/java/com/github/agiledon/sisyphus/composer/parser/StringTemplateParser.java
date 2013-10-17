@@ -1,7 +1,12 @@
 package com.github.agiledon.sisyphus.composer.parser;
 
+import com.google.common.base.Function;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import org.stringtemplate.v4.ST;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static com.github.agiledon.sisyphus.util.ResourceLoader.loadResource;
@@ -18,20 +23,19 @@ public class StringTemplateParser {
         String template = loadResource(templateFileName);
         ST st = new ST(template, VARIABLE_INDICATOR, VARIABLE_INDICATOR);
 
-        //format: <variableName> = variableValue
-        for (String variablePair : variableContent) {
-             Variable variable = parseVariable(variablePair);
-            st.add(variable.name, variable.value);
+        List<Variable> variables = Lists.transform(variableContent, new Function<String, Variable>() {
+            @Override
+            public Variable apply(String variable) {
+                String[] variablePair = variable.split("=");
+                return new Variable(variablePair[0].trim(), variablePair[1].trim());
+            }
+        });
+
+        for (Variable variableObj : variables) {
+            st.add(variableObj.name, variableObj.value);
         }
 
         return st.render();
-    }
-
-    private Variable parseVariable(String variablePair) {
-        String[] split = variablePair.split("=");
-        String variableName = split[0].trim().replace(String.valueOf(VARIABLE_INDICATOR), "");
-        String variableValue = split[1].trim();
-        return new Variable(variableName, variableValue);
     }
 
     private class Variable {
