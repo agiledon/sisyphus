@@ -1,15 +1,34 @@
 package com.github.agiledon.sisyphus.asn;
 
+import com.google.common.base.Predicate;
+import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
+import com.google.common.collect.Iterables;
+
 public class SyntaxParser {
     public static final String EQUAL_OPERATOR = "=";
     public static final String VECTOR_INDICATOR = "SEQUENCE OF";
+    public static final String LINE_BREAK = "\n";
 
     public ClassProperty parseClass(String content) {
         ClassProperty currentProperty = new ClassProperty();
-        for (String line : content.split("\n")) {
+        Iterable<String> lines = Splitter.on(LINE_BREAK)
+                .omitEmptyStrings()
+                .split(content);
+
+        for (String line : filterSpaceLines(lines)) {
             currentProperty = setClassProperty(currentProperty, line);
         }
         return currentProperty;
+    }
+
+    private Iterable<String> filterSpaceLines(Iterable<String> lines) {
+        return Iterables.filter(lines, new Predicate<String>() {
+            @Override
+            public boolean apply(String line) {
+                return !Strings.isNullOrEmpty(line.trim());
+            }
+        });
     }
 
     private ClassProperty setClassProperty(ClassProperty currentProperty, String line) {
