@@ -1,2 +1,2 @@
-Hello <name>
-<product> can work.
+Hello $name$
+$product$ can work.

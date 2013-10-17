@@ -1,14 +1,14 @@
 [
     {
-        "result" : <result0>,
+        "result" : $result0$,
          "id" : "id0"
     },
     {
-        "result" : <result1>,
+        "result" : $result1$,
          "id" : "id1"
     },
     {
-        "result" : <result2>,
+        "result" : $result2$,
          "id" : "id2"
     }
 ]

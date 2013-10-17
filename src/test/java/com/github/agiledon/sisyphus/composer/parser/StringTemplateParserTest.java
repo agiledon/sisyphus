@@ -1,7 +1,5 @@
 package com.github.agiledon.sisyphus.composer.parser;
 
-import com.google.common.base.CharMatcher;
-import com.google.common.base.Splitter;
 import org.junit.Test;
 
 import java.util.List;
@@ -14,7 +12,7 @@ public class StringTemplateParserTest {
     @Test
     public void should_parse_template_file() {
         StringTemplateParser templateParser = new StringTemplateParser("template/testST.txt");
-        List<String> variables = newArrayList("<name> = Sisyphus", "<product> = StringTemplate");
+        List<String> variables = newArrayList("$name$ = Sisyphus", "$product$ = StringTemplate");
         String result = templateParser.evaluate(variables);
 
         assertThat(result, is("Hello Sisyphus\n" +

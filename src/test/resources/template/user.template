@@ -1,5 +1,5 @@
 {
-  "name" : { "first" : <firstName>, "last" : <lastName> },
+  "name" : { "first" : $firstName$, "last" : $lastName$ },
   "gender" : "MALE",
   "verified" : false,
   "userImage" : "Rm9vYmFyIQ=="

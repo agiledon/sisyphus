@@ -1,18 +1,18 @@
 { -- SEQUENCE --
-  loopNum = <loopNum>,
+  loopNum = $loopNum$,
   portAttrs = { -- SEQUENCE OF --
       { -- SEQUENCE --
       operType = 4,
       phyPortAddr = { -- SEQUENCE --
         moduleaddr = { -- SEQUENCE --
-          rackno = <phyPortAddr_moduleaddr_rackno>,
+          rackno = $phyPortAddr_moduleaddr_rackno$,
           shelfno = 1,
           bdaddr = 256
         },
         porttype = 1,
         portno = 1
       },
-      activeState = <portAttrs_activeState>,
+      activeState = $portAttrs_activeState$,
       isNegotiation = 0,
       speed = 3,
       duplex = 1,

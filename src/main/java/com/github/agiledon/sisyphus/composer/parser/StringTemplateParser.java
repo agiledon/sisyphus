@@ -7,6 +7,7 @@ import java.util.List;
 import static com.github.agiledon.sisyphus.util.ResourceLoader.loadResource;
 
 public class StringTemplateParser {
+    public static final char VARIABLE_INDICATOR = '$';
     private String templateFileName;
 
     public StringTemplateParser(String templateFileName) {
@@ -15,7 +16,7 @@ public class StringTemplateParser {
 
     public String evaluate(List<String> variableContent) {
         String template = loadResource(templateFileName);
-        ST st = new ST(template);
+        ST st = new ST(template, VARIABLE_INDICATOR, VARIABLE_INDICATOR);
 
         //format: <variableName> = variableValue
         for (String variablePair : variableContent) {
@@ -28,7 +29,7 @@ public class StringTemplateParser {
 
     private Variable parseVariable(String variablePair) {
         String[] split = variablePair.split("=");
-        String variableName = split[0].trim().replace("<", "").replace(">", "");
+        String variableName = split[0].trim().replace(String.valueOf(VARIABLE_INDICATOR), "");
         String variableValue = split[1].trim();
         return new Variable(variableName, variableValue);
     }
