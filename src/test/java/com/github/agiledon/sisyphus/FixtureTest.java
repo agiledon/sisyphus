@@ -128,4 +128,12 @@ public class FixtureTest {
         assertThat(user.getName().getFirst(), is("Joe"));
         assertThat(user.getName().getLast(), is("Sixpack"));
     }
+
+    @Test
+    public void should_be_null_if_missing_variable_by_parsing_template_file() {
+        User user = from("userWithTemplateMissingVariable.json")
+                .withTemplate("template/user.template")
+                .to(User.class);
+        assertThat(user, is(nullValue()));
+    }
 }

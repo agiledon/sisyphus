@@ -1,12 +1,10 @@
 package com.github.agiledon.sisyphus.composer.parser;
 
 import com.google.common.base.Function;
-import com.google.common.base.Splitter;
-import com.google.common.collect.Iterables;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import org.stringtemplate.v4.ST;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static com.github.agiledon.sisyphus.util.ResourceLoader.loadResource;
@@ -40,9 +38,9 @@ public class StringTemplateParser {
 
     private class Variable {
         public String name;
-        public Object value;
+        public String value;
 
-        private Variable(String name, Object value) {
+        private Variable(String name, String value) {
             this.name = name;
             this.value = value;
         }

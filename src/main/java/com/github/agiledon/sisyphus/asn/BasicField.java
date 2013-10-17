@@ -1,5 +1,7 @@
 package com.github.agiledon.sisyphus.asn;
 
+import com.google.common.base.Strings;
+
 import java.lang.reflect.Field;
 import java.math.BigInteger;
 
@@ -33,12 +35,14 @@ public class BasicField {
     }
 
     private Object parseFieldValue(String fieldTypeName) {
+        boolean nullOrEmptyValue = Strings.isNullOrEmpty(value);
+
         if ("String".equals(fieldTypeName)) {
-            return value;
+            return nullOrEmptyValue ? " " : value;
         } else if ("byte[]".equals(fieldTypeName)) {
-            return value.getBytes();
-        }else {
-            return BigInteger.valueOf(Integer.parseInt(value));
+            return nullOrEmptyValue ? "0".getBytes() : value.getBytes();
+        } else {
+            return nullOrEmptyValue ? BigInteger.valueOf(0) : BigInteger.valueOf(Integer.parseInt(value));
         }
     }
 
