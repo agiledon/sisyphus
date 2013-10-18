@@ -1,17 +1,13 @@
 package com.github.agiledon.sisyphus.asn;
 
-import com.github.agiledon.sisyphus.exception.ElementClassNotFoundException;
 import com.github.agiledon.sisyphus.exception.FailedDeserializationException;
 
-import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Vector;
 
 import static com.google.common.collect.Lists.newArrayList;
 
-public class AsnClass {
+public abstract class AsnClass {
     private String fieldName;
-    private boolean vector;
     private List<BasicField> basicFields;
     private List<AsnClass> childClassProperties;
     private AsnClass parentAsnClass;
@@ -22,53 +18,30 @@ public class AsnClass {
     }
 
     public AsnClass(String fieldName) {
-        this.fieldName = fieldName;
-    }
-
-    public AsnClass(String fieldName, boolean vector) {
         this();
         this.fieldName = fieldName;
-        this.vector = vector;
     }
 
-    public <T> T instantiate(Class<T> aClass) {
-        T mainObject;
+    public <T> T instantiate(Class<T> aParentClass) {
+        T parentObject;
 
         try {
-            mainObject = aClass.newInstance();
+            parentObject = aParentClass.newInstance();
             for (BasicField basicField : getBasicFields()) {
-                basicField.setField(mainObject, aClass);
+                basicField.setField(parentObject, aParentClass);
             }
-            for (AsnClass asnClass : getChildClassProperties()) {
-                asnClass.setField(mainObject, aClass);
+            for (AsnClass asnClass : getChildClasses()) {
+                asnClass.setField(parentObject, aParentClass);
             }
 
         } catch (Throwable t) {
             throw new FailedDeserializationException(t);
         }
 
-        return mainObject;
+        return parentObject;
     }
 
-    private void setField(Object mainObject, Class<?> aClass) throws NoSuchFieldException, IllegalAccessException {
-        if (getParentAsnClass().isVector()) {
-            Vector mainObjectVector = (Vector)mainObject;
-            Class<?> elementClass = getElementClass(mainObject);
-            mainObjectVector.addElement(instantiate(elementClass));
-        } else {
-            Field declaredField = aClass.getDeclaredField(getFieldName());
-            declaredField.set(mainObject, instantiate(declaredField.getType()));
-        }
-    }
-
-    private Class<?> getElementClass(Object mainObject) {
-        String elementType = mainObject.getClass().getName().replace("LIST", "");
-        try {
-            return Class.forName(elementType);
-        } catch (ClassNotFoundException e) {
-            throw new ElementClassNotFoundException();
-        }
-    }
+    protected abstract void setField(Object mainObject, Class<?> aClass) throws NoSuchFieldException, IllegalAccessException;
 
     protected List<BasicField> getBasicFields() {
         return basicFields;
@@ -78,12 +51,12 @@ public class AsnClass {
         basicFields.add(basicField);
     }
 
-    public void addChildClassProperty(AsnClass childAsnClass) {
+    public void addChildClass(AsnClass childAsnClass) {
         this.childClassProperties.add(childAsnClass);
         childAsnClass.parentAsnClass = this;
     }
 
-    protected List<AsnClass> getChildClassProperties() {
+    protected List<AsnClass> getChildClasses() {
         return childClassProperties;
     }
 
@@ -95,7 +68,5 @@ public class AsnClass {
         return fieldName;
     }
 
-    public boolean isVector() {
-        return vector;
-    }
+    public abstract boolean isVector();
 }

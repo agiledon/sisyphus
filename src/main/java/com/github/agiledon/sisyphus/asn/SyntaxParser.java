@@ -31,19 +31,19 @@ public class SyntaxParser {
         });
     }
 
-    private AsnClass generateAsnClassTree(AsnClass currentProperty, String line) {
+    private AsnClass generateAsnClassTree(AsnClass currentClass, String line) {
         if (!isMainClass(line)) {
             if (endOfClass(line)) {
-                currentProperty = navigateToParent(currentProperty);
+                currentClass = navigateToParent(currentClass);
             } else {
                 if (isClassField(line) || isNestedClass(line)) {
-                    currentProperty = navigateToChild(currentProperty, line);
+                    currentClass = navigateToChild(currentClass, line);
                 }else {
-                    currentProperty.addBasicField(parseBasicField(line));
+                    currentClass.addBasicField(parseBasicField(line));
                 }
             }
         }
-        return currentProperty;
+        return currentClass;
     }
 
     protected boolean isSequence(String line) {
@@ -62,15 +62,15 @@ public class SyntaxParser {
         return new BasicField(getFieldName(split), getFieldValue(split));
     }
 
-    protected AsnClass parseClassProperty(String line) {
+    protected AsnClass createAsnClass(String line) {
         if (isNestedClass(line)) {
             return new AsnSequenceClass();
         }
         String fieldName = getFieldName(line.split(EQUAL_OPERATOR));
         if (isVector(line)) {
-            return new AsnVectorClass(fieldName, true);
+            return new AsnVectorClass(fieldName);
         }
-        return new AsnSequenceClass(fieldName, false);
+        return new AsnSequenceClass(fieldName);
     }
 
     protected boolean isClassField(String line) {
@@ -93,24 +93,24 @@ public class SyntaxParser {
         return split[0].trim();
     }
 
-    private AsnClass navigateToChild(AsnClass currentProperty, String line) {
-        AsnClass childProperty = parseClassProperty(line);
-        currentProperty.addChildClassProperty(childProperty);
+    private AsnClass navigateToChild(AsnClass currentClass, String line) {
+        AsnClass childProperty = createAsnClass(line);
+        currentClass.addChildClass(childProperty);
 
-        currentProperty = childProperty;
-        return currentProperty;
+        currentClass = childProperty;
+        return currentClass;
+    }
+
+    private AsnClass navigateToParent(AsnClass currentClass) {
+        AsnClass parentAsnClass = currentClass.getParentAsnClass();
+        if (parentAsnClass != null) {
+            currentClass = parentAsnClass;
+        }
+        return currentClass;
     }
 
     protected boolean isNestedClass(String line) {
         return line.length() != line.trim().length() && line.trim().startsWith("{");
-    }
-
-    private AsnClass navigateToParent(AsnClass currentProperty) {
-        AsnClass parentAsnClass = currentProperty.getParentAsnClass();
-        if (parentAsnClass != null) {
-            currentProperty = parentAsnClass;
-        }
-        return currentProperty;
     }
 
     protected boolean endOfClass(String line) {

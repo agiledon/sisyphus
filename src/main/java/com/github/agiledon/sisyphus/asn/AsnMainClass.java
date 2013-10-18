@@ -4,7 +4,13 @@ public class AsnMainClass extends AsnClass {
     public AsnMainClass() {
     }
 
-    public AsnMainClass(String fieldName, boolean vector) {
-        super(fieldName, vector);
+    @Override
+    protected void setField(Object mainObject, Class<?> aClass) throws NoSuchFieldException, IllegalAccessException {
+        //do nothing
+    }
+
+    @Override
+    public boolean isVector() {
+        return false;
     }
 }
