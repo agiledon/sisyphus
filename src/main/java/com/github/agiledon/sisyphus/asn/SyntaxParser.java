@@ -10,8 +10,8 @@ public class SyntaxParser {
     public static final String VECTOR_INDICATOR = "SEQUENCE OF";
     public static final String LINE_BREAK = "\n";
 
-    public ClassProperty parseClass(String content) {
-        ClassProperty currentProperty = new ClassProperty();
+    public AsnClass parseClass(String content) {
+        AsnClass currentProperty = new AsnClass();
         Iterable<String> lines = Splitter.on(LINE_BREAK)
                 .omitEmptyStrings()
                 .split(content);
@@ -31,7 +31,7 @@ public class SyntaxParser {
         });
     }
 
-    private ClassProperty setClassProperty(ClassProperty currentProperty, String line) {
+    private AsnClass setClassProperty(AsnClass currentProperty, String line) {
         if (!isMainClass(line)) {
             if (endOfClass(line)) {
                 currentProperty = navigateToParent(currentProperty);
@@ -62,12 +62,12 @@ public class SyntaxParser {
         return new BasicField(getFieldName(split), getFieldValue(split));
     }
 
-    protected ClassProperty parseClassProperty(String line) {
+    protected AsnClass parseClassProperty(String line) {
         if (isNestedClass(line)) {
-            return new ClassProperty();
+            return new AsnClass();
         }
         String fieldName = getFieldName(line.split(EQUAL_OPERATOR));
-        return new ClassProperty(fieldName, isVector(line));
+        return new AsnClass(fieldName, isVector(line));
     }
 
     protected boolean isClassField(String line) {
@@ -90,8 +90,8 @@ public class SyntaxParser {
         return split[0].trim();
     }
 
-    private ClassProperty navigateToChild(ClassProperty currentProperty, String line) {
-        ClassProperty childProperty = parseClassProperty(line);
+    private AsnClass navigateToChild(AsnClass currentProperty, String line) {
+        AsnClass childProperty = parseClassProperty(line);
         currentProperty.addChildClassProperty(childProperty);
 
         currentProperty = childProperty;
@@ -102,10 +102,10 @@ public class SyntaxParser {
         return line.length() != line.trim().length() && line.trim().startsWith("{");
     }
 
-    private ClassProperty navigateToParent(ClassProperty currentProperty) {
-        ClassProperty parentClassProperty = currentProperty.getParentClassProperty();
-        if (parentClassProperty != null) {
-            currentProperty = parentClassProperty;
+    private AsnClass navigateToParent(AsnClass currentProperty) {
+        AsnClass parentAsnClass = currentProperty.getParentAsnClass();
+        if (parentAsnClass != null) {
+            currentProperty = parentAsnClass;
         }
         return currentProperty;
     }

@@ -9,19 +9,19 @@ import java.util.Vector;
 
 import static com.google.common.collect.Lists.newArrayList;
 
-public class ClassProperty {
+public class AsnClass {
     private String fieldName;
     private boolean vector;
     private List<BasicField> basicFields;
-    private List<ClassProperty> childClassProperties;
-    private ClassProperty parentClassProperty;
+    private List<AsnClass> childClassProperties;
+    private AsnClass parentAsnClass;
 
-    public ClassProperty() {
+    public AsnClass() {
         basicFields = newArrayList();
         childClassProperties = newArrayList();
     }
 
-    public ClassProperty(String fieldName, boolean vector) {
+    public AsnClass(String fieldName, boolean vector) {
         this();
         this.fieldName = fieldName;
         this.vector = vector;
@@ -35,8 +35,8 @@ public class ClassProperty {
             for (BasicField basicField : getBasicFields()) {
                 basicField.setField(mainObject, aClass);
             }
-            for (ClassProperty classProperty : getChildClassProperties()) {
-                classProperty.setField(mainObject, aClass);
+            for (AsnClass asnClass : getChildClassProperties()) {
+                asnClass.setField(mainObject, aClass);
             }
 
         } catch (Throwable t) {
@@ -47,7 +47,7 @@ public class ClassProperty {
     }
 
     private void setField(Object mainObject, Class<?> aClass) throws NoSuchFieldException, IllegalAccessException {
-        if (getParentClassProperty().isVector()) {
+        if (getParentAsnClass().isVector()) {
             Vector mainObjectVector = (Vector)mainObject;
             Class<?> elementClass = getElementClass(mainObject);
             mainObjectVector.addElement(instantiate(elementClass));
@@ -74,17 +74,17 @@ public class ClassProperty {
         basicFields.add(basicField);
     }
 
-    public void addChildClassProperty(ClassProperty childClassProperty) {
-        this.childClassProperties.add(childClassProperty);
-        childClassProperty.parentClassProperty = this;
+    public void addChildClassProperty(AsnClass childAsnClass) {
+        this.childClassProperties.add(childAsnClass);
+        childAsnClass.parentAsnClass = this;
     }
 
-    protected List<ClassProperty> getChildClassProperties() {
+    protected List<AsnClass> getChildClassProperties() {
         return childClassProperties;
     }
 
-    public ClassProperty getParentClassProperty() {
-        return parentClassProperty;
+    public AsnClass getParentAsnClass() {
+        return parentAsnClass;
     }
 
     protected String getFieldName() {
