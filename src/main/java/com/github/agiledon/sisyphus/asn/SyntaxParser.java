@@ -11,15 +11,15 @@ public class SyntaxParser {
     public static final String LINE_BREAK = "\n";
 
     public AsnClass parseClass(String content) {
-        AsnClass currentProperty = new AsnClass();
+        AsnClass rootClass = new AsnMainClass();
         Iterable<String> lines = Splitter.on(LINE_BREAK)
                 .omitEmptyStrings()
                 .split(content);
 
         for (String line : filterSpaceLines(lines)) {
-            currentProperty = setClassProperty(currentProperty, line);
+            rootClass = generateAsnClassTree(rootClass, line);
         }
-        return currentProperty;
+        return rootClass;
     }
 
     private Iterable<String> filterSpaceLines(Iterable<String> lines) {
@@ -31,7 +31,7 @@ public class SyntaxParser {
         });
     }
 
-    private AsnClass setClassProperty(AsnClass currentProperty, String line) {
+    private AsnClass generateAsnClassTree(AsnClass currentProperty, String line) {
         if (!isMainClass(line)) {
             if (endOfClass(line)) {
                 currentProperty = navigateToParent(currentProperty);
@@ -70,7 +70,7 @@ public class SyntaxParser {
         if (isVector(line)) {
             return new AsnVectorClass(fieldName, true);
         }
-        return new AsnSequenceClass(fieldName, isVector(line));
+        return new AsnSequenceClass(fieldName, false);
     }
 
     protected boolean isClassField(String line) {
