@@ -36,7 +36,7 @@ public class StringTemplateParser {
             @Override
             public Variable apply(String variable) {
                 Iterable<String> variablePair = Splitter.on("=").trimResults().split(variable);
-                return new Variable(getFirst(variablePair, "error_variable_name"), getLast(variablePair, " "));
+                return new Variable(getFirst(variablePair, "ERROR_VARIABLE_NAME"), getLast(variablePair, " "));
             }
         };
     }

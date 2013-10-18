@@ -1,12 +1,15 @@
 package com.github.agiledon.sisyphus.asn;
 
 import com.github.agiledon.sisyphus.exception.FailedDeserializationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 
 public abstract class AsnClass {
+    private final Logger logger = LoggerFactory.getLogger(AsnClass.class);
     private String fieldName;
     private List<BasicField> basicFields;
     private List<AsnClass> childClassProperties;
@@ -35,6 +38,7 @@ public abstract class AsnClass {
             }
 
         } catch (Throwable t) {
+            logger.error("Failed to de-serialize and the error message is {}", t.getMessage());
             throw new FailedDeserializationException(t);
         }
 

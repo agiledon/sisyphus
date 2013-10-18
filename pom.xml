@@ -39,6 +39,11 @@
             <artifactId>ST4</artifactId>
             <version>4.0.7</version>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.5</version>
+        </dependency>
 
         <dependency>
             <groupId>junit</groupId>

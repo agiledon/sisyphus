@@ -1,9 +1,14 @@
 package com.github.agiledon.sisyphus.asn;
 
+import com.google.common.base.CharMatcher;
 import com.google.common.base.Predicate;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
+
+import static com.google.common.base.CharMatcher.anyOf;
+import static com.google.common.collect.Iterables.getFirst;
+import static com.google.common.collect.Iterables.getLast;
 
 public class SyntaxParser {
     public static final String EQUAL_OPERATOR = "=";
@@ -55,11 +60,12 @@ public class SyntaxParser {
     }
 
     protected BasicField parseBasicField(String line) {
-        String[] split = line.split(EQUAL_OPERATOR);
-        if (split.length == 1) {
-            return new BasicField(getFieldName(split), "");
-        }
-        return new BasicField(getFieldName(split), getFieldValue(split));
+        Iterable<String> fieldInfo = Splitter.on(EQUAL_OPERATOR)
+                .trimResults(anyOf(" ,"))
+                .limit(2)
+                .split(line);
+
+        return new BasicField(getFirst(fieldInfo, "ERROR_FIELD_NAME"), getLast(fieldInfo, ""));
     }
 
     protected AsnClass createAsnClass(String line) {
