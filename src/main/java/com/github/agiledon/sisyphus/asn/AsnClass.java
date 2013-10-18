@@ -21,6 +21,10 @@ public class AsnClass {
         childClassProperties = newArrayList();
     }
 
+    public AsnClass(String fieldName) {
+        this.fieldName = fieldName;
+    }
+
     public AsnClass(String fieldName, boolean vector) {
         this();
         this.fieldName = fieldName;

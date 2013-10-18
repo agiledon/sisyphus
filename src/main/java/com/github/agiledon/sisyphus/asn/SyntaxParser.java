@@ -64,10 +64,13 @@ public class SyntaxParser {
 
     protected AsnClass parseClassProperty(String line) {
         if (isNestedClass(line)) {
-            return new AsnClass();
+            return new AsnSequenceClass();
         }
         String fieldName = getFieldName(line.split(EQUAL_OPERATOR));
-        return new AsnClass(fieldName, isVector(line));
+        if (isVector(line)) {
+            return new AsnVectorClass(fieldName, true);
+        }
+        return new AsnSequenceClass(fieldName, isVector(line));
     }
 
     protected boolean isClassField(String line) {
