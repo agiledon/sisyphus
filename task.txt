@@ -5,12 +5,12 @@
     * Support Choice (Done)
 * Provide cache for test data (Done)
 * Refactoring ClassProperty with polymorphism class
-(SequenceClassProperty, ChoiceClassProperty, VectorClassProperty)
+(AsnSequenceClass, AsnMainClass, AsnVectorClass) (Almost done except AsnChoiceClass)
 * Support data file template (Introduce StringTemplate); (Done)
 * Handle the case when missing variables (Done)
-* Only need configre one element for sequence in the template file
+* Only need configure one element for sequence in the template file
 (generate all elements according to data file)
 * Support de-serializing multi objects from one data file (Using section splitter)
 * Define annotation for JUnit
 * Define annotation for TestNG
-* Add logging feature
+* Add logging feature (Using SLF4J) (done)
