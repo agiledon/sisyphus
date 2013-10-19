@@ -64,11 +64,10 @@ public class FixtureTest {
 
     @Test
     public void should_compose_User_data_from_cache_with_json_format() {
-        Composer from = from("user.json");
-        User user = from.to(User.class);
+        User user = from("user.json").to(User.class);
         assertThat(user, not(nullValue()));
 
-        User cachedUser = from.to(User.class);
+        User cachedUser = from("user.json").to(User.class);
         assertThat(cachedUser, not(nullValue()));
 
         assertThat(Objects.equal(user, cachedUser), is(true));

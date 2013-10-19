@@ -55,11 +55,12 @@ Then, write your test using Fixture provided by sisyphus:
 ```java
     @Test
     public void should_compose_User_data_with_json_format() {
-        User user = from("user.json").to(User.class);
+        User user = Fixture.from("user.json").to(User.class);
         assertThat(user, not(nullValue()));
         assertThat(user.getName().getFirst(), is("Joe"));
     }
 ```
+
 **Note: the extension of test data must be "json".**
 
 Sisyphus uses Jackson to parse json data. But, Jackson require the target class must define the default constructor, if no, you need use annotation(@JsonCreate and @JsonProperty) provided by Jackson to annotate the constructor and parameters. In some cases, it is not suitable. For example, the system doesn't permit you modify the source code. So, sisyphus provides the second option：using Gson framework. To distinguish them, I use gson to demonstrate the another json data.
@@ -100,7 +101,7 @@ Then, write your test using Fixture provided by sisyphus:
 ```java
     @Test
     public void should_compose_StandardVariables_data_with_gson_format() {
-        StandardVariable[] standardVariables = from("standardVariable.gson").to(StandardVariable[].class);
+        StandardVariable[] standardVariables = Fixture.from("standardVariable.gson").to(StandardVariable[].class);
         assertThat(standardVariables, not(nullValue()));
         assertThat(standardVariables[0].result, is("0"));
         assertThat(standardVariables[1].result, is("1"));
@@ -122,7 +123,7 @@ Using Fixture:
 ```java
     @Test
     public void should_compose_Type_data_with_yaml_format() {
-        Map<String, List<String>> types = from("type.yaml").to(Map.class);
+        Map<String, List<String>> types = Fixture.from("type.yaml").to(Map.class);
         assertThat(types, not(nullValue()));
         assertThat(types.size(), is(2));
         assertThat(types.get("Type1").get(0), is("Type1sub1"));
@@ -160,7 +161,7 @@ The test method seems like:
 ```java
     @Test
     public void should_compose_StandardVariables_data_by_parsing_template_file() {
-        StandardVariable[] standardVariables = from("standardVariableWithTemplate.gson")
+        StandardVariable[] standardVariables = Fixture.from("standardVariableWithTemplate.gson")
                 .withTemplate("template/standardVariable.template")
                 .to(StandardVariable[].class);
         assertThat(standardVariables, not(nullValue()));
@@ -176,11 +177,10 @@ To imporve the performance of running tests, sisyphus provide the caching featur
 ```java
     @Test
     public void should_compose_User_data_from_cache_with_json_format() {
-        Composer from = from("user.json");
-        User user = from.to(User.class);
+        User user = Fixture.from("user.json").to(User.class);
         assertThat(user, not(nullValue()));
 
-        User cachedUser = from.to(User.class);
+        User cachedUser = Fixture.from("user.json").to(User.class);
         assertThat(cachedUser, not(nullValue()));
 
         assertThat(Objects.equal(user, cachedUser), is(true));
@@ -188,10 +188,10 @@ To imporve the performance of running tests, sisyphus provide the caching featur
     
         @Test
     public void should_compose_User_data_from_cache_with_gson_format() {
-        StandardVariable[] standardVariables = from("standardVariable.gson").to(StandardVariable[].class);
+        StandardVariable[] standardVariables = Fixture.from("standardVariable.gson").to(StandardVariable[].class);
         assertThat(standardVariables, not(nullValue()));
 
-        StandardVariable[] cachedStandardVariables = from("standardVariable.gson").to(StandardVariable[].class);
+        StandardVariable[] cachedStandardVariables = Fixture.from("standardVariable.gson").to(StandardVariable[].class);
         assertThat(cachedStandardVariables, not(nullValue()));
 
         assertThat(Objects.equal(standardVariables, cachedStandardVariables), is(true));
