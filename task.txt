@@ -1,5 +1,7 @@
-* Support the data with Yaml format (Done)
-* Support the data with Json format (Done)
+* Support Yaml format (Done)
+* Support Json format (Done)
+* Support memory database (HSQL, Datomic)
+* Support Xml format
 * Support ASN format data and provide the extension point for specific requirement
     * Support Sequence (Done)
     * Support Choice (Done)
@@ -11,6 +13,6 @@
 * Only need configure one element for sequence in the template file
 (generate all elements according to data file)
 * Support de-serializing multi objects from one data file (Using section splitter)
-* Define annotation for JUnit
+* Define annotation for JUnit (Refer to junitparams and zohhak)
 * Define annotation for TestNG
 * Add logging feature (Using SLF4J) (done)
