@@ -9,6 +9,26 @@ Sisyphus can help you create the objects you want to test. The only one thing yo
 ###How to use it
 Sisyphus provide Fixture to encapsulate all logic to privide test data objects. 
 
+#### Fetch Sisyphus
+
+Current version of sisyphus is 0.1-snapshot, you can config you build script to manage the dependency for sisyphus:
+
+```groovy
+repositories {
+    maven{
+        url 'https://oss.sonatype.org/content/groups/public'
+    }
+    mavenCentral();
+}
+
+dependencies {
+    test (
+            'junit:junit:4.11',
+            'com.github.agiledon:sisyphus:0.1-SNAPSHOT'
+        )
+}
+```
+
 #### JSON
 If you want to prepare the user object as below:
 ```java
