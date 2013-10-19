@@ -13,6 +13,8 @@
 * Only need configure one element for sequence in the template file
 (generate all elements according to data file)
 * Support de-serializing multi objects from one data file (Using section splitter)
-* Define annotation for JUnit (Refer to junitparams and zohhak)
+* Define annotation for JUnit
+    - Support Rule (Done)
+    - Support Test Method Parameter (Refer to junitparams and zohhak)
 * Define annotation for TestNG
 * Add logging feature (Using SLF4J) (done)
