@@ -58,7 +58,7 @@ uploadArchives {
                 licenses {
                     license {
                         name 'MIT Licence'
-                        url 'https://raw.github.com/dreamhead/moco/master/MIT-LICENSE.txt'
+                        url 'https://raw.github.com/agiledon/sisyphus/master/MIT-LICENSE.txt'
                         distribution 'repo'
                     }
                 }
