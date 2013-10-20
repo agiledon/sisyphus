@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/agiledon/sisyphus.png?branch=master)](https://travis-ci.org/agiledon/sisyphus)
+
 ##Sisyphus
 
 Sisyphus is the mini framework to deserialize the data to the specific object for unit and integrated tests based on JVM paltform. It supports Json, Yaml and customized ASN format. 
