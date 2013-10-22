@@ -33,6 +33,10 @@ dependencies {
             "org.slf4j:slf4j-api:$slf4jVersion",
             "junit:junit:$junitVersion"
     )
+
+    testCompile(
+           fileTree(dir: 'src/test/libs', include: '*.jar')
+    )
 }
 
 uploadArchives {
