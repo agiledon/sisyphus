@@ -8,5 +8,5 @@ out/
 build/
 src/test/libs
 src/test/resources/asn/
-src/test/java/com/github/agiledon/sisyphus/asn/
+src/test/java/com/github/agiledon/sisyphus/asn/SyntaxParserTest.java
 src/test/java/com/github/agiledon/sisyphus/composer/AsnComposerTest.java

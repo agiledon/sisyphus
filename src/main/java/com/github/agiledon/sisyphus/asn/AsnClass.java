@@ -68,7 +68,7 @@ public abstract class AsnClass {
         return parentAsnClass;
     }
 
-    protected String getFieldName() {
+    public String getFieldName() {
         return fieldName;
     }
 

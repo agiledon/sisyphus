@@ -1,18 +1,16 @@
 package com.github.agiledon.sisyphus.asn;
 
+import com.github.agiledon.sisyphus.asn.rule.*;
 import com.google.common.base.*;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import java.util.List;
 
-import static com.google.common.base.CharMatcher.anyOf;
-import static com.google.common.collect.Iterables.getFirst;
+import static com.github.agiledon.sisyphus.asn.rule.ParsingRule.generateAsnClassTree;
 import static com.google.common.collect.Iterables.getLast;
 
 public class SyntaxParser {
-    public static final String EQUAL_OPERATOR = "=";
-    public static final String VECTOR_INDICATOR = "SEQUENCE OF";
     public static final String LINE_BREAK = "\n";
 
     public AsnClass parseClass(String content) {
@@ -34,93 +32,6 @@ public class SyntaxParser {
                 return !Strings.isNullOrEmpty(line.trim());
             }
         });
-    }
-
-    private AsnClass generateAsnClassTree(AsnClass currentClass, String line) {
-        if (!isMainClass(line)) {
-            if (endOfClass(line)) {
-                currentClass = navigateToParent(currentClass);
-            } else {
-                if (isClassField(line) || isNestedClass(line)) {
-                    currentClass = navigateToChild(currentClass, line);
-                } else {
-                    currentClass.addBasicField(parseBasicField(line));
-                }
-            }
-        }
-        return currentClass;
-    }
-
-    protected boolean isSequence(String line) {
-        return line.contains("SEQUENCE") || line.contains("CHOICE");
-    }
-
-    protected boolean isMainClass(String line) {
-        return line.startsWith("{");
-    }
-
-    protected BasicField parseBasicField(String line) {
-        Iterable<String> fieldInfo = Splitter.on(EQUAL_OPERATOR)
-                .trimResults(anyOf(" ,"))
-                .limit(2)
-                .split(line);
-
-        return new BasicField(getFirst(fieldInfo, "ERROR_FIELD_NAME"), getLast(fieldInfo, ""));
-    }
-
-    protected AsnClass createAsnClass(String line) {
-        if (isNestedClass(line)) {
-            return new AsnSequenceClass();
-        }
-        String fieldName = getFieldName(line.split(EQUAL_OPERATOR));
-        if (isVector(line)) {
-            return new AsnVectorClass(fieldName);
-        }
-        return new AsnSequenceClass(fieldName);
-    }
-
-    protected boolean isClassField(String line) {
-        return isSequence(line) && line.contains(EQUAL_OPERATOR);
-    }
-
-    private boolean isVector(String line) {
-        return line.contains(VECTOR_INDICATOR);
-    }
-
-    private String getFieldValue(String[] split) {
-        String secondPart = split[1].trim();
-        if (secondPart.endsWith(",")) {
-            secondPart = secondPart.replace(",", "");
-        }
-        return secondPart;
-    }
-
-    private String getFieldName(String[] split) {
-        return split[0].trim();
-    }
-
-    private AsnClass navigateToChild(AsnClass currentClass, String line) {
-        AsnClass childProperty = createAsnClass(line);
-        currentClass.addChildClass(childProperty);
-
-        currentClass = childProperty;
-        return currentClass;
-    }
-
-    private AsnClass navigateToParent(AsnClass currentClass) {
-        AsnClass parentAsnClass = currentClass.getParentAsnClass();
-        if (parentAsnClass != null) {
-            currentClass = parentAsnClass;
-        }
-        return currentClass;
-    }
-
-    protected boolean isNestedClass(String line) {
-        return line.length() != line.trim().length() && line.trim().startsWith("{");
-    }
-
-    protected boolean endOfClass(String line) {
-        return line.trim().contains("}");
     }
 
     public List<BasicElement> parseBasicElements(String line) {
