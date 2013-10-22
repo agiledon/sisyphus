@@ -1,6 +1,5 @@
 package com.github.agiledon.sisyphus;
 
-import com.github.agiledon.sisyphus.composer.Composer;
 import com.github.agiledon.sisyphus.domain.json.StandardVariable;
 import com.github.agiledon.sisyphus.domain.json.User;
 import com.google.common.base.Objects;

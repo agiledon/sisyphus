@@ -1,10 +1,10 @@
 package com.github.agiledon.sisyphus.asn;
 
-import com.google.common.base.CharMatcher;
-import com.google.common.base.Predicate;
-import com.google.common.base.Splitter;
-import com.google.common.base.Strings;
+import com.google.common.base.*;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+
+import java.util.List;
 
 import static com.google.common.base.CharMatcher.anyOf;
 import static com.google.common.collect.Iterables.getFirst;
@@ -43,7 +43,7 @@ public class SyntaxParser {
             } else {
                 if (isClassField(line) || isNestedClass(line)) {
                     currentClass = navigateToChild(currentClass, line);
-                }else {
+                } else {
                     currentClass.addBasicField(parseBasicField(line));
                 }
             }
@@ -121,5 +121,21 @@ public class SyntaxParser {
 
     protected boolean endOfClass(String line) {
         return line.trim().contains("}");
+    }
+
+    public List<BasicElement> parseBasicElements(String line) {
+        List<String> elements = Splitter.on(",")
+                .trimResults()
+                .splitToList(line);
+        return Lists.transform(elements, new Function<String, BasicElement>() {
+            @Override
+            public BasicElement apply(String element) {
+                return new BasicElement(element);
+            }
+        });
+    }
+
+    public boolean isBasicElement(String line) {
+        return CharMatcher.anyOf("{}=").matchesNoneOf(line);
     }
 }
