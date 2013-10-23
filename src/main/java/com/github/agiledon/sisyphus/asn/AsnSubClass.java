@@ -8,7 +8,7 @@ import java.lang.reflect.Field;
 import java.util.Vector;
 
 public abstract class AsnSubClass extends AsnClass{
-    private final Logger logger = LoggerFactory.getLogger(AsnSubClass.class);
+    protected final Logger logger = LoggerFactory.getLogger(AsnSubClass.class);
 
     protected AsnSubClass() {
     }
