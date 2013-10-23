@@ -1,11 +1,14 @@
 package com.github.agiledon.sisyphus.asn;
 
 import com.google.common.base.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.math.BigInteger;
 
 public class BasicField {
+    private final Logger logger = LoggerFactory.getLogger(BasicField.class);
     private String name;
     private String value;
 
@@ -15,8 +18,12 @@ public class BasicField {
     }
 
     public void setField(Object mainObject, Class<?> aClass) throws NoSuchFieldException, IllegalAccessException, InstantiationException {
-        Field field = aClass.getDeclaredField(name);
-        field.set(mainObject, getFieldValue(field.getType()));
+        try {
+            Field field = aClass.getDeclaredField(name);
+            field.set(mainObject, getFieldValue(field.getType()));
+        } catch (NoSuchFieldException ex) {
+            logger.warn("Can not find the field with {} and inner exception is {}", name, ex.getMessage());
+        }
     }
 
     private Object getFieldValue(Class<?> fieldType) throws IllegalAccessException, NoSuchFieldException, InstantiationException {
