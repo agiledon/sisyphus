@@ -1,8 +1,6 @@
 package com.github.agiledon.sisyphus.asn;
 
-import java.lang.reflect.Field;
-
-public class AsnVectorClass extends AsnClass {
+public class AsnVectorClass extends AsnSubClass {
 
     public AsnVectorClass(String fieldName) {
         super(fieldName);
@@ -10,8 +8,7 @@ public class AsnVectorClass extends AsnClass {
 
     @Override
     protected void setField(Object mainObject, Class<?> aClass) throws NoSuchFieldException, IllegalAccessException {
-        Field declaredField = aClass.getDeclaredField(getFieldName());
-        declaredField.set(mainObject, instantiate(declaredField.getType()));
+        setCurrentField(mainObject, aClass);
     }
 
     @Override

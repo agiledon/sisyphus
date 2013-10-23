@@ -1,7 +1,7 @@
 package com.github.agiledon.sisyphus.asn.rule;
 
+import com.github.agiledon.sisyphus.asn.AsnChoiceClass;
 import com.github.agiledon.sisyphus.asn.AsnClass;
-import com.github.agiledon.sisyphus.asn.AsnSequenceClass;
 
 public class ChoiceClassRule extends SubClassRule {
     protected static boolean isChoice(String line) {
@@ -13,7 +13,7 @@ public class ChoiceClassRule extends SubClassRule {
     }
 
     protected AsnClass createAsnClass(String line) {
-        return new AsnSequenceClass(getFieldName(line));
+        return new AsnChoiceClass(getFieldName(line));
     }
 
 }

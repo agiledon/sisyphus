@@ -1,11 +1,7 @@
 package com.github.agiledon.sisyphus.asn;
 
-public class AsnSequenceClass extends AsnSubClass {
-    public AsnSequenceClass() {
-        super();
-    }
-
-    public AsnSequenceClass(String fieldName) {
+public class AsnChoiceClass extends AsnSubClass {
+    public AsnChoiceClass(String fieldName) {
         super(fieldName);
     }
 
@@ -22,4 +18,5 @@ public class AsnSequenceClass extends AsnSubClass {
     public boolean isVector() {
         return false;
     }
+
 }
