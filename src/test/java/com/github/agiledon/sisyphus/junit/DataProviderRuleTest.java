@@ -14,7 +14,7 @@ public class DataProviderRuleTest {
     public DataProviderRule dataProvider = new DataProviderRule();
 
     @Test
-    @TestDataResource(resourceName = "user.json", targetClass = User.class)
+    @DataResource(resourceName = "user.json", targetClass = User.class)
     public void should_compose_User_data_with_json_format() {
         User user = dataProvider.provideData();
         assertThat(user, not(nullValue()));
@@ -22,7 +22,7 @@ public class DataProviderRuleTest {
     }
 
     @Test
-    @TestDataResource(resourceName = "userWithTemplate.json",
+    @DataResource(resourceName = "userWithTemplate.json",
             templateName = "template/user.template",
             targetClass = User.class)
     public void should_compose_user_data_by_parsing_template_file() {
