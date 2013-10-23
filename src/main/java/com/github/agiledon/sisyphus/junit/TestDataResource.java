@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
-public @interface FileResource {
+public @interface TestDataResource {
     String resourceName();
     String templateName() default "";
     Class<?> targetClass();

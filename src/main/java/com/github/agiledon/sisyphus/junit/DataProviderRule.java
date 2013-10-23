@@ -17,10 +17,10 @@ public class DataProviderRule implements TestRule {
         return new Statement() {
             @Override
             public void evaluate() throws Throwable {
-                FileResource fileResource = description.getAnnotation(FileResource.class);
-                resourceName = fileResource.resourceName();
-                templateName = fileResource.templateName();
-                targetClass = fileResource.targetClass();
+                TestDataResource testDataResource = description.getAnnotation(TestDataResource.class);
+                resourceName = testDataResource.resourceName();
+                templateName = testDataResource.templateName();
+                targetClass = testDataResource.targetClass();
                 statement.evaluate();
             }
         };
