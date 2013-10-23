@@ -2,6 +2,7 @@ package com.github.agiledon.sisyphus;
 
 import com.github.agiledon.sisyphus.domain.json.StandardVariable;
 import com.github.agiledon.sisyphus.domain.json.User;
+import com.github.agiledon.sisyphus.domain.yaml.Invoice;
 import com.google.common.base.Objects;
 import org.junit.Test;
 
@@ -15,6 +16,16 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNot.not;
 
 public class FixtureTest {
+    @Test
+    public void should_compose_invoice_data_with_yaml_format() {
+        Invoice invoice = from("invoice.yaml").to(Invoice.class);
+        assertThat(invoice, not(nullValue()));
+        assertThat(invoice.date, is("2001-01-23"));
+        assertThat(invoice.products.length, is(2));
+        assertThat(invoice.products[0].description, is("Basketball"));
+        assertThat(invoice.billTo.given, is("Chris"));
+    }
+
     @Test
     public void should_compose_Type_data_with_yaml_format() {
         Map<String, List<String>> types = from("type.yaml").to(Map.class);
