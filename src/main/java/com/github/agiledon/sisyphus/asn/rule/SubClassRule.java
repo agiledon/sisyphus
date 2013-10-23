@@ -1,8 +1,6 @@
 package com.github.agiledon.sisyphus.asn.rule;
 
 import com.github.agiledon.sisyphus.asn.AsnClass;
-import com.github.agiledon.sisyphus.asn.AsnSequenceClass;
-import com.github.agiledon.sisyphus.asn.AsnVectorClass;
 
 public abstract class SubClassRule extends ParsingRule implements AsnClassGenerator {
     @Override
@@ -18,22 +16,9 @@ public abstract class SubClassRule extends ParsingRule implements AsnClassGenera
         return currentClass;
     }
 
-    protected AsnClass createAsnClass(String line) {
-        if (new NestedClassRule().match(line)) {
-            return new AsnSequenceClass();
-        }
-        String fieldName = getFieldName(line.split("="));
-        if (isVector(line)) {
-            return new AsnVectorClass(fieldName);
-        }
-        return new AsnSequenceClass(fieldName);
-    }
+    protected abstract AsnClass createAsnClass(String line);
 
-    private boolean isVector(String line) {
-        return line.contains(VECTOR_INDICATOR);
-    }
-
-    private String getFieldName(String[] split) {
-        return split[0].trim();
+    protected String getFieldName(String line) {
+        return line.split("=")[0].trim();
     }
 }
