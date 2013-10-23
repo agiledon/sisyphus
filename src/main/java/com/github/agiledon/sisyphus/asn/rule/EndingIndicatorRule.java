@@ -4,7 +4,7 @@ import com.github.agiledon.sisyphus.asn.AsnClass;
 
 public class EndingIndicatorRule extends ParsingRule {
     public boolean match(String line) {
-        return line.trim().contains("}");
+        return line.trim().startsWith("}");
     }
 
     @Override

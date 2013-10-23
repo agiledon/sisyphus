@@ -18,7 +18,7 @@ public abstract class AsnSubClass extends AsnClass{
     }
 
     protected Class<?> getElementClass(Object mainObject) {
-        String elementType = mainObject.getClass().getName().replace("LIST", "");
+        String elementType = mainObject.getClass().getName().replaceFirst("(?i)List", "");
         try {
             return Class.forName(elementType);
         } catch (ClassNotFoundException e) {
@@ -28,8 +28,10 @@ public abstract class AsnSubClass extends AsnClass{
     }
 
     protected void setCurrentField(Object mainObject, Class<?> aClass) throws NoSuchFieldException, IllegalAccessException {
-        Field declaredField = aClass.getDeclaredField(getFieldName());
-        declaredField.set(mainObject, instantiate(declaredField.getType()));
+        if (getFieldName() != null) {
+            Field declaredField = aClass.getDeclaredField(getFieldName());
+            declaredField.set(mainObject, instantiate(declaredField.getType()));
+        }
     }
 
     protected void addElement(Object mainObject) {

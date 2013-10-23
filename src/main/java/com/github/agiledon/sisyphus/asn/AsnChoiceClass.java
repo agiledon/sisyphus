@@ -19,13 +19,13 @@ public class AsnChoiceClass extends AsnSubClass {
     @Override
     protected void setCurrentField(Object mainObject, Class<?> aClass) throws NoSuchFieldException, IllegalAccessException {
         AsnClass asnClass = getChildClasses().get(0);
-        if (asnClass != null) {
+        if (asnClass != null && getFieldName() != null) {
             Field currentField = aClass.getDeclaredField(getFieldName());
             Object currentObj = instantiate(currentField.getType());
             setChoiceId(asnClass, currentObj);
             currentField.set(mainObject, currentObj);
         } else {
-            logger.warn("There is any child field for choice class with field {}", getFieldName());
+            logger.warn("There is no child field for choice class.");
         }
     }
 
