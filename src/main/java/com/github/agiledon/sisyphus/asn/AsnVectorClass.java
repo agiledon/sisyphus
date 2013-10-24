@@ -22,16 +22,24 @@ public class AsnVectorClass extends AsnClass {
     }
 
     protected void addElement(Object currentObject) {
-        Vector currentVector = (Vector)currentObject;
-        Class<?> elementClass = getElementClass(currentObject);
+        Vector currentVector = (Vector) currentObject;
+        String currentTypeName = currentObject.getClass().getName();
 
-        for (AsnClass childAsnClass : getChildClasses()) {
-            currentVector.addElement(childAsnClass.instantiate(elementClass));
+        if (currentTypeName.contains("StringList_T")) {
+            for (BasicElement element : getBasicElements()) {
+                currentVector.addElement(element.getValue());
+            }
+        } else {
+            Class<?> elementClass = getElementClass(currentTypeName);
+            for (AsnClass childAsnClass : getChildClasses()) {
+                currentVector.addElement(childAsnClass.instantiate(elementClass));
+            }
         }
     }
 
-    protected Class<?> getElementClass(Object mainObject) {
-        String elementType = mainObject.getClass().getName().replaceFirst("(?i)List", "");
+    private Class<?> getElementClass(String currentTypeName) {
+        //todo
+        String elementType = currentTypeName.replaceFirst("(?i)List", "");
         try {
             return Class.forName(elementType);
         } catch (ClassNotFoundException e) {

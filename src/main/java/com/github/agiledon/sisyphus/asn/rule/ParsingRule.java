@@ -13,7 +13,8 @@ public abstract class ParsingRule {
             new EndingIndicatorRule(),
             new VectorClassRule(),
             new SequenceClassRule(),
-            new ChoiceClassRule());
+            new ChoiceClassRule(),
+            new BasicElementRule());
     private static ArrayList<AsnClassRule> generators = newArrayList(
             new VectorClassRule(),
             new SequenceClassRule(),

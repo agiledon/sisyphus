@@ -15,10 +15,12 @@ public abstract class AsnClass {
     private List<BasicField> basicFields;
     private List<AsnClass> childClasses;
     private AsnClass parentClass;
+    private List<BasicElement> basicElements;
 
     public AsnClass() {
         basicFields = newArrayList();
         childClasses = newArrayList();
+        basicElements = newArrayList();
     }
 
     public AsnClass(String fieldName) {
@@ -82,5 +84,13 @@ public abstract class AsnClass {
 
     public String getFieldName() {
         return fieldName;
+    }
+
+    public void addBasicElements(List<BasicElement> basicElements) {
+        this.basicElements.addAll(basicElements);
+    }
+
+    public List<BasicElement> getBasicElements() {
+        return basicElements;
     }
 }
