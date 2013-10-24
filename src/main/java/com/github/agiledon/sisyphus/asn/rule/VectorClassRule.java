@@ -8,6 +8,9 @@ public class VectorClassRule extends SubClassRule{
 
     @Override
     protected AsnClass createAsnClass(String line) {
+        if (noFieldName(line)) {
+            return new AsnVectorClass();
+        }
         return new AsnVectorClass(getFieldName(line));
     }
 

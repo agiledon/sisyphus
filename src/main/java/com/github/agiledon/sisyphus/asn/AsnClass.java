@@ -4,20 +4,21 @@ import com.github.agiledon.sisyphus.exception.FailedDeserializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 
 public abstract class AsnClass {
-    private final Logger logger = LoggerFactory.getLogger(AsnClass.class);
+    protected final Logger logger = LoggerFactory.getLogger(AsnClass.class);
     private String fieldName;
     private List<BasicField> basicFields;
-    private List<AsnClass> childClassProperties;
+    private List<AsnClass> childClasses;
     private AsnClass parentAsnClass;
 
     public AsnClass() {
         basicFields = newArrayList();
-        childClassProperties = newArrayList();
+        childClasses = newArrayList();
     }
 
     public AsnClass(String fieldName) {
@@ -25,27 +26,41 @@ public abstract class AsnClass {
         this.fieldName = fieldName;
     }
 
-    public <T> T instantiate(Class<T> aParentClass) {
-        T parentObject;
+    public final <T> T instantiate(Class<T> currentClass) {
+        T currentObject;
 
         try {
-            parentObject = aParentClass.newInstance();
-            for (BasicField basicField : getBasicFields()) {
-                basicField.setField(parentObject, aParentClass);
-            }
-            for (AsnClass asnClass : getChildClasses()) {
-                asnClass.setField(parentObject, aParentClass);
-            }
-
+            currentObject = newInstance(currentClass);
         } catch (Throwable t) {
             logger.error("Failed to de-serialize and the error message is {}", t.getMessage());
             throw new FailedDeserializationException(t);
         }
 
-        return parentObject;
+        return currentObject;
     }
 
-    protected abstract void setField(Object mainObject, Class<?> aClass) throws NoSuchFieldException, IllegalAccessException;
+    protected  <T> T newInstance(Class<T> currentClass) throws InstantiationException, IllegalAccessException, NoSuchFieldException {
+        T currentObject;
+        currentObject = currentClass.newInstance();
+        setBasicFields(currentObject, currentClass);
+        setClassFields(currentObject, currentClass);
+        return currentObject;
+    }
+
+    protected <T> void setClassFields(T currentObject, Class<T> currentClass) throws NoSuchFieldException, IllegalAccessException {
+        for (AsnClass childAsnClass : getChildClasses()) {
+            Field childField = currentClass.getDeclaredField(childAsnClass.getFieldName());
+            childField.set(currentObject, childAsnClass.instantiate(childField.getType()));
+        }
+
+    }
+
+    protected <T> void setBasicFields(T currentObject, Class<T> currentClass) throws IllegalAccessException, NoSuchFieldException, InstantiationException {
+        for (BasicField basicField : getBasicFields()) {
+            basicField.setField(currentObject, currentClass);
+        }
+
+    }
 
     protected List<BasicField> getBasicFields() {
         return basicFields;
@@ -56,12 +71,12 @@ public abstract class AsnClass {
     }
 
     public void addChildClass(AsnClass childAsnClass) {
-        this.childClassProperties.add(childAsnClass);
+        this.childClasses.add(childAsnClass);
         childAsnClass.parentAsnClass = this;
     }
 
     protected List<AsnClass> getChildClasses() {
-        return childClassProperties;
+        return childClasses;
     }
 
     public AsnClass getParentAsnClass() {
@@ -71,6 +86,4 @@ public abstract class AsnClass {
     public String getFieldName() {
         return fieldName;
     }
-
-    public abstract boolean isVector();
 }

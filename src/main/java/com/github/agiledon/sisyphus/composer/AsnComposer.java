@@ -5,8 +5,8 @@ import com.github.agiledon.sisyphus.asn.SyntaxParser;
 
 public class AsnComposer extends AbstractComposer{
     @Override
-    protected <T> T deserialize(Class<T> tClass) {
-        AsnClass asnClass = new SyntaxParser().parseClass(getContent());
-        return asnClass.instantiate(tClass);
+    protected <T> T deserialize(Class<T> currentClass) {
+        AsnClass currentAsnClass = new SyntaxParser().parseClass(getContent());
+        return currentAsnClass.instantiate(currentClass);
     }
 }

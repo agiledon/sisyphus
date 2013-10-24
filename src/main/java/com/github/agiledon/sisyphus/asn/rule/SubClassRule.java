@@ -21,4 +21,8 @@ public abstract class SubClassRule extends ParsingRule implements AsnClassGenera
     protected String getFieldName(String line) {
         return line.split("=")[0].trim();
     }
+
+    protected boolean noFieldName(String line) {
+        return line.trim().startsWith("{");
+    }
 }

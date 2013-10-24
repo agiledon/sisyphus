@@ -17,10 +17,10 @@ public class BasicField {
         this.value = value;
     }
 
-    public void setField(Object mainObject, Class<?> aClass) throws NoSuchFieldException, IllegalAccessException, InstantiationException {
+    public void setField(Object currentObject, Class<?> aClass) throws NoSuchFieldException, IllegalAccessException, InstantiationException {
         try {
             Field field = aClass.getDeclaredField(name);
-            field.set(mainObject, getFieldValue(field.getType()));
+            field.set(currentObject, getFieldValue(field.getType()));
         } catch (NoSuchFieldException ex) {
             logger.warn("Can not find the field with {} and inner exception is {}", name, ex.getMessage());
         }

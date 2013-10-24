@@ -13,6 +13,9 @@ public class ChoiceClassRule extends SubClassRule {
     }
 
     protected AsnClass createAsnClass(String line) {
+        if (noFieldName(line)) {
+            return new AsnChoiceClass();
+        }
         return new AsnChoiceClass(getFieldName(line));
     }
 

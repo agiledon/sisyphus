@@ -14,6 +14,9 @@ public class SequenceClassRule extends SubClassRule{
     }
 
     protected AsnClass createAsnClass(String line) {
+        if (noFieldName(line)) {
+            return new AsnSequenceClass();
+        }
         return new AsnSequenceClass(getFieldName(line));
     }
 }

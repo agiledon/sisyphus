@@ -20,7 +20,6 @@ public class SequenceClassRuleTest {
     public void should_parse_class_property_given_equal_expression_with_class_name() {
         AsnClass asnClass = sequenceClassRule.createAsnClass("      foo = { -- SEQUENCE ");
         assertThat(asnClass.getFieldName(), is("foo"));
-        assertThat(asnClass.isVector(), is(false));
     }
 
     @Test

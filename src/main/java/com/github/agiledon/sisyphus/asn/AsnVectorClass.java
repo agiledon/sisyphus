@@ -1,6 +1,10 @@
 package com.github.agiledon.sisyphus.asn;
 
-public class AsnVectorClass extends AsnSubClass {
+import com.github.agiledon.sisyphus.exception.ElementClassNotFoundException;
+
+import java.util.Vector;
+
+public class AsnVectorClass extends AsnClass {
 
     public AsnVectorClass(String fieldName) {
         super(fieldName);
@@ -11,12 +15,28 @@ public class AsnVectorClass extends AsnSubClass {
     }
 
     @Override
-    protected void setField(Object mainObject, Class<?> aClass) throws NoSuchFieldException, IllegalAccessException {
-        setCurrentField(mainObject, aClass);
+    protected <T> T newInstance(Class<T> currentClass) throws InstantiationException, IllegalAccessException, NoSuchFieldException {
+        T currentObject = currentClass.newInstance();
+        addElement(currentObject);
+        return currentObject;
     }
 
-    @Override
-    public boolean isVector() {
-        return true;
+    protected void addElement(Object currentObject) {
+        Vector currentVector = (Vector)currentObject;
+        Class<?> elementClass = getElementClass(currentObject);
+
+        for (AsnClass childAsnClass : getChildClasses()) {
+            currentVector.addElement(childAsnClass.instantiate(elementClass));
+        }
+    }
+
+    protected Class<?> getElementClass(Object mainObject) {
+        String elementType = mainObject.getClass().getName().replaceFirst("(?i)List", "");
+        try {
+            return Class.forName(elementType);
+        } catch (ClassNotFoundException e) {
+            logger.error("Class {} is not found. The cause is {}", elementType, e.getMessage());
+            throw new ElementClassNotFoundException(e);
+        }
     }
 }

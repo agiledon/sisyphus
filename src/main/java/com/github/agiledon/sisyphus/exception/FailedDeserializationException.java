@@ -4,4 +4,9 @@ public class FailedDeserializationException extends RuntimeException {
     public FailedDeserializationException(Throwable t) {
         super(t);
     }
+
+    public FailedDeserializationException() {
+
+
+    }
 }

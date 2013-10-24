@@ -54,13 +54,13 @@ public class SyntaxParser {
     }
 
     private AsnClass createRootClass(String firstLine) {
-        AsnClass rootClass;
         if (firstLine.contains("SEQUENCE OF")) {
-            rootClass = new AsnVectorClass();
-        } else {
-            rootClass = new AsnMainClass();
+            return new AsnVectorClass();
         }
-        return rootClass;
+        if (firstLine.contains("CHOICE")) {
+            return new AsnChoiceClass();
+        }
+        return new AsnMainClass();
     }
 
 }
