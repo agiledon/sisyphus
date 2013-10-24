@@ -6,8 +6,11 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Arrays;
 
 import static com.github.agiledon.sisyphus.asn.rule.ParsingRule.generateAsnClassTree;
 
@@ -16,17 +19,21 @@ public class SyntaxParser {
     public static final String LINE_BREAK = "\n";
 
     public AsnClass parseClass(String content) {
-        AsnClass rootClass;
-        String[] filteredLines = eachLine(content);
+        AsnClass rootClass = null;
+        String[] lines = eachLine(content);
 
         try {
             Preconditions.checkArgument(
-                    filteredLines != null && filteredLines.length >= 1,
+                    lines != null && lines.length >= 1,
                     "data file is error");
 
-            rootClass = createRootClass(filteredLines[0]);
-            for (String line : filteredLines) {
-                rootClass = generateAsnClassTree(rootClass, line);
+            for (int lineNo = 0; lineNo < lines.length; lineNo++) {
+                String line = lines[lineNo];
+                if (lineNo == 0) {
+                    rootClass = createRootClass(line);
+                } else {
+                    rootClass = generateAsnClassTree(rootClass, line);
+                }
             }
             return rootClass;
         } catch (IllegalArgumentException ex) {
@@ -60,7 +67,7 @@ public class SyntaxParser {
         if (firstLine.contains("CHOICE")) {
             return new AsnChoiceClass();
         }
-        return new AsnMainClass();
+        return new AsnSequenceClass();
     }
 
 }

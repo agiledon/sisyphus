@@ -5,8 +5,7 @@ public class FailedDeserializationException extends RuntimeException {
         super(t);
     }
 
-    public FailedDeserializationException() {
-
-
+    public FailedDeserializationException(String message) {
+        super(message);
     }
 }

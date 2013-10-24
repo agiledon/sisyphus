@@ -6,12 +6,12 @@ import java.util.Vector;
 
 public class AsnVectorClass extends AsnClass {
 
-    public AsnVectorClass(String fieldName) {
-        super(fieldName);
-    }
-
     public AsnVectorClass() {
         super();
+    }
+
+    public AsnVectorClass(String fieldName) {
+        super(fieldName);
     }
 
     @Override

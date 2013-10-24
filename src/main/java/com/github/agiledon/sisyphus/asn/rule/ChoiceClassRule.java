@@ -3,7 +3,7 @@ package com.github.agiledon.sisyphus.asn.rule;
 import com.github.agiledon.sisyphus.asn.AsnChoiceClass;
 import com.github.agiledon.sisyphus.asn.AsnClass;
 
-public class ChoiceClassRule extends SubClassRule {
+public class ChoiceClassRule extends AsnClassRule {
     protected static boolean isChoice(String line) {
         return line.contains("CHOICE");
     }
@@ -13,7 +13,7 @@ public class ChoiceClassRule extends SubClassRule {
     }
 
     protected AsnClass createAsnClass(String line) {
-        if (noFieldName(line)) {
+        if (isNestedClass(line)) {
             return new AsnChoiceClass();
         }
         return new AsnChoiceClass(getFieldName(line));

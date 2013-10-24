@@ -14,7 +14,7 @@ public abstract class AsnClass {
     private String fieldName;
     private List<BasicField> basicFields;
     private List<AsnClass> childClasses;
-    private AsnClass parentAsnClass;
+    private AsnClass parentClass;
 
     public AsnClass() {
         basicFields = newArrayList();
@@ -28,14 +28,12 @@ public abstract class AsnClass {
 
     public final <T> T instantiate(Class<T> currentClass) {
         T currentObject;
-
         try {
             currentObject = newInstance(currentClass);
         } catch (Throwable t) {
             logger.error("Failed to de-serialize and the error message is {}", t.getMessage());
             throw new FailedDeserializationException(t);
         }
-
         return currentObject;
     }
 
@@ -47,19 +45,18 @@ public abstract class AsnClass {
         return currentObject;
     }
 
-    protected <T> void setClassFields(T currentObject, Class<T> currentClass) throws NoSuchFieldException, IllegalAccessException {
-        for (AsnClass childAsnClass : getChildClasses()) {
-            Field childField = currentClass.getDeclaredField(childAsnClass.getFieldName());
-            childField.set(currentObject, childAsnClass.instantiate(childField.getType()));
-        }
-
-    }
-
-    protected <T> void setBasicFields(T currentObject, Class<T> currentClass) throws IllegalAccessException, NoSuchFieldException, InstantiationException {
+    protected final <T> void setBasicFields(T currentObject, Class<T> currentClass) throws IllegalAccessException, NoSuchFieldException, InstantiationException {
         for (BasicField basicField : getBasicFields()) {
             basicField.setField(currentObject, currentClass);
         }
 
+    }
+
+    protected final <T> void setClassFields(T currentObject, Class<T> currentClass) throws NoSuchFieldException, IllegalAccessException {
+        for (AsnClass childAsnClass : getChildClasses()) {
+            Field childField = currentClass.getDeclaredField(childAsnClass.getFieldName());
+            childField.set(currentObject, childAsnClass.instantiate(childField.getType()));
+        }
     }
 
     protected List<BasicField> getBasicFields() {
@@ -70,17 +67,17 @@ public abstract class AsnClass {
         basicFields.add(basicField);
     }
 
-    public void addChildClass(AsnClass childAsnClass) {
-        this.childClasses.add(childAsnClass);
-        childAsnClass.parentAsnClass = this;
+    public void addChildClass(AsnClass childClass) {
+        this.childClasses.add(childClass);
+        childClass.parentClass = this;
     }
 
     protected List<AsnClass> getChildClasses() {
         return childClasses;
     }
 
-    public AsnClass getParentAsnClass() {
-        return parentAsnClass;
+    public AsnClass getParentClass() {
+        return parentClass;
     }
 
     public String getFieldName() {

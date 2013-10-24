@@ -13,7 +13,7 @@ public class EndingIndicatorRule extends ParsingRule {
     }
 
     private AsnClass navigateToParent(AsnClass currentClass) {
-        AsnClass parentAsnClass = currentClass.getParentAsnClass();
+        AsnClass parentAsnClass = currentClass.getParentClass();
         if (parentAsnClass != null) {
             currentClass = parentAsnClass;
         }

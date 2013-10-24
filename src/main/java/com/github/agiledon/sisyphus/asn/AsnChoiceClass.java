@@ -15,23 +15,36 @@ public class AsnChoiceClass extends AsnClass {
 
     @Override
     protected <T> T newInstance(Class<T> currentClass) throws InstantiationException, IllegalAccessException, NoSuchFieldException {
-        AsnClass childAsnClass = getChildClasses().get(0);
-        if (childAsnClass == null) {
-            logger.warn("There is no child class");
-            throw new FailedDeserializationException();
-        }
-
         T currentObject = currentClass.newInstance();
-        String choiceIdConstFieldName = childAsnClass.getFieldName().toUpperCase() + "_CID";
-        Field choiceIdConstField = currentObject.getClass().getDeclaredField(choiceIdConstFieldName);
-        int choiceIdValue = choiceIdConstField.getInt(currentObject);
-        Field choiceIdField = currentObject.getClass().getDeclaredField("choiceId");
-        choiceIdField.set(currentObject, choiceIdValue);
 
+        setChoiceIdField(currentObject);
         setBasicFields(currentObject, currentClass);
         setClassFields(currentObject, currentClass);
 
         return currentObject;
+    }
+
+    private <T> void setChoiceIdField(T currentObject) throws NoSuchFieldException, IllegalAccessException {
+        AsnClass childAsnClass = getChildClasses().get(0);
+        if (childAsnClass == null) {
+            String errorMessage = String.format("No child class for %s", this);
+            logger.error(errorMessage);
+            throw new FailedDeserializationException(errorMessage);
+        }
+
+        setChoiceIdValue(childAsnClass, currentObject);
+    }
+
+    private <T> void setChoiceIdValue(AsnClass childAsnClass, T currentObject) throws NoSuchFieldException, IllegalAccessException {
+        int choiceIdValue = getChoiceId(childAsnClass, currentObject);
+        Field choiceIdField = currentObject.getClass().getDeclaredField("choiceId");
+        choiceIdField.set(currentObject, choiceIdValue);
+    }
+
+    private <T> int getChoiceId(AsnClass childAsnClass, T currentObject) throws NoSuchFieldException, IllegalAccessException {
+        String choiceIdConstFieldName = childAsnClass.getFieldName().toUpperCase() + "_CID";
+        Field choiceIdConstField = currentObject.getClass().getDeclaredField(choiceIdConstFieldName);
+        return choiceIdConstField.getInt(currentObject);
     }
 
 }

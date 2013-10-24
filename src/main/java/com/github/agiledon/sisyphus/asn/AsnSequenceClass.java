@@ -8,5 +8,4 @@ public class AsnSequenceClass extends AsnClass {
     public AsnSequenceClass(String fieldName) {
         super(fieldName);
     }
-
 }

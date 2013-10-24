@@ -8,12 +8,10 @@ import static com.google.common.collect.Lists.newArrayList;
 
 public abstract class ParsingRule implements AsnClassGenerator {
     private static List<ParsingRule> rules = newArrayList(
-            new MainClassRule(),
             new EndingIndicatorRule(),
             new VectorClassRule(),
             new SequenceClassRule(),
-            new ChoiceClassRule(),
-            new NestedClassRule());
+            new ChoiceClassRule());
 
     public static AsnClass generateAsnClassTree(AsnClass currentClass, String line) {
         for (ParsingRule rule : rules) {
