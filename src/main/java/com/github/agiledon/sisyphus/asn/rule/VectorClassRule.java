@@ -18,4 +18,9 @@ public class VectorClassRule extends AsnClassRule {
     public boolean match(String line) {
         return line.contains(VECTOR_INDICATOR);
     }
+
+    @Override
+    public AsnClass generate() {
+        return new AsnVectorClass();
+    }
 }

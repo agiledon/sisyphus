@@ -4,12 +4,9 @@ import com.github.agiledon.sisyphus.asn.AsnChoiceClass;
 import com.github.agiledon.sisyphus.asn.AsnClass;
 
 public class ChoiceClassRule extends AsnClassRule {
-    protected static boolean isChoice(String line) {
-        return line.contains("CHOICE");
-    }
 
     public boolean match(String line) {
-        return isChoice(line) && line.contains("=");
+        return line.contains("CHOICE");
     }
 
     protected AsnClass createAsnClass(String line) {
@@ -19,4 +16,8 @@ public class ChoiceClassRule extends AsnClassRule {
         return new AsnChoiceClass(getFieldName(line));
     }
 
+    @Override
+    public AsnClass generate() {
+        return new AsnChoiceClass();
+    }
 }

@@ -21,7 +21,7 @@ public class Fixture {
             composer = createComposer(fileExtension);
             composers.put(fileExtension, composer);
         }
-        composer.clearTemplateParser();
+        composer.clearTemplate();
         composer.setResourceName(resourceName);
         return composer;
     }

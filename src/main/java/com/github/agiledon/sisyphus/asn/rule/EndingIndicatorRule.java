@@ -8,7 +8,7 @@ public class EndingIndicatorRule extends ParsingRule {
     }
 
     @Override
-    public AsnClass generate(AsnClass currentClass, String line) {
+    public AsnClass asnClassNode(AsnClass currentClass, String line) {
         return navigateToParent(currentClass);
     }
 

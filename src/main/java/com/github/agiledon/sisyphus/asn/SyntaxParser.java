@@ -1,39 +1,30 @@
 package com.github.agiledon.sisyphus.asn;
 
+import com.github.agiledon.sisyphus.asn.rule.ParsingRule;
 import com.github.agiledon.sisyphus.exception.FailedDeserializationException;
-import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
-
-import static com.github.agiledon.sisyphus.asn.rule.ParsingRule.generateAsnClassTree;
+import static com.github.agiledon.sisyphus.asn.rule.ParsingRule.asnClassTree;
+import static com.google.common.base.Preconditions.checkArgument;
 
 public class SyntaxParser {
     private final Logger logger = LoggerFactory.getLogger(SyntaxParser.class);
     public static final String LINE_BREAK = "\n";
 
     public AsnClass parseClass(String content) {
-        AsnClass rootClass = null;
+        AsnClass rootClass;
         String[] lines = eachLine(content);
 
         try {
-            Preconditions.checkArgument(
-                    lines != null && lines.length >= 1,
-                    "data file is error");
-
-            for (int lineNo = 0; lineNo < lines.length; lineNo++) {
-                String line = lines[lineNo];
-                if (lineNo == 0) {
-                    rootClass = createRootClass(line);
-                } else {
-                    rootClass = generateAsnClassTree(rootClass, line);
-                }
+            checkArgument(lines != null && lines.length >= 1, "data file is error");
+            rootClass = ParsingRule.createRootClass(lines[0]);
+            for (String line : lines) {
+                rootClass = asnClassTree(rootClass, line);
             }
             return rootClass;
         } catch (IllegalArgumentException ex) {
@@ -59,15 +50,4 @@ public class SyntaxParser {
         });
         return Iterables.toArray(filteredLines, String.class);
     }
-
-    private AsnClass createRootClass(String firstLine) {
-        if (firstLine.contains("SEQUENCE OF")) {
-            return new AsnVectorClass();
-        }
-        if (firstLine.contains("CHOICE")) {
-            return new AsnChoiceClass();
-        }
-        return new AsnSequenceClass();
-    }
-
 }

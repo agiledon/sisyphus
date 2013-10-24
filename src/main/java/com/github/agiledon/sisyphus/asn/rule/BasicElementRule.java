@@ -18,7 +18,7 @@ public class BasicElementRule extends ParsingRule{
     }
 
     @Override
-    public AsnClass generate(AsnClass currentClass, String line) {
+    public AsnClass asnClassNode(AsnClass currentClass, String line) {
         //todo
         return null;
     }

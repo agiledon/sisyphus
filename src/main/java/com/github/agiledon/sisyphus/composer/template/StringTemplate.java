@@ -1,4 +1,4 @@
-package com.github.agiledon.sisyphus.composer.parser;
+package com.github.agiledon.sisyphus.composer.template;
 
 import com.google.common.base.Function;
 import com.google.common.base.Splitter;
@@ -11,11 +11,11 @@ import static com.github.agiledon.sisyphus.util.ResourceLoader.loadResource;
 import static com.google.common.collect.Iterables.getFirst;
 import static com.google.common.collect.Iterables.getLast;
 
-public class StringTemplateParser {
+public class StringTemplate {
     public static final char VARIABLE_INDICATOR = '$';
     private String templateFileName;
 
-    public StringTemplateParser(String templateFileName) {
+    public StringTemplate(String templateFileName) {
         this.templateFileName = templateFileName;
     }
 

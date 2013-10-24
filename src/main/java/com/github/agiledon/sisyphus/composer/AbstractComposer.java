@@ -1,6 +1,6 @@
 package com.github.agiledon.sisyphus.composer;
 
-import com.github.agiledon.sisyphus.composer.parser.StringTemplateParser;
+import com.github.agiledon.sisyphus.composer.template.StringTemplate;
 import com.google.common.base.Joiner;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import static com.google.common.collect.Maps.newHashMap;
 public abstract class AbstractComposer implements Composer {
     protected String resourceName;
     private Map<String, Object> results = newHashMap();
-    private StringTemplateParser templateParser;
+    private StringTemplate stringTemplate;
 
     public void setResourceName(String resourceName) {
         this.resourceName = resourceName;
@@ -31,24 +31,24 @@ public abstract class AbstractComposer implements Composer {
 
     protected String getContent() {
         List<String> content = loadTextLines(resourceName);
-        if (templateParser != null) {
-            return templateParser.evaluate(content);
+        if (stringTemplate != null) {
+            return stringTemplate.evaluate(content);
         }
         return Joiner.on("\n").join(content);
     }
 
-    public void setTemplateParser(StringTemplateParser templateParser) {
-        this.templateParser = templateParser;
+    public void setTemplate(StringTemplate stringTemplate) {
+        this.stringTemplate = stringTemplate;
     }
 
     @Override
-    public void clearTemplateParser() {
-        this.templateParser = null;
+    public void clearTemplate() {
+        this.stringTemplate = null;
     }
 
     @Override
     public Composer withTemplate(String templateFileName) {
-        this.setTemplateParser(new StringTemplateParser(templateFileName));
+        this.setTemplate(new StringTemplate(templateFileName));
         return this;
     }
 }

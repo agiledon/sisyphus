@@ -15,4 +15,9 @@ public class SequenceClassRule extends AsnClassRule {
         }
         return new AsnSequenceClass(getFieldName(line));
     }
+
+    @Override
+    public AsnClass generate() {
+        return new AsnSequenceClass();
+    }
 }

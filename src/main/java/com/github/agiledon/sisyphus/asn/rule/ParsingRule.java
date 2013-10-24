@@ -1,27 +1,43 @@
 package com.github.agiledon.sisyphus.asn.rule;
 
 import com.github.agiledon.sisyphus.asn.AsnClass;
+import com.github.agiledon.sisyphus.exception.FailedDeserializationException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 
-public abstract class ParsingRule implements AsnClassGenerator {
+public abstract class ParsingRule {
     private static List<ParsingRule> rules = newArrayList(
             new EndingIndicatorRule(),
             new VectorClassRule(),
             new SequenceClassRule(),
             new ChoiceClassRule());
+    private static ArrayList<AsnClassRule> generators = newArrayList(
+            new VectorClassRule(),
+            new SequenceClassRule(),
+            new ChoiceClassRule());
 
-    public static AsnClass generateAsnClassTree(AsnClass currentClass, String line) {
+    public static AsnClass asnClassTree(AsnClass currentClass, String line) {
         for (ParsingRule rule : rules) {
             if (rule.match(line)) {
-                return rule.generate(currentClass, line);
+                return rule.asnClassNode(currentClass, line);
             }
         }
 
-        return new BasicFieldRule().generate(currentClass, line);
+        return new BasicFieldRule().asnClassNode(currentClass, line);
+    }
+
+    public static AsnClass createRootClass(String firstLine) {
+        for (AsnClassRule generator : generators) {
+            if (generator.match(firstLine)) {
+                return generator.generate();
+            }
+        }
+        throw new FailedDeserializationException("Wrong Data file");
     }
 
     public abstract boolean match(String line);
+    public abstract AsnClass asnClassNode(AsnClass currentClass, String line);
 }
