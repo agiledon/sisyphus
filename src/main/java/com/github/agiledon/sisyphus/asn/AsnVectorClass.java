@@ -6,6 +6,10 @@ public class AsnVectorClass extends AsnSubClass {
         super(fieldName);
     }
 
+    public AsnVectorClass() {
+        super();
+    }
+
     @Override
     protected void setField(Object mainObject, Class<?> aClass) throws NoSuchFieldException, IllegalAccessException {
         setCurrentField(mainObject, aClass);

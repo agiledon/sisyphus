@@ -7,6 +7,10 @@ public class AsnChoiceClass extends AsnSubClass {
         super(fieldName);
     }
 
+    public AsnChoiceClass() {
+        super();
+    }
+
     @Override
     protected void setField(Object mainObject, Class<?> aClass) throws NoSuchFieldException, IllegalAccessException {
         if (getParentAsnClass() != null && getParentAsnClass().isVector()) {
