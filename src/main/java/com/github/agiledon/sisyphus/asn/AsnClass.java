@@ -47,7 +47,7 @@ public abstract class AsnClass {
         return currentObject;
     }
 
-    protected final <T> void setBasicFields(T currentObject, Class<T> currentClass) throws IllegalAccessException, NoSuchFieldException, InstantiationException {
+    protected final <T> void setBasicFields(T currentObject, Class<T> currentClass) throws IllegalAccessException {
         for (BasicField basicField : getBasicFields()) {
             basicField.setField(currentObject, currentClass);
         }

@@ -1,11 +1,11 @@
 package com.github.agiledon.sisyphus.asn;
 
-import com.google.common.base.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
-import java.math.BigInteger;
+
+import static com.github.agiledon.sisyphus.asn.util.BasicFields.getFieldValue;
 
 public class BasicField {
     private final Logger logger = LoggerFactory.getLogger(BasicField.class);
@@ -17,46 +17,15 @@ public class BasicField {
         this.value = value;
     }
 
-    public void setField(Object currentObject, Class<?> aClass) throws NoSuchFieldException, IllegalAccessException, InstantiationException {
+    public void setField(Object currentObject, Class<?> aClass) throws IllegalAccessException {
         try {
             Field field = aClass.getDeclaredField(name);
-            field.set(currentObject, getFieldValue(field.getType()));
+            field.set(currentObject, getFieldValue(field.getType(), value));
         } catch (NoSuchFieldException ex) {
             logger.warn("Can not find the field with {} and inner exception is {}", name, ex.getMessage());
+        } catch (Exception ex) {
+            logger.warn("Can not find the field with {} and inner exception is {}", name, ex.getMessage());
         }
-    }
-
-    private Object getFieldValue(Class<?> fieldType) throws IllegalAccessException, NoSuchFieldException, InstantiationException {
-        String fieldTypeName = fieldType.getSimpleName();
-        if (isPrimitiveType(fieldTypeName)) {
-            return parseFieldValue(fieldTypeName);
-        }
-        Object fieldValue = fieldType.newInstance();
-        setInnerValueField(fieldType, fieldValue);
-        return fieldValue;
-    }
-
-    private void setInnerValueField(Class<?> fieldType, Object fieldValue) throws NoSuchFieldException, IllegalAccessException {
-        Field valueField = fieldType.getField("value");
-        valueField.set(fieldValue, parseFieldValue(valueField.getType().getSimpleName()));
-    }
-
-    private Object parseFieldValue(String fieldTypeName) {
-        boolean nullOrEmptyValue = Strings.isNullOrEmpty(value);
-
-        if ("String".equals(fieldTypeName)) {
-            return nullOrEmptyValue ? " " : value;
-        } else if ("byte[]".equals(fieldTypeName)) {
-            return nullOrEmptyValue ? "0".getBytes() : value.getBytes();
-        } else {
-            return nullOrEmptyValue ? BigInteger.valueOf(0) : BigInteger.valueOf(Integer.parseInt(value));
-        }
-    }
-
-    private boolean isPrimitiveType(String fieldTypeName) {
-        return "String".equals(fieldTypeName)
-                || "BigInteger".equals(fieldTypeName)
-                || "byte[]".equals(fieldTypeName);
     }
 
     @Override

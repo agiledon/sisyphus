@@ -13,6 +13,7 @@ import java.util.List;
 
 import static com.github.agiledon.sisyphus.util.ResourceFilePath.compensatePath;
 import static com.github.agiledon.sisyphus.util.ResourceFilePath.getAbsolutePath;
+import static com.google.common.collect.Lists.newArrayList;
 
 public class ResourceLoader {
     private static final Logger logger = LoggerFactory.getLogger(ResourceLoader.class);
@@ -23,13 +24,19 @@ public class ResourceLoader {
     }
 
     public static List<String> loadTextLines(String textFileName) {
-        File file = new File(getAbsolutePath(compensatePath(textFileName)));
         try {
+            File file = new File(getAbsolutePath(compensatePath(textFileName)));
             return Files.readLines(file, Charsets.UTF_8);
         } catch (IOException e) {
-            logger.error("Failed to read file {}.", textFileName);
-            throw new FailToReadTextFileException(e);
+            return logAndReturnEmptyList(textFileName);
+        }catch (Exception e) {
+            return logAndReturnEmptyList(textFileName);
         }
+    }
+
+    private static List<String> logAndReturnEmptyList(String textFileName) {
+        logger.warn("Failed to read file {}.", textFileName);
+        return newArrayList();
     }
 
 

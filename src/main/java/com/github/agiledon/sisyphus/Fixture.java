@@ -36,6 +36,8 @@ public class Fixture {
             return new UnknownComposer();
         } catch (IllegalAccessException e) {
             return new UnknownComposer();
+        } catch (Exception e) {
+            return new UnknownComposer();
         }
     }
 

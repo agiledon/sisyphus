@@ -26,6 +26,7 @@ public class BasicElementRule extends ParsingRule{
     public List<BasicElement> parseBasicElements(String line) {
         List<String> elements = Splitter.on(",")
                 .trimResults()
+                .omitEmptyStrings()
                 .splitToList(line);
         return Lists.transform(elements, new Function<String, BasicElement>() {
             @Override

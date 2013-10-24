@@ -28,9 +28,15 @@ public class SyntaxParser {
             }
             return rootClass;
         } catch (IllegalArgumentException ex) {
-            logger.error(ex.getMessage());
-            throw new FailedDeserializationException(ex);
+            return logAndRethrowException(ex);
+        } catch (Exception ex) {
+            return logAndRethrowException(ex);
         }
+    }
+
+    private AsnClass logAndRethrowException(Exception ex) {
+        logger.error(ex.getMessage());
+        throw new FailedDeserializationException(ex);
     }
 
     private String[] eachLine(String content) {
