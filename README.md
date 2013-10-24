@@ -135,20 +135,78 @@ Then, write your test using Fixture provided by sisyphus:
 #### Yaml
 Sisyphus use SnakeYaml to parse yaml data. The test data sample like this:
 ```
-Type1:
-    [Type1sub1,Type1sub2]
-Type2:
-    [Type2sub1,Type2sub2]
+invoice: 34843
+date   : 2001-01-23
+billTo: &id001
+    given  : Chris
+    family : Dumars
+    address:
+        lines: |
+            458 Walkman Dr.
+            Suite #292
+        city    : Royal Oak
+        state   : MI
+        postal  : 48046
+shipTo: *id001
+products:
+    - sku         : BL394D
+      quantity    : 4
+      description : Basketball
+      price       : 450.00
+    - sku         : BL4438H
+      quantity    : 1
+      description : Super Hoop
+      price       : 2392.00
+tax  : 251.42
+total: 4443.52
+comments:
+    Late afternoon is best.
+    Backup contact is Nancy
+    Billsmer @ 338-4338.
+```
+
+The corresponding java classes are as below:
+```java
+public class Invoice {
+    public Integer invoice; // invoice
+    public String date; // date
+    public Person billTo;// bill-to
+    public Person shipTo;// ship-to
+    public Product[] products;
+    public Float tax;
+    public Float total;
+    public String comments;
+
+}
+public class Product {
+    public String sku;
+    public int quantity;
+    public String description;
+    public double price;
+}
+public class Person {
+    public String given;
+    public String family;
+    public Address address;
+}
+public class Address {
+    public String lines;
+    public String city;
+    public String state;
+    public String postal;
+}
 ```
 
 Using Fixture:
 ```java
     @Test
-    public void should_compose_Type_data_with_yaml_format() {
-        Map<String, List<String>> types = Fixture.from("type.yaml").to(Map.class);
-        assertThat(types, not(nullValue()));
-        assertThat(types.size(), is(2));
-        assertThat(types.get("Type1").get(0), is("Type1sub1"));
+    public void should_compose_invoice_data_with_yaml_format() {
+        Invoice invoice = from("invoice.yaml").to(Invoice.class);
+        assertThat(invoice, not(nullValue()));
+        assertThat(invoice.date, is("2001-01-23"));
+        assertThat(invoice.products.length, is(2));
+        assertThat(invoice.products[0].description, is("Basketball"));
+        assertThat(invoice.billTo.given, is("Chris"));
     }
 ```
 
@@ -220,9 +278,35 @@ To imporve the performance of running tests, sisyphus provide the caching featur
     }
 ```
 
+#### JUnit Support
 
-###Todo
-* Support JUnit and TestNG annotation.
+It defines the DataProviderRule and DataResource annotation:
+```java
+public class DataProviderRuleTest {
+    @Rule
+    public DataProviderRule dataProvider = new DataProviderRule();
+
+    @Test
+    @DataResource(resourceName = "user.json", targetClass = User.class)
+    public void should_compose_User_data_with_json_format() {
+        User user = dataProvider.provideData();
+        assertThat(user, not(nullValue()));
+        assertThat(user.getName().getFirst(), is("Joe"));
+    }
+
+    @Test
+    @DataResource(resourceName = "userWithTemplate.json",
+            templateName = "template/user.template",
+            targetClass = User.class)
+    public void should_compose_user_data_by_parsing_template_file() {
+        User user = dataProvider.provideData();
+        assertThat(user, not(nullValue()));
+        assertThat(user.getName().getFirst(), is("Joe"));
+        assertThat(user.getName().getLast(), is("Sixpack"));
+    }
+}
+```
+
 
 ### Frameworks
 * Sisyphus use these frameworks: Guava, snakeyaml, jackson, gson, st4(StringTemplate), slf4j.
