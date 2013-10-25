@@ -2,6 +2,7 @@
 * Support Json format (Done)
 * Support memory database (HSQL, Datomic)
 * Support Xml format
+* Support Csv format
 * Support ASN format data and provide the extension point for specific requirement
     * Support Sequence (Done)
     * Support Choice (Done)
@@ -12,7 +13,7 @@
 * Handle the case when missing variables (Done)
 * Only need configure one element for sequence in the template file
 (generate all elements according to data file)
-* Support de-serializing multi objects from one data file (Using section splitter)
+* Support de-serializing multi objects from one data file (Using section splitter, done)
 * Define annotation for JUnit
     - Support Rule (Done)
     - Support Test Method Parameter (Refer to junitparams and zohhak)
