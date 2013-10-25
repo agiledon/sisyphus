@@ -1,3 +1,4 @@
+# {} means class
 {
   "name" : { "first" : "Joe", "last" : "Sixpack" },
   "gender" : "MALE",

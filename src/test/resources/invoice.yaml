@@ -1,3 +1,4 @@
+#yaml format
 invoice: 34843
 date   : 2001-01-23
 billTo: &id001

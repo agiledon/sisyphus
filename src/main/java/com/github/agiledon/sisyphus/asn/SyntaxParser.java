@@ -2,12 +2,12 @@ package com.github.agiledon.sisyphus.asn;
 
 import com.github.agiledon.sisyphus.asn.rule.ParsingRule;
 import com.github.agiledon.sisyphus.exception.FailedDeserializationException;
-import com.google.common.base.Predicate;
 import com.google.common.base.Splitter;
-import com.google.common.base.Strings;
-import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 import static com.github.agiledon.sisyphus.asn.rule.ParsingRule.asnClassTree;
 import static com.google.common.base.Preconditions.checkArgument;
@@ -18,11 +18,11 @@ public class SyntaxParser {
 
     public AsnClass parseClass(String content) {
         AsnClass rootClass;
-        String[] lines = eachLine(content);
+        List<String> lines = eachLine(content);
 
         try {
-            checkArgument(lines != null && lines.length >= 1, "data file is error");
-            rootClass = ParsingRule.createRootClass(lines[0]);
+            checkArgument(lines != null && lines.size() >= 1, "data file is error");
+            rootClass = ParsingRule.createRootClass(lines.get(0));
             for (String line : lines) {
                 rootClass = asnClassTree(rootClass, line);
             }
@@ -39,21 +39,11 @@ public class SyntaxParser {
         throw new FailedDeserializationException(ex);
     }
 
-    private String[] eachLine(String content) {
+    private List<String> eachLine(String content) {
         Iterable<String> lines = Splitter.on(LINE_BREAK)
                 .omitEmptyStrings()
                 .split(content);
 
-        return filterSpaceLines(lines);
-    }
-
-    private String[] filterSpaceLines(Iterable<String> lines) {
-        Iterable<String> filteredLines = Iterables.filter(lines, new Predicate<String>() {
-            @Override
-            public boolean apply(String line) {
-                return !Strings.isNullOrEmpty(line.trim());
-            }
-        });
-        return Iterables.toArray(filteredLines, String.class);
+        return Lists.newArrayList(lines);
     }
 }

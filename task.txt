@@ -18,3 +18,4 @@
     - Support Test Method Parameter (Refer to junitparams and zohhak)
 * Define annotation for TestNG
 * Add logging feature (Using SLF4J) (done)
+* Support comment with # in data and template file (done)
