@@ -253,7 +253,7 @@ The test method seems like:
 
 #### Multi Sections
 To make use of template effectively, sisyphus provides the multi sections for data file. So, you don't need create the related data file for each test case. In fact, you can gather all data in the one file using a section indicator "///":
-``` Template file
+```
 {
   "name" : { "first" : $firstName$, "last" : $lastName$ },
   "gender" : "MALE",
