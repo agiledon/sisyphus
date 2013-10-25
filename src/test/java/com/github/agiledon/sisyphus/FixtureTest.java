@@ -142,6 +142,18 @@ public class FixtureTest {
     }
 
     @Test
+    public void should_compose_multi_user_data_by_parsing_template_file() {
+        List<User> users = from("userWithMultiSections.json")
+                .withTemplate("template/user.template")
+                .toList(User.class);
+        assertThat(users, not(nullValue()));
+        assertThat(users.get(0).getName().getFirst(), is("Joe"));
+        assertThat(users.get(0).getName().getLast(), is("Sixpack"));
+        assertThat(users.get(2).getName().getFirst(), is("Yi"));
+        assertThat(users.get(2).getName().getLast(), is("Zhang"));
+    }
+
+    @Test
     public void should_be_null_if_missing_variable_by_parsing_template_file() {
         User user = from("userWithTemplateMissingVariable.json")
                 .withTemplate("template/user.template")

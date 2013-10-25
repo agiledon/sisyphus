@@ -1,0 +1,13 @@
+# This is multi section sample
+firstName = "Joe"
+lastName = "Sixpack"
+
+///
+
+firstName = "Bruce"
+lastName = "Zhang"
+
+///
+
+firstName = "Yi"
+lastName = "Zhang"

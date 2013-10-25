@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.github.agiledon.sisyphus.util.ResourceFilePath.compensatePath;
@@ -21,6 +22,7 @@ import static com.google.common.collect.Lists.newArrayList;
 public class ResourceLoader {
     private static final Logger logger = LoggerFactory.getLogger(ResourceLoader.class);
     private static final String COMMENT_INDICATOR = "#";
+    private static final String SECTION_INDICATOR = "///";
 
     public static String loadResource(String resourceName) {
         List<String> resource = loadResourceAsLines(resourceName);
@@ -34,9 +36,26 @@ public class ResourceLoader {
             return filterInvalidLines(strings);
         } catch (IOException e) {
             return logAndReturnEmptyList(resourceName);
-        }catch (Exception e) {
+        } catch (Exception e) {
             return logAndReturnEmptyList(resourceName);
         }
+    }
+
+    public static List<List<String>> loadResources(String resourceName) {
+        List<List<String>> resources = newArrayList();
+        List<String> section = newArrayList();
+        for (String line : loadResourceAsLines(resourceName)) {
+            if (line.trim().startsWith(SECTION_INDICATOR)) {
+                resources.add(section);
+                section = newArrayList();
+            } else {
+                section.add(line);
+            }
+        }
+        if (section.size() > 0) {
+            resources.add(section);
+        }
+        return resources;
     }
 
     private static List<String> logAndReturnEmptyList(String resourceName) {

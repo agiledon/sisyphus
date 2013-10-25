@@ -22,20 +22,19 @@ public abstract class AbstractComposer implements Composer {
     public <T> T to(Class<T> tClass) {
         T result = (T)results.get(resourceName);
         if (result == null) {
-            result = deserialize(tClass);
+            result = deserialize(tClass, loadResourceAsLines(resourceName));
             results.put(resourceName, result);
         }
         return result;
     }
 
-    protected abstract <T> T deserialize(Class<T> tClass);
+    protected abstract <T> T deserialize(Class<T> tClass, List<String> resource);
 
-    protected String getContent() {
-        List<String> content = loadResourceAsLines(resourceName);
+    protected String getContent(List<String> resource) {
         if (stringTemplate != null) {
-            return stringTemplate.evaluate(content);
+            return stringTemplate.evaluate(resource);
         }
-        return Joiner.on("\n").join(content);
+        return Joiner.on("\n").join(resource);
     }
 
     public void setTemplate(StringTemplate stringTemplate) {
@@ -48,8 +47,11 @@ public abstract class AbstractComposer implements Composer {
     }
 
     @Override
-    public Composer withTemplate(String templateFileName) {
-        this.setTemplate(new StringTemplate(templateFileName));
-        return this;
+    public MultiSectionsComposer withTemplate(String templateFileName) {
+        StringTemplate template = new StringTemplate(templateFileName);
+        this.setTemplate(template);
+        MultiSectionsComposer multiSectionsComposer = new MultiSectionsComposer(this);
+        multiSectionsComposer.setResourceName(resourceName);
+        return multiSectionsComposer;
     }
 }
