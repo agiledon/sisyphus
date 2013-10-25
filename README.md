@@ -251,6 +251,67 @@ The test method seems like:
     }
 ```
 
+#### Multi Sections
+To make use of template effectively, sisyphus provides the multi sections for data file. So, you don't need create the related data file for each test case. In fact, you can gather all data in the one file using a section indicator "///":
+``` Template file
+{
+  "name" : { "first" : $firstName$, "last" : $lastName$ },
+  "gender" : "MALE",
+  "verified" : false,
+  "userImage" : "Rm9vYmFyIQ=="
+}
+```
+
+The data file is as below:
+```
+firstName = "Joe"
+lastName = "Sixpack"
+
+///
+
+firstName = "Bruce"
+lastName = "Zhang"
+
+///
+
+firstName = "Yi"
+lastName = "Zhang"
+```
+
+Then you can invoke the toList() method to get List object:
+```java
+    @Test
+    public void should_compose_multi_user_data_by_parsing_template_file() {
+        List<User> users = from("userWithMultiSections.json")
+                .withTemplate("template/user.template")
+                .toList(User.class);
+        
+        assertThat(users, not(nullValue()));
+        assertThat(users.get(0).getName().getFirst(), is("Joe"));
+        assertThat(users.get(0).getName().getLast(), is("Sixpack"));
+        assertThat(users.get(2).getName().getFirst(), is("Yi"));
+        assertThat(users.get(2).getName().getLast(), is("Zhang"));
+    }
+```
+
+#### Comments
+To let all data files make sense, sisyphus introduce the comments indicator "#". It will ignore this line start with "#" when sisyphus parse the test data:
+```
+# This is multi section sample
+firstName = "Joe"
+lastName = "Sixpack"
+
+///
+
+firstName = "Bruce"
+lastName = "Zhang"
+
+///
+
+firstName = "Yi"
+lastName = "Zhang"
+```
+
 #### Caching
 
 To imporve the performance of running tests, sisyphus provide the caching feature:
