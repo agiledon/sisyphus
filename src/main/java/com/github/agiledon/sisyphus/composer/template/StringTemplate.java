@@ -12,7 +12,7 @@ import static com.google.common.collect.Iterables.getFirst;
 import static com.google.common.collect.Iterables.getLast;
 
 public class StringTemplate {
-    public static final char VARIABLE_INDICATOR = '$';
+    private static final char VARIABLE_INDICATOR = '$';
     private String templateFileName;
 
     public StringTemplate(String templateFileName) {

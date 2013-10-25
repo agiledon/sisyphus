@@ -14,13 +14,13 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 public class SyntaxParser {
     private final Logger logger = LoggerFactory.getLogger(SyntaxParser.class);
-    public static final String LINE_BREAK = "\n";
+    private static final String LINE_BREAK = "\n";
 
     public AsnClass parseClass(String content) {
         AsnClass rootClass;
-        List<String> lines = eachLine(content);
 
         try {
+            List<String> lines = splitLines(content);
             checkArgument(lines != null && lines.size() >= 1, "data file is error");
             rootClass = ParsingRule.createRootClass(lines.get(0));
             for (String line : lines) {
@@ -39,7 +39,7 @@ public class SyntaxParser {
         throw new FailedDeserializationException(ex);
     }
 
-    private List<String> eachLine(String content) {
+    private List<String> splitLines(String content) {
         Iterable<String> lines = Splitter.on(LINE_BREAK)
                 .omitEmptyStrings()
                 .split(content);

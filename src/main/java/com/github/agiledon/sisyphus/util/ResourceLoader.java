@@ -20,27 +20,27 @@ import static com.google.common.collect.Lists.newArrayList;
 
 public class ResourceLoader {
     private static final Logger logger = LoggerFactory.getLogger(ResourceLoader.class);
-    public static final String COMMENT_INDICATOR = "#";
+    private static final String COMMENT_INDICATOR = "#";
 
     public static String loadResource(String resourceName) {
-        List<String> resource = loadTextLines(resourceName);
+        List<String> resource = loadResourceAsLines(resourceName);
         return Joiner.on("\n").join(resource);
     }
 
-    public static List<String> loadTextLines(String textFileName) {
+    public static List<String> loadResourceAsLines(String resourceName) {
         try {
-            File file = new File(getAbsolutePath(compensatePath(textFileName)));
+            File file = new File(getAbsolutePath(compensatePath(resourceName)));
             List<String> strings = Files.readLines(file, Charsets.UTF_8);
             return filterInvalidLines(strings);
         } catch (IOException e) {
-            return logAndReturnEmptyList(textFileName);
+            return logAndReturnEmptyList(resourceName);
         }catch (Exception e) {
-            return logAndReturnEmptyList(textFileName);
+            return logAndReturnEmptyList(resourceName);
         }
     }
 
-    private static List<String> logAndReturnEmptyList(String textFileName) {
-        logger.warn("Failed to read file {}.", textFileName);
+    private static List<String> logAndReturnEmptyList(String resourceName) {
+        logger.warn("Failed to read file {}.", resourceName);
         return newArrayList();
     }
 
