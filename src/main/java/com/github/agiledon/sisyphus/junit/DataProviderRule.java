@@ -26,6 +26,7 @@ public class DataProviderRule implements TestRule {
         };
     }
 
+    @SuppressWarnings("unchecked")
     public <T> T provideData() {
         if (Strings.isNullOrEmpty(templateName)) {
             return (T) Fixture.from(resourceName)

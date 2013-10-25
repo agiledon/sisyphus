@@ -30,43 +30,61 @@ public class AsnVectorClass extends AsnClass {
         return currentObject;
     }
 
+    @SuppressWarnings("unchecked")
     protected void addElement(Object currentObject) {
         Vector currentVector = (Vector) currentObject;
         String currentTypeName = currentObject.getClass().getName();
 
         Map<String, String> typeMapping = from(TYPE_MAPPING_FILE_NAME).to(Map.class);
 
+        Class<?> elementClass;
         if (isConfigured(currentTypeName, typeMapping)) {
-            addElementsOnConfiguration(currentVector, currentTypeName, typeMapping);
+            elementClass = getElementClassOnConfiguration(currentTypeName, typeMapping);
         } else {
-            addElementsOnConvention(currentVector, currentTypeName);
+            elementClass = getElementClassOnConvention(currentTypeName);
         }
+        addElements(currentVector, elementClass);
     }
 
-    private boolean isConfigured(String currentTypeName, Map<String, String> typeMapping) {
-        return typeMapping != null && typeMapping.containsKey(currentTypeName);
+    private void addElements(Vector currentVector, Class<?> elementClass) {
+        addClassElements(currentVector, elementClass);
+        addBasicElements(currentVector, elementClass);
     }
 
-    private void addElementsOnConvention(Vector currentVector, String currentTypeName) {
-        Class<?> elementClass = getElementClass(currentTypeName);
+    @SuppressWarnings("unchecked")
+    private void addClassElements(Vector currentVector, Class<?> elementClass) {
         for (AsnClass childAsnClass : getChildClasses()) {
             currentVector.addElement(childAsnClass.instantiate(elementClass));
         }
     }
 
-    private void addElementsOnConfiguration(Vector currentVector, String currentTypeName, Map<String, String> typeMapping) {
+    @SuppressWarnings("unchecked")
+    private void addBasicElements(Vector currentVector, Class<?> elementClass) {
         for (BasicElement element : getBasicElements()) {
-            Class<?> aClass;
             try {
-                aClass = Class.forName(typeMapping.get(currentTypeName));
-                Object filedValue = BasicFields.getFieldValue(aClass, element.getValue());
+                Object filedValue = BasicFields.getFieldValue(elementClass, element.getValue());
                 currentVector.addElement(filedValue);
-            } catch (ClassNotFoundException e) {
-                logAndRethrowException(currentTypeName);
             } catch (Exception e) {
-                logAndRethrowException(currentTypeName);
+                logAndRethrowException(elementClass.getClass().getName());
             }
         }
+    }
+
+
+    private Class<?> getElementClassOnConfiguration(String currentTypeName, Map<String, String> typeMapping) {
+        try {
+            return Class.forName(typeMapping.get(currentTypeName));
+        } catch (ClassNotFoundException e) {
+            logger.error(e.getMessage());
+            throw new FailedDeserializationException(e);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            throw new FailedDeserializationException(e);
+        }
+    }
+
+    private boolean isConfigured(String currentTypeName, Map<String, String> typeMapping) {
+        return typeMapping != null && typeMapping.containsKey(currentTypeName);
     }
 
     private void logAndRethrowException(String currentTypeName) {
@@ -75,7 +93,7 @@ public class AsnVectorClass extends AsnClass {
         throw new FailedDeserializationException(errorMessage);
     }
 
-    private Class<?> getElementClass(String currentTypeName) {
+    private Class<?> getElementClassOnConvention(String currentTypeName) {
         //todo
         String elementType = currentTypeName.replaceFirst("(?i)List", "");
         try {

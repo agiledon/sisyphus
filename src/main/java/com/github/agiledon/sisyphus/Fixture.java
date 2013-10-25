@@ -26,6 +26,7 @@ public class Fixture {
         return composer;
     }
 
+    @SuppressWarnings("unchecked")
     private static Composer createComposer(String fileExtension) {
         try {
             Class<Composer> aClass = (Class<Composer>) Class.forName(getClassFullName(fileExtension));

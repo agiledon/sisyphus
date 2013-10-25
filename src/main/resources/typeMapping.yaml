@@ -1,0 +1,2 @@
+com.zte.asn.globaldefs.StringList_T  : java.lang.String
+com.zte.asn.globaldefs.IntegerList_T : java.math.BigInteger

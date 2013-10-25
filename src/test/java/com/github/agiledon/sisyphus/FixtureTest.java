@@ -27,6 +27,7 @@ public class FixtureTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void should_compose_Type_data_with_yaml_format() {
         Map<String, List<String>> types = from("type.yaml").to(Map.class);
         assertThat(types, not(nullValue()));
@@ -35,6 +36,7 @@ public class FixtureTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void should_compose_Type_data_by_parsing_template_file() {
         Map<String, List<String>> types = from("typeWithTemplate.yaml")
                 .withTemplate("template/type.template")
@@ -45,6 +47,7 @@ public class FixtureTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void should_compose_Type_data_from_cache_with_yaml_format() {
         Map<String, List<String>> types = from("type.yaml").to(Map.class);
         assertThat(types, not(nullValue()));

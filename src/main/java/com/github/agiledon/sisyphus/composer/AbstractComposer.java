@@ -18,6 +18,7 @@ public abstract class AbstractComposer implements Composer {
         this.resourceName = resourceName;
     }
 
+    @SuppressWarnings("unchecked")
     public <T> T to(Class<T> tClass) {
         T result = (T)results.get(resourceName);
         if (result == null) {
