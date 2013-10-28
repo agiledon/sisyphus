@@ -1,8 +1,6 @@
 package com.github.agiledon.sisyphus.composer;
 
 import com.github.agiledon.sisyphus.composer.template.StringTemplate;
-import com.google.common.base.Joiner;
-
 import java.util.List;
 
 public class StringTemplateComposer extends ComposerDecorator {
@@ -14,10 +12,10 @@ public class StringTemplateComposer extends ComposerDecorator {
     }
 
     @Override
-    protected String getContent(List<String> resource) {
+    protected String evaluate(List<String> resource) {
         if (stringTemplate != null) {
             return stringTemplate.evaluate(resource);
         }
-        return Joiner.on("\n").join(resource);
+        return decoratedComposer.evaluate(resource);
     }
 }

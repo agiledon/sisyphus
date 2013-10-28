@@ -1,22 +1,26 @@
-* Support Yaml format (Done)
-* Support Json format (Done)
+To Do:
 * Support memory database (HSQL, Datomic)
 * Support Xml format
 * Support Csv format
-* Support ASN format data and provide the extension point for specific requirement
-    * Support Sequence (Done)
-    * Support Choice (Done)
-* Provide cache for test data (Done)
-* Refactoring ClassProperty with polymorphism class
-(AsnSequenceClass, AsnMainClass, AsnVectorClass) (Almost done except AsnChoiceClass)
-* Support data file template (Introduce StringTemplate); (Done)
-* Handle the case when missing variables (Done)
 * Only need configure one element for sequence in the template file
 (generate all elements according to data file)
-* Support de-serializing multi objects from one data file (Using section splitter, done)
 * Define annotation for JUnit
     - Support Rule (Done)
     - Support Test Method Parameter (Refer to junitparams and zohhak)
 * Define annotation for TestNG
-* Add logging feature (Using SLF4J) (done)
-* Support comment with # in data and template file (done)
+
+Done:
+* Support Yaml format
+* Support Json format
+* Support ASN format data and provide the extension point for specific requirement
+    * Support Sequence
+    * Support Choice
+    * Support Vector
+* Provide cache for test data
+* Refactoring ClassProperty with polymorphism class
+(AsnSequenceClass, AsnChoiceClass, AsnVectorClass)
+* Support data file template (Introduce StringTemplate)
+* Handle the case when missing variables
+* Support de-serializing multi objects from one data file (Using section splitter ///)
+* Add logging feature (Using SLF4J)
+* Support comment with # in data and template file

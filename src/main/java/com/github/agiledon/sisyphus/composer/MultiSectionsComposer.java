@@ -1,9 +1,8 @@
 package com.github.agiledon.sisyphus.composer;
 
-import com.github.agiledon.sisyphus.util.ResourceLoader;
-
 import java.util.List;
 
+import static com.github.agiledon.sisyphus.util.ResourceLoader.loadResources;
 import static com.google.common.collect.Lists.newArrayList;
 
 public class MultiSectionsComposer extends ComposerDecorator {
@@ -14,21 +13,15 @@ public class MultiSectionsComposer extends ComposerDecorator {
 
     @Override
     public <T> T to(Class<T> tClass) {
-        return composer.to(tClass);
+        return decoratedComposer.to(tClass);
     }
 
     public <T> List<T> toList(Class<T> tClass) {
         List<T> results = newArrayList();
-        List<List<String>> resources = ResourceLoader.loadResources(resourceName);
-        for (List<String> resource : resources) {
-            T eachOne = deserialize(tClass, getContent(resource));
+        for (List<String> resource : loadResources(resourceName)) {
+            T eachOne = deserialize(tClass, evaluate(resource));
             results.add(eachOne);
         }
         return results;
-    }
-
-    @Override
-    protected String getContent(List<String> resource) {
-        return composer.getContent(resource);
     }
 }

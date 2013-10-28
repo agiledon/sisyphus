@@ -1,10 +1,12 @@
 package com.github.agiledon.sisyphus.junit;
 
 import com.github.agiledon.sisyphus.Fixture;
-import com.google.common.base.Strings;
+import com.github.agiledon.sisyphus.exception.NotSupportedException;import com.google.common.base.Strings;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
+
+import java.util.List;
 
 public class DataProviderRule implements TestRule {
 
@@ -35,6 +37,17 @@ public class DataProviderRule implements TestRule {
             return (T) Fixture.from(resourceName)
                     .withTemplate(templateName)
                     .to(targetClass);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> List<T> provideDataList() {
+        if (Strings.isNullOrEmpty(templateName)) {
+            throw new NotSupportedException("Must provide template file name");
+        } else {
+            return (List<T>) Fixture.from(resourceName)
+                    .withTemplate(templateName)
+                    .toList(targetClass);
         }
     }
 }
