@@ -6,16 +6,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.List;
 
 public class JsonComposer extends AbstractComposer {
     private final Logger logger = LoggerFactory.getLogger(JsonComposer.class);
 
     @Override
-    protected <T> T deserialize(Class<T> tClass, List<String> resource) {
+    protected <T> T deserialize(Class<T> tClass, String content) {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            return mapper.readValue(getContent(resource), tClass);
+            return mapper.readValue(content, tClass);
         } catch (JsonMappingException e) {
             logger.error("Faild to de-serialize json content with {}. Return null Object", e.getMessage());
             return null;

@@ -4,5 +4,4 @@ public interface Composer {
     <T> T to(Class<T> tClass);
     MultiSectionsComposer withTemplate(String templateFileName);
     void setResourceName(String resourceName);
-    void clearTemplate();
 }
