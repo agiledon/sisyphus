@@ -11,7 +11,7 @@ import java.util.Map;
 import static com.google.common.base.CaseFormat.UPPER_CAMEL;
 import static com.google.common.collect.Maps.newHashMap;
 
-public class Fixture {
+public abstract class Fixture {
     private static Map<String, Composer> composers = newHashMap();
 
     public static Composer from(String resourceName) {

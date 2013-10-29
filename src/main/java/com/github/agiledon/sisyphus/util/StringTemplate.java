@@ -41,7 +41,7 @@ public class StringTemplate {
         };
     }
 
-    private class Variable {
+    private final class Variable {
         public String name;
         public String value;
 

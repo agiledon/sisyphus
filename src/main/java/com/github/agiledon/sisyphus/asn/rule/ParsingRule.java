@@ -3,7 +3,6 @@ package com.github.agiledon.sisyphus.asn.rule;
 import com.github.agiledon.sisyphus.asn.AsnClass;
 import com.github.agiledon.sisyphus.exception.FailedDeserializationException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -15,7 +14,7 @@ public abstract class ParsingRule {
             new SequenceClassRule(),
             new ChoiceClassRule(),
             new BasicElementRule());
-    private static ArrayList<AsnClassRule> generators = newArrayList(
+    private static List<AsnClassRule> generators = newArrayList(
             new CollectionClassRule(),
             new SequenceClassRule(),
             new ChoiceClassRule());

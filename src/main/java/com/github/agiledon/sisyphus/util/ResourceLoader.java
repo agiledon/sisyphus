@@ -18,7 +18,7 @@ import static com.github.agiledon.sisyphus.util.ResourceFilePath.compensatePath;
 import static com.github.agiledon.sisyphus.util.ResourceFilePath.getAbsolutePath;
 import static com.google.common.collect.Lists.newArrayList;
 
-public class ResourceLoader {
+public abstract class ResourceLoader {
     private static final Logger logger = LoggerFactory.getLogger(ResourceLoader.class);
     private static final String COMMENT_INDICATOR = "#";
     private static final String SECTION_INDICATOR = "///";

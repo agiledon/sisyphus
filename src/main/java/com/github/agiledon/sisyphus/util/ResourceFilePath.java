@@ -1,9 +1,6 @@
 package com.github.agiledon.sisyphus.util;
 
-public class ResourceFilePath {
-    public ResourceFilePath() {
-    }
-
+public abstract class ResourceFilePath {
     public static String compensatePath(String resourceName) {
         if (!resourceName.startsWith("/")) {
             resourceName = "/" + resourceName;
