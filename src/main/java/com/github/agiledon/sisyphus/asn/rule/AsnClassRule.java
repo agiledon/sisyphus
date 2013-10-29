@@ -18,9 +18,7 @@ public abstract class AsnClassRule extends ParsingRule implements AsnClassGenera
     protected AsnClass navigateToChild(AsnClass currentClass, String line) {
         AsnClass childProperty = createAsnClass(line);
         currentClass.addChildClass(childProperty);
-
-        currentClass = childProperty;
-        return currentClass;
+        return childProperty;
     }
 
     protected abstract AsnClass createAsnClass(String line);
