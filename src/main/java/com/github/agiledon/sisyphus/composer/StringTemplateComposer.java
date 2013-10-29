@@ -1,6 +1,6 @@
 package com.github.agiledon.sisyphus.composer;
 
-import com.github.agiledon.sisyphus.composer.template.StringTemplate;
+import com.github.agiledon.sisyphus.util.StringTemplate;
 import java.util.List;
 
 public class StringTemplateComposer extends ComposerDecorator {

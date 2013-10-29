@@ -1,4 +1,4 @@
-package com.github.agiledon.sisyphus.composer.template;
+package com.github.agiledon.sisyphus.util;
 
 import org.junit.Test;
 
