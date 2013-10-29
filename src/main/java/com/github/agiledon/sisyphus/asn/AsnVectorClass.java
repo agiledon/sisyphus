@@ -70,7 +70,6 @@ public class AsnVectorClass extends AsnClass {
         }
     }
 
-
     private Class<?> getElementClassOnConfiguration(String currentTypeName, Map<String, String> typeMapping) {
         try {
             return Class.forName(typeMapping.get(currentTypeName));
@@ -83,16 +82,6 @@ public class AsnVectorClass extends AsnClass {
         }
     }
 
-    private boolean isConfigured(String currentTypeName, Map<String, String> typeMapping) {
-        return typeMapping != null && typeMapping.containsKey(currentTypeName);
-    }
-
-    private void logAndRethrowException(String currentTypeName) {
-        String errorMessage = String.format("Can not get the class type %s", currentTypeName);
-        logger.error(errorMessage);
-        throw new FailedDeserializationException(errorMessage);
-    }
-
     private Class<?> getElementClassOnConvention(String currentTypeName) {
         //todo
         String elementType = currentTypeName.replaceFirst("(?i)List", "");
@@ -102,5 +91,15 @@ public class AsnVectorClass extends AsnClass {
             logger.error("Class {} is not found. The cause is {}", elementType, e.getMessage());
             throw new ElementClassNotFoundException(e);
         }
+    }
+
+    private boolean isConfigured(String currentTypeName, Map<String, String> typeMapping) {
+        return typeMapping != null && typeMapping.containsKey(currentTypeName);
+    }
+
+    private void logAndRethrowException(String currentTypeName) {
+        String errorMessage = String.format("Can not get the class type %s", currentTypeName);
+        logger.error(errorMessage);
+        throw new FailedDeserializationException(errorMessage);
     }
 }
