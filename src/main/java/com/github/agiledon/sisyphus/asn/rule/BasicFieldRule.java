@@ -22,7 +22,7 @@ public class BasicFieldRule extends ParsingRule {
 
     protected BasicField parseBasicField(String line) {
         Iterable<String> fieldInfo = Splitter.on("=")
-                .trimResults(anyOf(" ,"))
+                .trimResults(anyOf(" ,\r"))
                 .limit(2)
                 .split(line);
 
