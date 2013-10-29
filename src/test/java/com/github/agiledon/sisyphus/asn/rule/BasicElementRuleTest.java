@@ -16,7 +16,7 @@ public class BasicElementRuleTest {
     }
 
     @Test
-    public void should_be_basic_element_with_basic_type_of_vector() {
+    public void should_be_basic_element_with_basic_type_of_collection() {
         List<BasicElement> basicElements = new BasicElementRule().parseBasicElements("   value1, value2, value 3");
         assertThat(basicElements.size(), is(3));
         assertThat(basicElements.get(0).getValue(), is("value1"));

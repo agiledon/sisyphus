@@ -6,20 +6,20 @@ import com.github.agiledon.sisyphus.exception.FailedDeserializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collection;
 import java.util.Map;
-import java.util.Vector;
 
 import static com.github.agiledon.sisyphus.Fixture.from;
 
-public class AsnVectorClass extends AsnClass {
+public class AsnCollectionClass extends AsnClass {
     public static final String TYPE_MAPPING_FILE_NAME = "typeMapping.yaml";
-    private static Logger logger = LoggerFactory.getLogger(AsnVectorClass.class);
+    private static Logger logger = LoggerFactory.getLogger(AsnCollectionClass.class);
 
-    public AsnVectorClass() {
+    public AsnCollectionClass() {
         super();
     }
 
-    public AsnVectorClass(String fieldName) {
+    public AsnCollectionClass(String fieldName) {
         super(fieldName);
     }
 
@@ -32,7 +32,7 @@ public class AsnVectorClass extends AsnClass {
 
     @SuppressWarnings("unchecked")
     protected void addElement(Object currentObject) {
-        Vector currentVector = (Vector) currentObject;
+        Collection currentCollection = (Collection) currentObject;
         String currentTypeName = currentObject.getClass().getName();
 
         Map<String, String> typeMapping = from(TYPE_MAPPING_FILE_NAME).to(Map.class);
@@ -43,27 +43,27 @@ public class AsnVectorClass extends AsnClass {
         } else {
             elementClass = getElementClassOnConvention(currentTypeName);
         }
-        addElements(currentVector, elementClass);
+        addElements(currentCollection, elementClass);
     }
 
-    private void addElements(Vector currentVector, Class<?> elementClass) {
-        addClassElements(currentVector, elementClass);
-        addBasicElements(currentVector, elementClass);
+    private void addElements(Collection currentCollection, Class<?> elementClass) {
+        addClassElements(currentCollection, elementClass);
+        addBasicElements(currentCollection, elementClass);
     }
 
     @SuppressWarnings("unchecked")
-    private void addClassElements(Vector currentVector, Class<?> elementClass) {
+    private void addClassElements(Collection currentCollection, Class<?> elementClass) {
         for (AsnClass childAsnClass : getChildClasses()) {
-            currentVector.addElement(childAsnClass.instantiate(elementClass));
+            currentCollection.add(childAsnClass.instantiate(elementClass));
         }
     }
 
     @SuppressWarnings("unchecked")
-    private void addBasicElements(Vector currentVector, Class<?> elementClass) {
+    private void addBasicElements(Collection currentCollection, Class<?> elementClass) {
         for (BasicElement element : getBasicElements()) {
             try {
                 Object filedValue = BasicFields.getFieldValue(elementClass, element.getValue());
-                currentVector.addElement(filedValue);
+                currentCollection.add(filedValue);
             } catch (Exception e) {
                 logAndRethrowException(elementClass.getClass().getName());
             }

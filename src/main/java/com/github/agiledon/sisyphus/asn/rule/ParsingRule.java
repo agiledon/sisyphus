@@ -11,12 +11,12 @@ import static com.google.common.collect.Lists.newArrayList;
 public abstract class ParsingRule {
     private static List<ParsingRule> rules = newArrayList(
             new EndingIndicatorRule(),
-            new VectorClassRule(),
+            new CollectionClassRule(),
             new SequenceClassRule(),
             new ChoiceClassRule(),
             new BasicElementRule());
     private static ArrayList<AsnClassRule> generators = newArrayList(
-            new VectorClassRule(),
+            new CollectionClassRule(),
             new SequenceClassRule(),
             new ChoiceClassRule());
 
