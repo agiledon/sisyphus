@@ -18,7 +18,7 @@ import static com.github.agiledon.sisyphus.util.ResourceFilePath.compensatePath;
 import static com.github.agiledon.sisyphus.util.ResourceFilePath.getAbsolutePath;
 import static com.google.common.collect.Lists.newArrayList;
 
-public abstract class ResourceLoader {
+public abstract class ResourceLoader implements Predicates {
     private static Logger logger = LoggerFactory.getLogger(ResourceLoader.class);
     private static final String COMMENT_INDICATOR = "#";
     private static final String SECTION_INDICATOR = "///";
@@ -41,20 +41,12 @@ public abstract class ResourceLoader {
     }
 
     public static List<List<String>> loadResources(String resourceName) {
-        List<List<String>> resources = newArrayList();
-        List<String> section = newArrayList();
-        for (String line : loadResourceAsLines(resourceName)) {
-            if (line.trim().startsWith(SECTION_INDICATOR)) {
-                resources.add(section);
-                section = newArrayList();
-            } else {
-                section.add(line);
+        return ListUtil.partition(loadResourceAsLines(resourceName), new Predicates<String>() {
+            @Override
+            public boolean apply(String element) {
+                return element.trim().startsWith(SECTION_INDICATOR);
             }
-        }
-        if (section.size() > 0) {
-            resources.add(section);
-        }
-        return resources;
+        });
     }
 
     private static List<String> logAndReturnEmptyList(String resourceName) {
