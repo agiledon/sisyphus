@@ -2,7 +2,8 @@ package com.github.agiledon.sisyphus.util;
 
 import java.util.List;
 
-public class ListUtil {
+public final class ListUtil {
+    private ListUtil() {}
     public static <E> List<List<E>> partition(List<E> target, Predicates<E> predicate) {
         List<List<E>> partitions = com.google.common.collect.Lists.newArrayList();
         List<E> elementList = com.google.common.collect.Lists.newArrayList();
