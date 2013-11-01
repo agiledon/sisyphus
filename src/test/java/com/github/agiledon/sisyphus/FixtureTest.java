@@ -2,6 +2,7 @@ package com.github.agiledon.sisyphus;
 
 import com.github.agiledon.sisyphus.domain.json.StandardVariable;
 import com.github.agiledon.sisyphus.domain.json.User;
+import com.github.agiledon.sisyphus.domain.sis.SisInvoice;
 import com.github.agiledon.sisyphus.domain.yaml.Invoice;
 import com.google.common.base.Objects;
 import org.junit.Test;
@@ -159,5 +160,16 @@ public class FixtureTest {
                 .withTemplate("template/user.template")
                 .to(User.class);
         assertThat(user, is(nullValue()));
+    }
+
+    @Test
+    public void should_compose_invoice_data_according_sis_format() {
+        SisInvoice invoice = from("invoice.sis").to(SisInvoice.class);
+        assertThat(invoice, not(nullValue()));
+        assertThat(invoice.date, is("2001-01-23"));
+        assertThat(invoice.products.size(), is(2));
+        assertThat(invoice.products.get(0).description, is("Basketball"));
+        assertThat(invoice.billTo.given, is("Chris"));
+        assertThat(invoice.tax, is(251.42f));
     }
 }
