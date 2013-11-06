@@ -18,7 +18,7 @@ public class BasicElementRule extends ParsingRule{
     }
 
     @Override
-    public SisClass asnClassNode(SisClass currentClass, String line) {
+    public SisClass sisClassNode(SisClass currentClass, String line) {
         currentClass.addBasicElements(parseBasicElements(line));
         return currentClass;
     }

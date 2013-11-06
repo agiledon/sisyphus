@@ -19,14 +19,14 @@ public abstract class ParsingRule {
             new NormalClassRule(),
             new ChoiceClassRule());
 
-    public static SisClass asnClassTree(SisClass currentClass, String line) {
+    public static SisClass sisClassTree(SisClass currentClass, String line) {
         for (ParsingRule rule : rules) {
             if (rule.match(line)) {
-                return rule.asnClassNode(currentClass, line);
+                return rule.sisClassNode(currentClass, line);
             }
         }
 
-        return new BasicFieldRule().asnClassNode(currentClass, line);
+        return new BasicFieldRule().sisClassNode(currentClass, line);
     }
 
     public static SisClass createRootClass(String firstLine) {
@@ -39,5 +39,5 @@ public abstract class ParsingRule {
     }
 
     public abstract boolean match(String line);
-    public abstract SisClass asnClassNode(SisClass currentClass, String line);
+    public abstract SisClass sisClassNode(SisClass currentClass, String line);
 }

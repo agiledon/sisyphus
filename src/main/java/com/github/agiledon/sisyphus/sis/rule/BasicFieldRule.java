@@ -15,7 +15,7 @@ public class BasicFieldRule extends ParsingRule {
     }
 
     @Override
-    public SisClass asnClassNode(SisClass currentClass, String line) {
+    public SisClass sisClassNode(SisClass currentClass, String line) {
         currentClass.addBasicField(this.parseBasicField(line));
         return currentClass;
     }

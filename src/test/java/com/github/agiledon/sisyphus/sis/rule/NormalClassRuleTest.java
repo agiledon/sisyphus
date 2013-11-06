@@ -18,12 +18,12 @@ public class NormalClassRuleTest {
 
     @Test
     public void should_parse_class_property_given_equal_expression_with_class_name() {
-        SisClass sisClass = normalClassRule.createAsnClass("      foo = { -- SEQUENCE ");
+        SisClass sisClass = normalClassRule.createSisClass("      foo = { ");
         assertThat(sisClass.getFieldName(), is("foo"));
     }
 
     @Test
     public void should_be_sequence_class_if_line_contains_sequence_and_equal_character() {
-        assertThat(normalClassRule.match("      foo = { -- SEQUENCE"), is(true));
+        assertThat(normalClassRule.match("      foo = { "), is(true));
     }
 }

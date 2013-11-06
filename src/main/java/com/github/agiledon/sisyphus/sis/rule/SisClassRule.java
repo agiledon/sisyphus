@@ -4,7 +4,7 @@ import com.github.agiledon.sisyphus.sis.SisClass;
 
 public abstract class SisClassRule extends ParsingRule implements SisClassGenerator {
     @Override
-    public SisClass asnClassNode(SisClass currentClass, String line) {
+    public SisClass sisClassNode(SisClass currentClass, String line) {
         if (isMainClass(line)) {
             return currentClass;
         }
@@ -16,12 +16,12 @@ public abstract class SisClassRule extends ParsingRule implements SisClassGenera
     }
 
     protected SisClass navigateToChild(SisClass currentClass, String line) {
-        SisClass childProperty = createAsnClass(line);
+        SisClass childProperty = createSisClass(line);
         currentClass.addChildClass(childProperty);
         return childProperty;
     }
 
-    protected abstract SisClass createAsnClass(String line);
+    protected abstract SisClass createSisClass(String line);
 
     protected String getFieldName(String line) {
         return line.split("=")[0].trim();

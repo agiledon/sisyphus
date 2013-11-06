@@ -12,13 +12,11 @@ To Do:
 Done:
 * Support Yaml format
 * Support Json format
-* Support ASN format data and provide the extension point for specific requirement
-    * Support Sequence
-    * Support Choice
+* Support Custom SIS format data and provide the extension point for specific requirement
     * Support Collection
 * Provide cache for test data
 * Refactoring ClassProperty with polymorphism class
-(AsnSequenceClass, AsnChoiceClass, AsnCollectionClass)
+(SisNormalClass, SisCollectionClass)
 * Support data file template (Introduce StringTemplate)
 * Handle the case when missing variables
 * Support de-serializing multi objects from one data file (Using section splitter ///)

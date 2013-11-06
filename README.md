@@ -2,7 +2,7 @@
 
 ##Sisyphus
 
-Sisyphus is the mini framework to deserialize the data to the specific object for unit and integrated tests based on JVM paltform. It supports Json, Yaml and customized ASN format. 
+Sisyphus is the mini framework to deserialize the data to the specific object for unit and integrated tests based on JVM paltform. It supports Json, Yaml and customized SIS format.
 
 In some projects, the developers need create the object which contains the data they need to test. For some objects, however, it is very tedious to create these objects. Of course, you are able to define the related factories or builders. If these java objects contains more than a dozen of fields, do you like do these things?
 

@@ -7,7 +7,7 @@ public class CollectionClassRule extends SisClassRule {
     public static final String COLLECTION_INDICATOR = "[";
 
     @Override
-    protected SisClass createAsnClass(String line) {
+    protected SisClass createSisClass(String line) {
         if (isNestedClass(line)) {
             return new SisCollectionClass();
         }

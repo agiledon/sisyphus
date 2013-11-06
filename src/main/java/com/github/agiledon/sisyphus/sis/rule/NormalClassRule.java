@@ -9,7 +9,7 @@ public class NormalClassRule extends SisClassRule {
         return line.contains("{");
     }
 
-    protected SisClass createAsnClass(String line) {
+    protected SisClass createSisClass(String line) {
         if (isNestedClass(line)) {
             return new SisNormalClass();
         }

@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import static com.github.agiledon.sisyphus.sis.rule.ParsingRule.asnClassTree;
+import static com.github.agiledon.sisyphus.sis.rule.ParsingRule.sisClassTree;
 import static com.github.agiledon.sisyphus.sis.rule.ParsingRule.createRootClass;
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -24,7 +24,7 @@ public class SyntaxParser {
             checkArgument(lines != null && lines.size() >= 1, "data file is error");
             rootClass = createRootClass(lines.get(0));
             for (String line : lines) {
-                rootClass = asnClassTree(rootClass, line);
+                rootClass = sisClassTree(rootClass, line);
             }
             return rootClass;
         } catch (IllegalArgumentException ex) {

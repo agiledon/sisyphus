@@ -9,7 +9,7 @@ public class ChoiceClassRule extends SisClassRule {
         return line.contains("CHOICE");
     }
 
-    protected SisClass createAsnClass(String line) {
+    protected SisClass createSisClass(String line) {
         if (isNestedClass(line)) {
             return new SisChoiceClass();
         }
