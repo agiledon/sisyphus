@@ -38,6 +38,8 @@ public abstract class BasicFields {
 
         if ("String".equals(fieldTypeName)) {
             return nullOrEmptyValue ? " " : value;
+        } else if ("Boolean".equalsIgnoreCase(fieldTypeName)) {
+            return nullOrEmptyValue ? false : Boolean.parseBoolean(value);
         } else if ("byte[]".equals(fieldTypeName)) {
             return nullOrEmptyValue ? "0".getBytes() : value.getBytes();
         } else if ("Float".equalsIgnoreCase(fieldTypeName)) {
@@ -51,6 +53,7 @@ public abstract class BasicFields {
 
     private static boolean isPrimitiveType(String fieldTypeName) {
         return "String".equals(fieldTypeName)
+                || "Boolean".equalsIgnoreCase(fieldTypeName)
                 || "BigInteger".equals(fieldTypeName)
                 || "Integer".equals(fieldTypeName)
                 || "int".equals(fieldTypeName)
