@@ -37,9 +37,13 @@ public abstract class BasicFields {
         boolean nullOrEmptyValue = Strings.isNullOrEmpty(value);
 
         if ("String".equals(fieldTypeName)) {
-            return nullOrEmptyValue ? " " : value;
+            return nullOrEmptyValue ? "" : value;
         } else if ("Boolean".equalsIgnoreCase(fieldTypeName)) {
             return nullOrEmptyValue ? false : Boolean.parseBoolean(value);
+        } else if ("Integer".equalsIgnoreCase(fieldTypeName)) {
+            return nullOrEmptyValue ? 0 : Integer.valueOf(value);
+        } else if ("int".equalsIgnoreCase(fieldTypeName)) {
+            return nullOrEmptyValue ? 0 : Integer.valueOf(value);
         } else if ("byte[]".equals(fieldTypeName)) {
             return nullOrEmptyValue ? "0".getBytes() : value.getBytes();
         } else if ("Float".equalsIgnoreCase(fieldTypeName)) {
@@ -47,7 +51,7 @@ public abstract class BasicFields {
         } else if ("Double".equalsIgnoreCase(fieldTypeName)) {
             return nullOrEmptyValue ? 0 : Double.valueOf(value);
         } else {
-            return nullOrEmptyValue ? BigInteger.valueOf(0) : BigInteger.valueOf(Integer.parseInt(value));
+            return nullOrEmptyValue ? BigInteger.valueOf(0) : BigInteger.valueOf(Long.parseLong(value));
         }
     }
 
