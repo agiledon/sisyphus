@@ -8,15 +8,14 @@ import org.junit.rules.ExpectedException;
 
 import java.util.List;
 
-import static com.github.agiledon.sisyphus.Fixture.from;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNot.not;
 
-public class DataProviderRuleTest {
+public class DataProviderTest {
     @Rule
-    public DataProviderRule dataProvider = new DataProviderRule();
+    public DataProvider dataProvider = new DataProvider();
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();

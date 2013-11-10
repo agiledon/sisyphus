@@ -8,7 +8,7 @@ import org.junit.runners.model.Statement;
 
 import java.util.List;
 
-public class DataProviderRule implements TestRule {
+public class DataProvider implements TestRule {
 
     private String resourceName;
     private Class<?> targetClass;
