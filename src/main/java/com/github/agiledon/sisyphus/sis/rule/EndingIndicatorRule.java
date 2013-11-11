@@ -4,7 +4,7 @@ import com.github.agiledon.sisyphus.sis.SisClass;
 
 public class EndingIndicatorRule extends ParsingRule {
     public boolean match(String line) {
-        return line.trim().startsWith("}") || line.trim().startsWith("]");
+        return line.trim().startsWith("}") || line.trim().startsWith("]") || line.trim().startsWith(">");
     }
 
     @Override

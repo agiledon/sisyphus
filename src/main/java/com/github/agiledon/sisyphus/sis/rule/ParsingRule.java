@@ -11,10 +11,12 @@ public abstract class ParsingRule {
     private static List<ParsingRule> rules = newArrayList(
             new EndingIndicatorRule(),
             new CollectionClassRule(),
+            new ListClassRule(),
             new NormalClassRule(),
             new BasicElementRule());
     private static List<SisClassRule> generators = newArrayList(
             new CollectionClassRule(),
+            new ListClassRule(),
             new NormalClassRule());
 
     public static SisClass sisClassTree(SisClass currentClass, String line) {

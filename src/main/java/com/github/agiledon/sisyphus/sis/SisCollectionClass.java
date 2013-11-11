@@ -25,7 +25,6 @@ public class SisCollectionClass extends SisClass {
         if (isArray(currentClass)) {
             return newArrayInstance(currentClass);
         }
-
         T currentObject = currentClass.newInstance();
         addElements(currentObject);
         return currentObject;
@@ -64,11 +63,11 @@ public class SisCollectionClass extends SisClass {
     }
 
     private Class getElementClass(Collection currentCollection) {
-        final ParameterizedType genericSuperclass1 = (ParameterizedType) currentCollection.getClass().getGenericSuperclass();
-        return (Class) genericSuperclass1.getActualTypeArguments()[0];
+        final ParameterizedType genericSuperclass = (ParameterizedType) currentCollection.getClass().getGenericSuperclass();
+        return (Class) genericSuperclass.getActualTypeArguments()[0];
     }
 
-    private void addElements(Collection currentCollection, Class<?> elementClass) {
+    protected void addElements(Collection currentCollection, Class<?> elementClass) {
         addClassElements(currentCollection, elementClass);
         addBasicElements(currentCollection, elementClass);
     }

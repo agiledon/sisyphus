@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -57,8 +58,17 @@ public abstract class SisClass {
     protected final <T> void setClassFields(T currentObject, Class<T> currentClass) throws NoSuchFieldException, IllegalAccessException {
         for (SisClass childSisClass : getChildClasses()) {
             Field childField = currentClass.getDeclaredField(childSisClass.getFieldName());
+            if (childSisClass instanceof SisListClass) {
+                SisListClass collectionClass = (SisListClass)childSisClass;
+                collectionClass.setElementClass(getListElementClass(childField));
+            }
             childField.set(currentObject, childSisClass.instantiate(childField.getType()));
         }
+    }
+
+    private Class<?> getListElementClass(Field childField) {
+        ParameterizedType integerListType = (ParameterizedType) childField.getGenericType();
+        return (Class<?>) integerListType.getActualTypeArguments()[0];
     }
 
     protected List<BasicField> getBasicFields() {
