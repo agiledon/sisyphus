@@ -47,22 +47,4 @@ public class SisFixtureTest {
         assertThat(invoice.billTo.given, is("Chris"));
         assertThat(invoice.tax, is(251.42f));
     }
-
-    @Test
-    public void should_create_list_instance() {
-        List<Product> products = new ArrayList<Product>() {};
-        System.out.println(products.getClass().getCanonicalName());
-
-        final Class<? extends List> listClass = products.getClass();
-        final ParameterizedType genericSuperclass = (ParameterizedType) listClass.getGenericSuperclass();
-        Class type = (Class) genericSuperclass.getActualTypeArguments()[0];
-        System.out.println(type.getCanonicalName());
-
-        ProductList productList = new ProductList();
-        final Class<? extends Collection> listClass1 = productList.getClass();
-        final ParameterizedType genericSuperclass1 = (ParameterizedType) listClass1.getGenericSuperclass();
-        Class type1 = (Class) genericSuperclass1.getActualTypeArguments()[0];
-        System.out.println(type1.getCanonicalName());
-
-    }
 }
