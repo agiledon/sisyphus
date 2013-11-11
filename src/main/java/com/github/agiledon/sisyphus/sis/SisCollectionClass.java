@@ -1,19 +1,15 @@
 package com.github.agiledon.sisyphus.sis;
 
-import com.github.agiledon.sisyphus.sis.util.BasicFields;
-import com.github.agiledon.sisyphus.exception.ElementClassNotFoundException;
 import com.github.agiledon.sisyphus.exception.FailedDeserializationException;
+import com.github.agiledon.sisyphus.sis.util.BasicFields;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
-import java.util.Map;
-
-import static com.github.agiledon.sisyphus.Fixture.from;
 
 public class SisCollectionClass extends SisClass {
-    public static final String TYPE_MAPPING_FILE_NAME = "typeMapping.yaml";
     private static Logger logger = LoggerFactory.getLogger(SisCollectionClass.class);
 
     public SisCollectionClass() {
@@ -31,7 +27,7 @@ public class SisCollectionClass extends SisClass {
         }
 
         T currentObject = currentClass.newInstance();
-        addElement(currentObject);
+        addElements(currentObject);
         return currentObject;
     }
 
@@ -62,19 +58,14 @@ public class SisCollectionClass extends SisClass {
     }
 
     @SuppressWarnings("unchecked")
-    protected void addElement(Object currentObject) {
+    protected void addElements(Object currentObject) {
         Collection currentCollection = (Collection) currentObject;
-        String currentTypeName = currentObject.getClass().getName();
+        addElements(currentCollection, getElementClass(currentCollection));
+    }
 
-        Map<String, String> typeMapping = from(TYPE_MAPPING_FILE_NAME).to(Map.class);
-
-        Class<?> elementClass;
-        if (isConfigured(currentTypeName, typeMapping)) {
-            elementClass = getElementClassOnConfiguration(currentTypeName, typeMapping);
-        } else {
-            elementClass = getElementClassOnConvention(currentTypeName);
-        }
-        addElements(currentCollection, elementClass);
+    private Class getElementClass(Collection currentCollection) {
+        final ParameterizedType genericSuperclass1 = (ParameterizedType) currentCollection.getClass().getGenericSuperclass();
+        return (Class) genericSuperclass1.getActualTypeArguments()[0];
     }
 
     private void addElements(Collection currentCollection, Class<?> elementClass) {
@@ -99,33 +90,6 @@ public class SisCollectionClass extends SisClass {
                 logAndRethrowException(elementClass.getClass().getName());
             }
         }
-    }
-
-    private Class<?> getElementClassOnConfiguration(String currentTypeName, Map<String, String> typeMapping) {
-        try {
-            return Class.forName(typeMapping.get(currentTypeName));
-        } catch (ClassNotFoundException e) {
-            logger.error(e.getMessage());
-            throw new FailedDeserializationException(e);
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            throw new FailedDeserializationException(e);
-        }
-    }
-
-    private Class<?> getElementClassOnConvention(String currentTypeName) {
-        //todo
-        String elementType = currentTypeName.replaceFirst("(?i)List", "");
-        try {
-            return Class.forName(elementType);
-        } catch (ClassNotFoundException e) {
-            logger.error("Class {} is not found. The cause is {}", elementType, e.getMessage());
-            throw new ElementClassNotFoundException(e);
-        }
-    }
-
-    private boolean isConfigured(String currentTypeName, Map<String, String> typeMapping) {
-        return typeMapping != null && typeMapping.containsKey(currentTypeName);
     }
 
     private void logAndRethrowException(String currentTypeName) {
