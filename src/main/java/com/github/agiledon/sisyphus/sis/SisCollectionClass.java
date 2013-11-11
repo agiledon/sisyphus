@@ -6,6 +6,7 @@ import com.github.agiledon.sisyphus.exception.FailedDeserializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Map;
 
@@ -25,9 +26,39 @@ public class SisCollectionClass extends SisClass {
 
     @Override
     protected <T> T newInstance(Class<T> currentClass) throws InstantiationException, IllegalAccessException, NoSuchFieldException {
+        if (isArray(currentClass)) {
+            return newArrayInstance(currentClass);
+        }
+
         T currentObject = currentClass.newInstance();
         addElement(currentObject);
         return currentObject;
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T newArrayInstance(Class<T> currentClass) {
+        try {
+            Class<?> elementClass = Class.forName(getElementTypeForArray(currentClass));
+            int elementCounts = this.getChildClasses().size();
+            Object[] array = (Object[]) Array.newInstance(elementClass, elementCounts);
+            for (int i = 0; i < elementCounts; i++) {
+                array[i] = getChildClasses().get(i).instantiate(elementClass);
+            }
+
+            return (T) array;
+        } catch (ClassNotFoundException e) {
+            logger.error(e.getMessage());
+            throw new FailedDeserializationException(e);
+        }
+    }
+
+    private <T> String getElementTypeForArray(Class<T> currentClass) {
+        String canonicalName = currentClass.getCanonicalName();
+        return canonicalName.substring(0, canonicalName.length() - 2);
+    }
+
+    private <T> boolean isArray(Class<T> currentClass) {
+        return currentClass.getSimpleName().endsWith("[]");
     }
 
     @SuppressWarnings("unchecked")
