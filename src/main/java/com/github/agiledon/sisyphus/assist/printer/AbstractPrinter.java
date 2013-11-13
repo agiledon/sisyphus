@@ -12,7 +12,7 @@ import static com.github.agiledon.sisyphus.util.ResourceFilePath.compensatePath;
 import static com.github.agiledon.sisyphus.util.ResourceFilePath.getAbsolutePath;
 
 public abstract class AbstractPrinter implements Printer {
-    private static Logger logger = LoggerFactory.getLogger(AbstractPrinter.class);
+    protected static Logger logger = LoggerFactory.getLogger(AbstractPrinter.class);
 
     @Override
     public <T> void print(T sourceObject, String dataFileName) {
