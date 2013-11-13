@@ -1,11 +1,13 @@
 package com.github.agiledon.sisyphus.assist.printer;
 
-public class GsonPrinter extends AbstractPrinter {
-    public <T> GsonPrinter(Class<T> tClass) {
-        super(tClass);
+@SuppressWarnings("unchecked")
+public class GsonPrinter<T> extends AbstractPrinter<T> {
+    public GsonPrinter(T sourceObject) {
+        super(sourceObject);
     }
 
     @Override
-    public void print(String fileName) {
+    protected String serialize(T sourceObject) {
+        return null;
     }
 }

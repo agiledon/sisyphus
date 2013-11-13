@@ -1,12 +1,13 @@
 package com.github.agiledon.sisyphus.assist.printer;
 
-public class JsonPrinter extends AbstractPrinter {
-    public JsonPrinter(Class sourceClass) {
-        super(sourceClass);
+@SuppressWarnings("unchecked")
+public class JsonPrinter<T> extends AbstractPrinter<T> {
+    public JsonPrinter(T sourceObject) {
+        super(sourceObject);
     }
 
     @Override
-    public void print(String fileName) {
+    protected String serialize(T sourceObject) {
+        return null;
     }
-
 }

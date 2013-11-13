@@ -1,11 +1,13 @@
 package com.github.agiledon.sisyphus.assist.printer;
 
-public class SisPrinter extends AbstractPrinter {
-    public <T> SisPrinter(Class<T> tClass) {
-        super(tClass);
+@SuppressWarnings("unchecked")
+public class SisPrinter<T> extends AbstractPrinter<T> {
+    public SisPrinter(T sourceObject) {
+        super(sourceObject);
     }
 
     @Override
-    public void print(String fileName) {
+    protected String serialize(T sourceObject) {
+        return null;
     }
 }

@@ -1,11 +1,13 @@
 package com.github.agiledon.sisyphus.assist.printer;
 
-public class YamlPrinter extends AbstractPrinter {
-    public <T> YamlPrinter(Class<T> tClass) {
-        super(tClass);
+@SuppressWarnings("unchecked")
+public class YamlPrinter<T> extends AbstractPrinter<T> {
+    public YamlPrinter(T sourceObject) {
+        super(sourceObject);
     }
 
     @Override
-    public void print(String fileName) {
+    protected String serialize(T sourceObject) {
+        return null;
     }
 }
