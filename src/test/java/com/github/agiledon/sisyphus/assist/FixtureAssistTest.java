@@ -6,7 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 public class FixtureAssistTest {
@@ -20,29 +19,25 @@ public class FixtureAssistTest {
 
     @Test
     public void should_get_JsonPrinter_and_pass_object_to_it() {
-        Printer printer = FixtureAssist.json(serializedObject);
+        Printer printer = FixtureAssist.json();
         assertThat(printer, instanceOf(JsonPrinter.class));
-        assertEquals(serializedObject, printer.sourceObject());
     }
 
     @Test
     public void should_get_GsonPrinter_and_pass_object_to_it() {
-        Printer printer = FixtureAssist.gson(serializedObject);
+        Printer printer = FixtureAssist.gson();
         assertThat(printer, instanceOf(GsonPrinter.class));
-        assertEquals(serializedObject, printer.sourceObject());
     }
 
     @Test
     public void should_get_YamlPrinter_and_pass_object_to_it() {
-        Printer printer = FixtureAssist.yaml(serializedObject);
+        Printer printer = FixtureAssist.yaml();
         assertThat(printer, instanceOf(YamlPrinter.class));
-        assertEquals(serializedObject, printer.sourceObject());
     }
 
     @Test
     public void should_get_SisPrinter_and_pass_object_to_it() {
-        Printer printer = FixtureAssist.sis(serializedObject);
+        Printer printer = FixtureAssist.sis();
         assertThat(printer, instanceOf(SisPrinter.class));
-        assertEquals(serializedObject, printer.sourceObject());
     }
 }
