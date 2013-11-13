@@ -1,8 +1,11 @@
 package com.github.agiledon.sisyphus.assist.printer;
 
+import com.google.gson.Gson;
+
 public class GsonPrinter extends AbstractPrinter {
     @Override
     protected <T> String serialize(T sourceObject) {
-        return null;
+        Gson gson = new Gson();
+        return gson.toJson(sourceObject);
     }
 }
