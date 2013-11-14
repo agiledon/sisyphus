@@ -1,25 +1,42 @@
 package com.github.agiledon.sisyphus.assist;
 
 import com.github.agiledon.sisyphus.assist.printer.*;
-import com.github.agiledon.sisyphus.domain.json.User;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
+
+import static com.github.agiledon.sisyphus.assist.FixtureAssist.gson;
+import static com.github.agiledon.sisyphus.assist.FixtureAssist.json;
+import static com.github.agiledon.sisyphus.assist.FixtureAssist.yaml;
+import static com.google.common.io.Files.getNameWithoutExtension;
 import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class FixtureAssistTest {
+public class FixtureAssistTest extends UserDataFixture {
 
-    private User serializedObject;
+    private String yamlFileName = "outputUser.yaml";
+    private String gsonFileName = "outputUser.gson";
+    private String jsonFileName = "outputUser.json";
 
     @Before
     public void setUp() throws Exception {
-        serializedObject = new User();
+        clearFiles(yamlFileName, gsonFileName, jsonFileName);
+    }
+
+    private void clearFiles(String... datafiles) {
+        for (String datafile : datafiles) {
+            File file = new File(datafile);
+            if (file.exists()) {
+                file.delete();
+            }
+        }
     }
 
     @Test
     public void should_get_JsonPrinter_and_pass_object_to_it() {
-        Printer printer = FixtureAssist.json();
+        Printer printer = json();
         assertThat(printer, instanceOf(JsonPrinter.class));
     }
 
@@ -31,7 +48,7 @@ public class FixtureAssistTest {
 
     @Test
     public void should_get_YamlPrinter_and_pass_object_to_it() {
-        Printer printer = FixtureAssist.yaml();
+        Printer printer = yaml();
         assertThat(printer, instanceOf(YamlPrinter.class));
     }
 
@@ -39,5 +56,21 @@ public class FixtureAssistTest {
     public void should_get_SisPrinter_and_pass_object_to_it() {
         Printer printer = FixtureAssist.sis();
         assertThat(printer, instanceOf(SisPrinter.class));
+    }
+
+    @Test
+    public void should_print_data_to_specific_file() {
+        yaml().print(createUser(), getNameWithoutExtension(yamlFileName));
+        gson().print(createUser(), getNameWithoutExtension(gsonFileName));
+        json().print(createUser(), getNameWithoutExtension(jsonFileName));
+
+        assertFilesExisted(yamlFileName, gsonFileName, jsonFileName);
+    }
+
+    private void assertFilesExisted(String... dataFileNames) {
+        for (String dataFileName : dataFileNames) {
+            File file = new File(dataFileName);
+            assertThat(file.exists(), is(true));
+        }
     }
 }

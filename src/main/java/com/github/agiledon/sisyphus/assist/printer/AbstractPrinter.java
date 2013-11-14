@@ -16,7 +16,7 @@ public abstract class AbstractPrinter implements Printer {
 
     @Override
     public <T> void print(T sourceObject, String dataFileName) {
-        File file = new File(getAbsolutePath(compensatePath(dataFileName)));
+        File file = new File(String.format("%s.%s", dataFileName, getExtension()));
         try {
             Files.write(serialize(sourceObject), file, Charsets.UTF_8);
         } catch (IOException e) {
@@ -25,6 +25,8 @@ public abstract class AbstractPrinter implements Printer {
             logger.error(e.getMessage());
         }
     }
+
+    protected abstract String getExtension();
 
     protected abstract <T> String serialize(T sourceObject);
 }

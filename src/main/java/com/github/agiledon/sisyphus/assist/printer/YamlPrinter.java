@@ -4,6 +4,11 @@ import org.yaml.snakeyaml.Yaml;
 
 public class YamlPrinter extends AbstractPrinter {
     @Override
+    protected String getExtension() {
+        return "yaml";
+    }
+
+    @Override
     protected <T> String serialize(T sourceObject) {
         Yaml yaml = new Yaml();
         return yaml.dump(sourceObject);

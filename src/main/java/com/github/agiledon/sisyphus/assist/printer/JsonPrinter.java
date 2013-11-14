@@ -6,6 +6,11 @@ import java.io.IOException;
 
 public class JsonPrinter extends AbstractPrinter {
     @Override
+    protected String getExtension() {
+        return "json";
+    }
+
+    @Override
     protected <T> String serialize(T sourceObject) {
         ObjectMapper mapper = new ObjectMapper();
         try {
