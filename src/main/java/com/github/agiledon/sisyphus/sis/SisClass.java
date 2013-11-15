@@ -103,4 +103,22 @@ public abstract class SisClass {
     public List<BasicElement> getBasicElements() {
         return basicElements;
     }
+
+    protected void printFieldName(StringBuilder stringBuilder) {
+        if (getFieldName() != null) {
+            stringBuilder.append(getFieldName() + " = ");
+        }
+    }
+
+    protected void printChildClasses(StringBuilder stringBuilder) {
+        List<SisClass> childClasses = getChildClasses();
+        for (int i = 0; i <childClasses.size(); i++) {
+            SisClass sisClass = childClasses.get(i);
+            stringBuilder.append(sisClass.toString());
+            if (i == childClasses.size() - 1) {
+                stringBuilder.append("\n");
+            }
+        }
+
+    }
 }

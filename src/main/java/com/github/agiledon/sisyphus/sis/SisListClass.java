@@ -8,6 +8,7 @@ public class SisListClass extends SisCollectionClass {
     private Class<?> elementClass;
 
     public SisListClass() {
+        super();
     }
 
     public SisListClass(String fieldName) {

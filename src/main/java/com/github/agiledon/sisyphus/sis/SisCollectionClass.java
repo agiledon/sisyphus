@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Array;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
+import java.util.List;
 
 public class SisCollectionClass extends SisClass {
     private static Logger logger = LoggerFactory.getLogger(SisCollectionClass.class);
@@ -28,6 +29,38 @@ public class SisCollectionClass extends SisClass {
         T currentObject = currentClass.newInstance();
         addElements(currentObject);
         return currentObject;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        printFieldName(stringBuilder);
+        printStartIndicator(stringBuilder);
+        printBasicElements(stringBuilder);
+        printChildClasses(stringBuilder);
+        printEndIndicator(stringBuilder);
+        return stringBuilder.toString();
+    }
+
+    private void printBasicElements(StringBuilder stringBuilder) {
+        List<BasicElement> basicElements = getBasicElements();
+        for (int i = 0; i < basicElements.size(); i++) {
+            BasicElement basicElement = basicElements.get(i);
+            stringBuilder.append(basicElement.getValue());
+            if (i < basicElements.size() - 1) {
+                stringBuilder.append(",");
+            }else {
+                stringBuilder.append("\n");
+            }
+        }
+    }
+
+    private void printEndIndicator(StringBuilder stringBuilder) {
+        stringBuilder.append("]");
+    }
+
+    private void printStartIndicator(StringBuilder stringBuilder) {
+        stringBuilder.append("[\n");
     }
 
     @SuppressWarnings("unchecked")

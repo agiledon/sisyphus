@@ -1,5 +1,6 @@
 package com.github.agiledon.sisyphus.sis.util;
 
+import com.github.agiledon.sisyphus.sis.BasicField;
 import org.junit.Test;
 
 import java.math.BigInteger;
@@ -69,5 +70,11 @@ public class BasicFieldsTest {
 
         result = (byte[]) BasicFields.getFieldValue(byte[].class, "");
         assertThat(result, is("0".getBytes()));
+    }
+
+    @Test
+    public void should_generate_string() {
+        BasicField basicField = new BasicField("fieldName", "value");
+        assertThat(basicField.toString(), is("fieldName = value"));
     }
 }

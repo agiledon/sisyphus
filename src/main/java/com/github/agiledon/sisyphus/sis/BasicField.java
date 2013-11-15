@@ -29,6 +29,11 @@ public class BasicField {
     }
 
     @Override
+    public String toString() {
+        return String.format("%s = %s", name, value);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (o instanceof BasicField) {
             BasicField that = (BasicField) o;
