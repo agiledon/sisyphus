@@ -32,29 +32,7 @@ public class SisCollectionClass extends SisClass {
     }
 
     @Override
-    public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        printStart(stringBuilder);
-        printBasicElements(stringBuilder);
-        printChildClasses(stringBuilder);
-        printEnd(stringBuilder);
-        return stringBuilder.toString();
-    }
-
-    private void printBasicElements(StringBuilder stringBuilder) {
-        List<BasicElement> basicElements = getBasicElements();
-        for (int i = 0; i < basicElements.size(); i++) {
-            BasicElement basicElement = basicElements.get(i);
-            stringBuilder.append(basicElement.getValue());
-            if (i < basicElements.size() - 1) {
-                stringBuilder.append(",");
-            }else {
-                stringBuilder.append("\n");
-            }
-        }
-    }
-
-    private void printEnd(StringBuilder stringBuilder) {
+    protected void printEnd(StringBuilder stringBuilder) {
         stringBuilder.append("]");
     }
 

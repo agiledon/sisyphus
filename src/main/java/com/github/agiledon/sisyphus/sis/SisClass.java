@@ -19,7 +19,7 @@ public abstract class SisClass {
     private List<SisClass> childClasses;
     private SisClass parentClass;
     private List<BasicElement> basicElements;
-    private int level;
+    private int currentLevel = 0;
 
     public SisClass() {
         basicFields = newArrayList();
@@ -43,7 +43,7 @@ public abstract class SisClass {
         return currentObject;
     }
 
-    protected  <T> T newInstance(Class<T> currentClass) throws InstantiationException, IllegalAccessException, NoSuchFieldException {
+    protected <T> T newInstance(Class<T> currentClass) throws InstantiationException, IllegalAccessException, NoSuchFieldException {
         T currentObject;
         currentObject = currentClass.newInstance();
         setBasicFields(currentObject, currentClass);
@@ -62,7 +62,7 @@ public abstract class SisClass {
         for (SisClass childSisClass : getChildClasses()) {
             Field childField = currentClass.getDeclaredField(childSisClass.getFieldName());
             if (childSisClass instanceof SisListClass) {
-                SisListClass collectionClass = (SisListClass)childSisClass;
+                SisListClass collectionClass = (SisListClass) childSisClass;
                 collectionClass.setElementClass(getListElementClass(childField));
             }
             childField.set(currentObject, childSisClass.instantiate(childField.getType()));
@@ -84,6 +84,7 @@ public abstract class SisClass {
 
     public void addChildClass(SisClass childClass) {
         this.childClasses.add(childClass);
+        childClass.setCurrentLevel(this.getCurrentLevel() + 1);
         childClass.parentClass = this;
     }
 
@@ -107,15 +108,16 @@ public abstract class SisClass {
         return basicElements;
     }
 
-    protected void printLeftPadding(StringBuilder stringBuilder) {
-        stringBuilder.append(spaces(getLevel() * TAB_SPACES_COUNT));
+    protected void printLeftPadding(StringBuilder stringBuilder, boolean forChild) {
+        int level = forChild ? 1 : 0;
+        stringBuilder.append(spaces((getCurrentLevel() + level) * TAB_SPACES_COUNT));
     }
 
     protected void printChildClasses(StringBuilder stringBuilder) {
         List<SisClass> childClasses = getChildClasses();
-        for (int i = 0; i <childClasses.size(); i++) {
+        for (int i = 0; i < childClasses.size(); i++) {
             SisClass sisClass = childClasses.get(i);
-            printLeftPadding(stringBuilder);
+            printLeftPadding(stringBuilder, false);
             stringBuilder.append(sisClass.toString());
             if (i == childClasses.size() - 1) {
                 stringBuilder.append("\n");
@@ -124,21 +126,60 @@ public abstract class SisClass {
 
     }
 
-    public void setLevel(int level) {
-        this.level = level;
+    public void setCurrentLevel(int currentLevel) {
+        this.currentLevel = currentLevel;
     }
 
-    public int getLevel() {
-        return level;
+    public int getCurrentLevel() {
+        return currentLevel;
     }
 
     protected abstract void printStartIndicator(StringBuilder stringBuilder);
 
     protected void printStart(StringBuilder stringBuilder) {
-        printLeftPadding(stringBuilder);
+        printLeftPadding(stringBuilder, false);
         if (getFieldName() != null) {
             stringBuilder.append(getFieldName() + " = ");
         }
         printStartIndicator(stringBuilder);
+    }
+
+    protected abstract void printEnd(StringBuilder stringBuilder);
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        printStart(builder);
+        printBasicElements(builder);
+        printBasicFields(builder);
+        printChildClasses(builder);
+        printEnd(builder);
+        return builder.toString();
+    }
+
+    private void printBasicFields(StringBuilder builder) {
+        List<BasicField> basicFields = getBasicFields();
+        for (int i = 0; i < basicFields.size(); i++) {
+            printLeftPadding(builder, true);
+            builder.append(basicFields.get(i).toString());
+            builder.append("\n");
+        }
+    }
+
+    protected void printBasicElements(StringBuilder stringBuilder) {
+        List<BasicElement> basicElements = getBasicElements();
+        if (basicElements.size() == 0) {
+            return;
+        }
+        printLeftPadding(stringBuilder, true);
+        for (int i = 0; i < basicElements.size(); i++) {
+            BasicElement basicElement = basicElements.get(i);
+            stringBuilder.append(basicElement.getValue());
+            if (i < basicElements.size() - 1) {
+                stringBuilder.append(",");
+            } else {
+                stringBuilder.append("\n");
+            }
+        }
     }
 }

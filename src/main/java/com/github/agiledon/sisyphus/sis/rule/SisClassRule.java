@@ -17,7 +17,6 @@ public abstract class SisClassRule extends ParsingRule implements SisClassGenera
 
     protected SisClass navigateToChild(SisClass currentClass, String line) {
         SisClass childProperty = createSisClass(line);
-        childProperty.setLevel(currentClass.getLevel() + 1);
         currentClass.addChildClass(childProperty);
         return childProperty;
     }

@@ -11,13 +11,17 @@ public class SisCollectionClassTest {
     @Test
     public void should_generate_string_for_collection_indicator_without_field_name() {
         SisCollectionClass collectionClass = new SisCollectionClass();
-        assertThat(collectionClass.toString(), is("[\n]"));
+        assertThat(collectionClass.toString(), is(
+                "[\n" +
+                "]"));
     }
 
     @Test
     public void should_generate_string_for_collection_indicator_with_field_name() {
         SisCollectionClass collectionClass = new SisCollectionClass("mainClass");
-        assertThat(collectionClass.toString(), is("mainClass = [\n]"));
+        assertThat(collectionClass.toString(), is(
+                "mainClass = [\n" +
+                "]"));
     }
 
     @Test
@@ -28,11 +32,13 @@ public class SisCollectionClassTest {
                 new BasicElement("value2")
         ));
 
-        assertThat(collectionClass.toString(), is("[\nvalue1,value2\n]"));
+        assertThat(collectionClass.toString(), is(
+                "[\n" +
+                "    value1,value2\n" +
+                "]"));
     }
 
     @Test
-    @Ignore
     public void should_generate_string_for_collection_with_class_element() {
         SisCollectionClass collectionClass = new SisCollectionClass();
         SisNormalClass childClass = new SisNormalClass();
