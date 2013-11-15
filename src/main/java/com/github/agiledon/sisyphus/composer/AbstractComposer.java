@@ -20,8 +20,8 @@ public abstract class AbstractComposer implements Composer {
     public <T> T to(Class<T> tClass) {
         T result = (T)results.get(resourceName);
         if (result == null) {
-            String content = evaluate(loadResourceAsLines(resourceName));
-            result = deserialize(tClass, content);
+            String resource = evaluate(loadResourceAsLines(resourceName));
+            result = deserialize(tClass, resource);
             results.put(resourceName, result);
         }
         return result;
@@ -31,7 +31,7 @@ public abstract class AbstractComposer implements Composer {
         return Joiner.on("\n").join(resource);
     }
 
-    protected abstract <T> T deserialize(Class<T> tClass, String content);
+    protected abstract <T> T deserialize(Class<T> tClass, String resource);
 
     @Override
     public MultiSectionsComposer withTemplate(String templateFileName) {

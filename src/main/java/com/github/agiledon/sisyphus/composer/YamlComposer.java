@@ -5,9 +5,9 @@ import org.yaml.snakeyaml.introspector.BeanAccess;
 
 public class YamlComposer extends AbstractComposer {
     @Override
-    public <T> T deserialize(Class<T> tClass, String content) {
+    public <T> T deserialize(Class<T> tClass, String resource) {
         Yaml yaml = new Yaml();
         yaml.setBeanAccess(BeanAccess.FIELD);
-        return yaml.loadAs(content, tClass);
+        return yaml.loadAs(resource, tClass);
     }
 }

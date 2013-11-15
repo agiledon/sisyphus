@@ -20,7 +20,7 @@ public class SyntaxParserTest {
 
     @Test
     public void should_parse_completed_segment_for_one_class_with_nested_class() {
-        SisClass sisClass = parser.parseClass(loadResource("invoice.sis"));
+        SisClass sisClass = parser.parseClassFromResource(loadResource("invoice.sis"));
         assertThat(sisClass.getBasicFields().size(), is(5));
         assertThat(sisClass.getBasicFields().get(0), is(new BasicField("invoice", "34843")));
 

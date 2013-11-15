@@ -16,11 +16,11 @@ public class SyntaxParser {
     private final Logger logger = LoggerFactory.getLogger(SyntaxParser.class);
     private static final String LINE_BREAK = "\n";
 
-    public SisClass parseClass(String content) {
+    public SisClass parseClassFromResource(String resource) {
         SisClass rootClass;
 
         try {
-            List<String> lines = splitLines(content);
+            List<String> lines = splitLines(resource);
             checkArgument(lines != null && lines.size() >= 1, "data file is error");
             rootClass = createRootClass(lines.get(0));
             for (String line : lines) {

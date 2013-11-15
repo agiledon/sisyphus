@@ -11,8 +11,8 @@ public abstract class ComposerDecorator extends AbstractComposer {
     }
 
     @Override
-    protected <T> T deserialize(Class<T> tClass, String content) {
-        return decoratedComposer.deserialize(tClass, content);
+    protected <T> T deserialize(Class<T> tClass, String resource) {
+        return decoratedComposer.deserialize(tClass, resource);
     }
 
     @Override
