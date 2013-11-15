@@ -1,6 +1,5 @@
 package com.github.agiledon.sisyphus.sis;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static com.google.common.collect.Lists.newArrayList;

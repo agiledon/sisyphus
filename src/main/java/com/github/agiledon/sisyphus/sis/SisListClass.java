@@ -32,4 +32,9 @@ public class SisListClass extends SisCollectionClass {
         Collection currentCollection = (Collection) currentObject;
         addElements(currentCollection, this.elementClass);
     }
+
+    @Override
+    protected void printEndIndicator(StringBuilder stringBuilder) {
+        super.printEndIndicator(stringBuilder);
+    }
 }

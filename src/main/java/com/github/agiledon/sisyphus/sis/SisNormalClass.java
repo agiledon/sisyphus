@@ -1,9 +1,5 @@
 package com.github.agiledon.sisyphus.sis;
 
-import com.github.agiledon.sisyphus.util.StringUtil;
-
-import java.util.List;
-
 public class SisNormalClass extends SisClass {
 
     public SisNormalClass() {
@@ -14,8 +10,7 @@ public class SisNormalClass extends SisClass {
         super(fieldName);
     }
 
-    protected void printEnd(StringBuilder builder) {
-        printLeftPadding(builder, false);
+    protected void printEndIndicator(StringBuilder builder) {
         builder.append("}");
     }
 

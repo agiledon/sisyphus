@@ -1,6 +1,5 @@
 package com.github.agiledon.sisyphus.sis;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -47,6 +46,31 @@ public class SisNormalClassTest {
                 "    childField = {\n" +
                 "        fieldName1 = value\n" +
                 "    }\n" +
+                "}"));
+    }
+
+    @Test
+    public void should_generate_string_for_normal_class_with_collection_class() {
+        SisNormalClass normalClass = new SisNormalClass("currentField");
+        SisCollectionClass collectionClass = new SisCollectionClass("collectionField");
+
+        normalClass.addBasicField(basicField);
+        normalClass.addChildClass(collectionClass);
+
+        SisNormalClass childClass = new SisNormalClass();
+        childClass.addBasicField(new BasicField("fieldName1", "value1"));
+        childClass.addBasicField(new BasicField("fieldName2", "value2"));
+        collectionClass.addChildClass(childClass);
+
+        assertThat(normalClass.toString(), is(
+                "currentField = {\n" +
+                "    fieldName1 = value\n" +
+                "    collectionField = [\n" +
+                "        {\n" +
+                "            fieldName1 = value1\n" +
+                "            fieldName2 = value2\n" +
+                "        }\n" +
+                "    ]\n" +
                 "}"));
     }
 }

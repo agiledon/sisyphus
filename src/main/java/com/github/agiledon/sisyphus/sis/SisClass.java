@@ -117,7 +117,6 @@ public abstract class SisClass {
         List<SisClass> childClasses = getChildClasses();
         for (int i = 0; i < childClasses.size(); i++) {
             SisClass sisClass = childClasses.get(i);
-            printLeftPadding(stringBuilder, false);
             stringBuilder.append(sisClass.toString());
             if (i == childClasses.size() - 1) {
                 stringBuilder.append("\n");
@@ -144,7 +143,7 @@ public abstract class SisClass {
         printStartIndicator(stringBuilder);
     }
 
-    protected abstract void printEnd(StringBuilder stringBuilder);
+    protected abstract void printEndIndicator(StringBuilder stringBuilder);
 
     @Override
     public String toString() {
@@ -155,6 +154,11 @@ public abstract class SisClass {
         printChildClasses(builder);
         printEnd(builder);
         return builder.toString();
+    }
+
+    private void printEnd(StringBuilder builder) {
+        printLeftPadding(builder, false);
+        printEndIndicator(builder);
     }
 
     private void printBasicFields(StringBuilder builder) {

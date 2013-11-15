@@ -32,7 +32,7 @@ public class SisCollectionClass extends SisClass {
     }
 
     @Override
-    protected void printEnd(StringBuilder stringBuilder) {
+    protected void printEndIndicator(StringBuilder stringBuilder) {
         stringBuilder.append("]");
     }
 
