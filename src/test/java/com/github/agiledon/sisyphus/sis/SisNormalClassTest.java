@@ -33,12 +33,13 @@ public class SisNormalClassTest {
     }
 
     @Test
-    @Ignore
     public void should_generate_string_for_normal_class_with_inner_class() {
         SisNormalClass normalClass = new SisNormalClass("currentField");
+        normalClass.setLevel(0);
         normalClass.addBasicField(basicField);
 
         SisNormalClass childNormalClass = new SisNormalClass("childField");
+        childNormalClass.setLevel(1);
         childNormalClass.addBasicField(basicField);
         normalClass.addChildClass(childNormalClass);
 

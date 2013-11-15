@@ -34,11 +34,10 @@ public class SisCollectionClass extends SisClass {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        printFieldName(stringBuilder);
-        printStartIndicator(stringBuilder);
+        printStart(stringBuilder);
         printBasicElements(stringBuilder);
         printChildClasses(stringBuilder);
-        printEndIndicator(stringBuilder);
+        printEnd(stringBuilder);
         return stringBuilder.toString();
     }
 
@@ -55,11 +54,12 @@ public class SisCollectionClass extends SisClass {
         }
     }
 
-    private void printEndIndicator(StringBuilder stringBuilder) {
+    private void printEnd(StringBuilder stringBuilder) {
         stringBuilder.append("]");
     }
 
-    private void printStartIndicator(StringBuilder stringBuilder) {
+    @Override
+    protected void printStartIndicator(StringBuilder stringBuilder) {
         stringBuilder.append("[\n");
     }
 

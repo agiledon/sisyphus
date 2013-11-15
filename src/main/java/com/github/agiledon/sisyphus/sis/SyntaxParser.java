@@ -23,6 +23,7 @@ public class SyntaxParser {
             List<String> lines = splitLines(content);
             checkArgument(lines != null && lines.size() >= 1, "data file is error");
             rootClass = createRootClass(lines.get(0));
+            rootClass.setLevel(0);
             for (String line : lines) {
                 rootClass = sisClassTree(rootClass, line);
             }

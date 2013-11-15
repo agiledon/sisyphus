@@ -8,15 +8,18 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
+import static com.github.agiledon.sisyphus.util.StringUtil.spaces;
 import static com.google.common.collect.Lists.newArrayList;
 
 public abstract class SisClass {
+    protected static final int TAB_SPACES_COUNT = 4;
     protected final Logger logger = LoggerFactory.getLogger(SisClass.class);
     private String fieldName;
     private List<BasicField> basicFields;
     private List<SisClass> childClasses;
     private SisClass parentClass;
     private List<BasicElement> basicElements;
+    private int level;
 
     public SisClass() {
         basicFields = newArrayList();
@@ -104,21 +107,38 @@ public abstract class SisClass {
         return basicElements;
     }
 
-    protected void printFieldName(StringBuilder stringBuilder) {
-        if (getFieldName() != null) {
-            stringBuilder.append(getFieldName() + " = ");
-        }
+    protected void printLeftPadding(StringBuilder stringBuilder) {
+        stringBuilder.append(spaces(getLevel() * TAB_SPACES_COUNT));
     }
 
     protected void printChildClasses(StringBuilder stringBuilder) {
         List<SisClass> childClasses = getChildClasses();
         for (int i = 0; i <childClasses.size(); i++) {
             SisClass sisClass = childClasses.get(i);
+            printLeftPadding(stringBuilder);
             stringBuilder.append(sisClass.toString());
             if (i == childClasses.size() - 1) {
                 stringBuilder.append("\n");
             }
         }
 
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    protected abstract void printStartIndicator(StringBuilder stringBuilder);
+
+    protected void printStart(StringBuilder stringBuilder) {
+        printLeftPadding(stringBuilder);
+        if (getFieldName() != null) {
+            stringBuilder.append(getFieldName() + " = ");
+        }
+        printStartIndicator(stringBuilder);
     }
 }
