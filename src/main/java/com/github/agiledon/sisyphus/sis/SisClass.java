@@ -147,13 +147,15 @@ public abstract class SisClass {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        printStart(builder);
-        printBasicElements(builder);
-        printBasicFields(builder);
-        printChildClasses(builder);
-        printEnd(builder);
-        return builder.toString();
+        StringBuilder stringBuilder = new StringBuilder();
+
+        printStart(stringBuilder);
+        printBasicElements(stringBuilder);
+        printBasicFields(stringBuilder);
+        printChildClasses(stringBuilder);
+        printEnd(stringBuilder);
+
+        return stringBuilder.toString();
     }
 
     private void printEnd(StringBuilder builder) {

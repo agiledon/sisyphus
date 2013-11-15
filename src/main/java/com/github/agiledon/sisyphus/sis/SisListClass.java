@@ -34,7 +34,12 @@ public class SisListClass extends SisCollectionClass {
     }
 
     @Override
+    protected void printStartIndicator(StringBuilder stringBuilder) {
+        stringBuilder.append("<\n");
+    }
+
+    @Override
     protected void printEndIndicator(StringBuilder stringBuilder) {
-        super.printEndIndicator(stringBuilder);
+        stringBuilder.append(">");
     }
 }

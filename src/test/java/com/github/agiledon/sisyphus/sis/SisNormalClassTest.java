@@ -73,4 +73,30 @@ public class SisNormalClassTest {
                 "    ]\n" +
                 "}"));
     }
+
+    @Test
+    public void should_generate_string_for_normal_class_with_list_class() {
+        SisNormalClass normalClass = new SisNormalClass("currentField");
+        SisListClass listClass = new SisListClass("listField");
+
+        normalClass.addBasicField(basicField);
+        normalClass.addChildClass(listClass);
+
+        SisNormalClass childClass = new SisNormalClass();
+        childClass.addBasicField(new BasicField("fieldName1", "value1"));
+        childClass.addBasicField(new BasicField("fieldName2", "value2"));
+
+        listClass.addChildClass(childClass);
+
+        assertThat(normalClass.toString(), is(
+                "currentField = {\n" +
+                "    fieldName1 = value\n" +
+                "    listField = <\n" +
+                "        {\n" +
+                "            fieldName1 = value1\n" +
+                "            fieldName2 = value2\n" +
+                "        }\n" +
+                "    >\n" +
+                "}"));
+    }
 }
