@@ -34,6 +34,10 @@ public class SyntaxParser {
         }
     }
 
+    public <T> SisClass parseClassFromObject(T sourceObject) {
+        return null;
+    }
+
     private SisClass logAndRethrowException(Exception ex) {
         logger.error(ex.getMessage());
         throw new FailedDeserializationException(ex);
