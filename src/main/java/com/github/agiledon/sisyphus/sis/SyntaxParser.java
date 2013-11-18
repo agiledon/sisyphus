@@ -1,11 +1,14 @@
 package com.github.agiledon.sisyphus.sis;
 
 import com.github.agiledon.sisyphus.exception.FailedDeserializationException;
+import com.github.agiledon.sisyphus.exception.FailedSerializationException;
+import com.github.agiledon.sisyphus.sis.util.BasicFields;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 import static com.github.agiledon.sisyphus.sis.rule.ParsingRule.sisClassTree;
@@ -35,7 +38,44 @@ public class SyntaxParser {
     }
 
     public <T> SisClass parseClassFromObject(T sourceObject) {
-        return null;
+        if (sourceObject == null) {
+            throw new FailedSerializationException("The target is null");
+        }
+        if (isArray(sourceObject)) {
+            return new SisCollectionClass();
+        }
+        if (isList(sourceObject)) {
+            return new SisListClass();
+        }
+
+        SisNormalClass resultClass = new SisNormalClass();
+
+        Field[] declaredFields = sourceObject.getClass().getDeclaredFields();
+        for (Field declaredField : declaredFields) {
+            try {
+                Object fieldValue = declaredField.get(sourceObject);
+                if (fieldValue == null) {
+                    continue;
+                }
+                if (BasicFields.isPrimitiveType(fieldValue.getClass().getSimpleName())) {
+                    resultClass.addBasicField(new BasicField(declaredField.getName(), fieldValue.toString()));
+                } else {
+                    resultClass.addChildClass(parseClassFromObject(fieldValue));
+                }
+            } catch (IllegalAccessException e) {
+                continue;
+            }
+        }
+
+        return resultClass;
+    }
+
+    private <T> boolean isList(T sourceObject) {
+        return sourceObject.getClass().getSimpleName().equals("ArrayList");
+    }
+
+    private <T> boolean isArray(T sourceObject) {
+        return sourceObject.getClass().getSimpleName().endsWith("[]");
     }
 
     private SisClass logAndRethrowException(Exception ex) {

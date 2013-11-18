@@ -55,7 +55,7 @@ public abstract class BasicFields {
         }
     }
 
-    private static boolean isPrimitiveType(String fieldTypeName) {
+    public static boolean isPrimitiveType(String fieldTypeName) {
         return "String".equals(fieldTypeName)
                 || "Boolean".equalsIgnoreCase(fieldTypeName)
                 || "BigInteger".equals(fieldTypeName)

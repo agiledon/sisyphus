@@ -1,17 +1,17 @@
 package com.github.agiledon.sisyphus.sis;
 
 import com.github.agiledon.sisyphus.domain.sis.Invoice;
+import com.github.agiledon.sisyphus.exception.FailedSerializationException;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
 
 import static com.github.agiledon.sisyphus.Fixture.from;
 import static com.github.agiledon.sisyphus.util.ResourceLoader.loadResource;
+import static com.google.common.collect.Lists.newArrayList;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 public class SyntaxParserTest {
@@ -40,7 +40,6 @@ public class SyntaxParserTest {
     }
 
     @Test
-    @Ignore
     public void should_parse_sis_class_from_invoice_object() {
         Invoice invoice = from("invoice.sis").to(Invoice.class);
 
@@ -48,5 +47,28 @@ public class SyntaxParserTest {
         assertThat(sisClass, instanceOf(SisNormalClass.class));
         assertThat(sisClass.getBasicFields().size(), is(5));
         assertThat(sisClass.getChildClasses().size(), is(3));
+    }
+
+    @Test(expected = FailedSerializationException.class)
+    public void should_throw_exception_if_given_object_is_null() {
+        parser.parseClassFromObject(null);
+    }
+
+    @Test
+    public void should_parse_to_SisListClass_from_list_object() {
+        SisClass sisClass = parser.parseClassFromObject(newArrayList("line"));
+        assertThat(sisClass, instanceOf(SisListClass.class));
+    }
+
+    @Test
+    public void should_parse_to_SisCollectionClass_from_array_object() {
+        SisClass sisClass = parser.parseClassFromObject(new String[] {"line"});
+        assertThat(sisClass, instanceOf(SisCollectionClass.class));
+    }
+
+    @Test
+    public void should_parse_to_SisNormalClass_from_customized_object() {
+        SisClass sisClass = parser.parseClassFromObject(new Invoice());
+        assertThat(sisClass, instanceOf(SisNormalClass.class));
     }
 }
