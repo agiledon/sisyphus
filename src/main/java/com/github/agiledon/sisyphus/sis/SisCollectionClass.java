@@ -23,12 +23,7 @@ public class SisCollectionClass extends SisClass {
 
     @Override
     protected <T> T newInstance(Class<T> currentClass) throws InstantiationException, IllegalAccessException, NoSuchFieldException {
-        if (isArray(currentClass)) {
-            return newArrayInstance(currentClass);
-        }
-        T currentObject = currentClass.newInstance();
-        addElements(currentObject);
-        return currentObject;
+        return newArrayInstance(currentClass);
     }
 
     @Override
@@ -61,21 +56,6 @@ public class SisCollectionClass extends SisClass {
     private <T> String getElementTypeForArray(Class<T> currentClass) {
         String canonicalName = currentClass.getCanonicalName();
         return canonicalName.substring(0, canonicalName.length() - 2);
-    }
-
-    private <T> boolean isArray(Class<T> currentClass) {
-        return currentClass.getSimpleName().endsWith("[]");
-    }
-
-    @SuppressWarnings("unchecked")
-    protected void addElements(Object currentObject) {
-        Collection currentCollection = (Collection) currentObject;
-        addElements(currentCollection, getElementClass(currentCollection));
-    }
-
-    private Class getElementClass(Collection currentCollection) {
-        final ParameterizedType genericSuperclass = (ParameterizedType) currentCollection.getClass().getGenericSuperclass();
-        return (Class) genericSuperclass.getActualTypeArguments()[0];
     }
 
     protected void addElements(Collection currentCollection, Class<?> elementClass) {

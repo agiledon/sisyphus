@@ -59,12 +59,12 @@ public abstract class SisClass {
 
     protected final <T> void setClassFields(T currentObject, Class<T> currentClass) throws NoSuchFieldException, IllegalAccessException {
         for (SisClass childSisClass : getChildClasses()) {
-            childSisClass.setClassField(currentObject, currentClass, childSisClass);
+            childSisClass.setClassField(currentObject, currentClass);
         }
     }
 
-    protected <T> void setClassField(T currentObject, Class<T> currentClass, SisClass childSisClass) throws NoSuchFieldException, IllegalAccessException {
-        Field childField = currentClass.getDeclaredField(this.getFieldName());
+    protected <T> void setClassField(T currentObject, Class<T> parentClass) throws NoSuchFieldException, IllegalAccessException {
+        Field childField = parentClass.getDeclaredField(this.getFieldName());
         childField.set(currentObject, this.instantiate(childField.getType()));
     }
 
@@ -120,7 +120,6 @@ public abstract class SisClass {
                 stringBuilder.append("\n");
             }
         }
-
     }
 
     public void setCurrentLevel(int currentLevel) {
@@ -163,9 +162,9 @@ public abstract class SisClass {
 
     private void printBasicFields(StringBuilder builder) {
         List<BasicField> basicFields = getBasicFields();
-        for (int i = 0; i < basicFields.size(); i++) {
+        for (BasicField basicField : basicFields) {
             printLeftPadding(builder, true);
-            builder.append(basicFields.get(i).toString());
+            builder.append(basicField.toString());
             builder.append("\n");
         }
     }
