@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 import static com.github.agiledon.sisyphus.util.StringUtil.spaces;
@@ -60,18 +59,13 @@ public abstract class SisClass {
 
     protected final <T> void setClassFields(T currentObject, Class<T> currentClass) throws NoSuchFieldException, IllegalAccessException {
         for (SisClass childSisClass : getChildClasses()) {
-            Field childField = currentClass.getDeclaredField(childSisClass.getFieldName());
-            if (childSisClass instanceof SisListClass) {
-                SisListClass collectionClass = (SisListClass) childSisClass;
-                collectionClass.setElementClass(getListElementClass(childField));
-            }
-            childField.set(currentObject, childSisClass.instantiate(childField.getType()));
+            childSisClass.setClassField(currentObject, currentClass, childSisClass);
         }
     }
 
-    private Class<?> getListElementClass(Field childField) {
-        ParameterizedType integerListType = (ParameterizedType) childField.getGenericType();
-        return (Class<?>) integerListType.getActualTypeArguments()[0];
+    protected <T> void setClassField(T currentObject, Class<T> currentClass, SisClass childSisClass) throws NoSuchFieldException, IllegalAccessException {
+        Field childField = currentClass.getDeclaredField(this.getFieldName());
+        childField.set(currentObject, this.instantiate(childField.getType()));
     }
 
     protected List<BasicField> getBasicFields() {

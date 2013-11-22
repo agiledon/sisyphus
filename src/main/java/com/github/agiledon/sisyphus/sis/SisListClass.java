@@ -17,8 +17,20 @@ public class SisListClass extends SisCollectionClass {
         super(fieldName);
     }
 
-    public void setElementClass(Class<?> elementClass) {
+    private void setElementClass(Class<?> elementClass) {
         this.elementClass = elementClass;
+    }
+
+    @Override
+    protected <T> void setClassField(T currentObject, Class<T> currentClass, SisClass childSisClass) throws NoSuchFieldException, IllegalAccessException {
+        Field childField = currentClass.getDeclaredField(this.getFieldName());
+        this.setElementClass(getListElementClass(childField));
+        childField.set(currentObject, this.instantiate(childField.getType()));
+    }
+
+    private Class<?> getListElementClass(Field childField) {
+        ParameterizedType integerListType = (ParameterizedType) childField.getGenericType();
+        return (Class<?>) integerListType.getActualTypeArguments()[0];
     }
 
     @Override
