@@ -1,5 +1,7 @@
 package com.github.agiledon.sisyphus.sis;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 
 import static com.google.common.collect.Lists.newArrayList;

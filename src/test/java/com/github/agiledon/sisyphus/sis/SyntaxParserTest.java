@@ -1,8 +1,10 @@
 package com.github.agiledon.sisyphus.sis;
 
 import com.github.agiledon.sisyphus.domain.sis.Invoice;
+import com.github.agiledon.sisyphus.domain.sis.ProductList;
 import com.github.agiledon.sisyphus.exception.FailedSerializationException;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -55,9 +57,32 @@ public class SyntaxParserTest {
     }
 
     @Test
-    public void should_parse_to_SisListClass_from_list_object() {
+    public void should_parse_to_SisListClass_from_list_object_with_primitive_type() {
         SisClass sisClass = parser.parseClassFromObject(newArrayList("line"));
         assertThat(sisClass, instanceOf(SisListClass.class));
+        assertThat(sisClass.getBasicElements().size(), is(1));
+    }
+
+    @Test
+    @Ignore
+    public void should_parse_to_SisListClass_from_customized_list_object() {
+        SisClass sisClass = parser.parseClassFromObject(new ProductList());
+        assertThat(sisClass, instanceOf(SisListClass.class));
+        assertThat(sisClass.getBasicElements().size(), is(1));
+    }
+
+    @Test
+    public void should_parse_to_SisListClass_from_list_object_with_customized_type() {
+        Invoice invoice = from("invoice.sis").to(Invoice.class);
+        SisClass sisClass = parser.parseClassFromObject(newArrayList(invoice));
+        assertThat(sisClass, instanceOf(SisListClass.class));
+        assertThat(sisClass.getBasicElements().size(), is(0));
+
+        List<SisClass> childClasses = sisClass.getChildClasses();
+        assertThat(childClasses.size(), is(1));
+        assertThat(childClasses.get(0), instanceOf(SisNormalClass.class));
+        assertThat(childClasses.get(0).getBasicFields().size(), is(5));
+        assertThat(childClasses.get(0).getChildClasses().size(), is(3));
     }
 
     @Test

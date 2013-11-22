@@ -104,6 +104,10 @@ public abstract class SisClass {
         this.basicElements.addAll(basicElements);
     }
 
+    public void addBasicElement(BasicElement basicElement) {
+        this.basicElements.add(basicElement);
+    }
+
     public List<BasicElement> getBasicElements() {
         return basicElements;
     }

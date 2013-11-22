@@ -9,10 +9,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.github.agiledon.sisyphus.sis.rule.ParsingRule.sisClassTree;
 import static com.github.agiledon.sisyphus.sis.rule.ParsingRule.createRootClass;
+import static com.github.agiledon.sisyphus.sis.util.BasicFields.isPrimitiveType;
 import static com.google.common.base.Preconditions.checkArgument;
 
 public class SyntaxParser {
@@ -45,9 +47,35 @@ public class SyntaxParser {
             return new SisCollectionClass();
         }
         if (isList(sourceObject)) {
-            return new SisListClass();
+            return createListClass(sourceObject);
         }
 
+        return createNormalClass(sourceObject);
+    }
+
+    private <T> SisClass createListClass(T sourceObject) {
+        SisListClass sisListClass = new SisListClass();
+
+        ArrayList list = (ArrayList) sourceObject;
+        if (list == null || list.size() == 0) {
+            return sisListClass;
+        }
+
+        Object firstElement = list.get(0);
+        if (isPrimitiveType(firstElement.getClass().getSimpleName())) {
+            for (Object element : list) {
+                sisListClass.addBasicElement(new BasicElement(element.toString()));
+            }
+        }   else {
+            for (Object element : list) {
+                sisListClass.addChildClass(parseClassFromObject(element));
+            }
+        }
+
+        return sisListClass;
+    }
+
+    private <T> SisNormalClass createNormalClass(T sourceObject) {
         SisNormalClass resultClass = new SisNormalClass();
 
         Field[] declaredFields = sourceObject.getClass().getDeclaredFields();
@@ -57,7 +85,7 @@ public class SyntaxParser {
                 if (fieldValue == null) {
                     continue;
                 }
-                if (BasicFields.isPrimitiveType(fieldValue.getClass().getSimpleName())) {
+                if (isPrimitiveType(fieldValue.getClass().getSimpleName())) {
                     resultClass.addBasicField(new BasicField(declaredField.getName(), fieldValue.toString()));
                 } else {
                     resultClass.addChildClass(parseClassFromObject(fieldValue));
@@ -66,7 +94,6 @@ public class SyntaxParser {
                 continue;
             }
         }
-
         return resultClass;
     }
 
