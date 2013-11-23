@@ -7,8 +7,8 @@ import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 
-public abstract class ResourceParserRule {
-    private static List<ResourceParserRule> rules = newArrayList(
+public abstract class ParsingRule {
+    private static List<ParsingRule> rules = newArrayList(
             new EndingIndicatorRule(),
             new SisArrayClassRule(),
             new SisListClassRule(),
@@ -20,7 +20,7 @@ public abstract class ResourceParserRule {
             new SisNormalClassRule());
 
     public static SisClass sisClassTree(SisClass currentClass, String line) {
-        for (ResourceParserRule rule : rules) {
+        for (ParsingRule rule : rules) {
             if (rule.match(line)) {
                 return rule.sisClassNode(currentClass, line);
             }
