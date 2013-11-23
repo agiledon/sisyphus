@@ -113,12 +113,8 @@ public abstract class SisClass {
 
     protected void printChildClasses(StringBuilder stringBuilder) {
         List<SisClass> childClasses = getChildClasses();
-        for (int i = 0; i < childClasses.size(); i++) {
-            SisClass sisClass = childClasses.get(i);
+        for (SisClass sisClass : childClasses) {
             stringBuilder.append(sisClass.toString());
-            if (i == childClasses.size() - 1) {
-                stringBuilder.append("\n");
-            }
         }
     }
 
@@ -138,6 +134,7 @@ public abstract class SisClass {
             stringBuilder.append(getFieldName() + " = ");
         }
         printStartIndicator(stringBuilder);
+        printNewLine(stringBuilder);
     }
 
     protected abstract void printEndIndicator(StringBuilder stringBuilder);
@@ -155,18 +152,23 @@ public abstract class SisClass {
         return stringBuilder.toString();
     }
 
-    private void printEnd(StringBuilder builder) {
-        printLeftPadding(builder, false);
-        printEndIndicator(builder);
+    private void printEnd(StringBuilder stringBuilder) {
+        printLeftPadding(stringBuilder, false);
+        printEndIndicator(stringBuilder);
+        printNewLine(stringBuilder);
     }
 
-    private void printBasicFields(StringBuilder builder) {
+    private void printBasicFields(StringBuilder stringBuilder) {
         List<BasicField> basicFields = getBasicFields();
         for (BasicField basicField : basicFields) {
-            printLeftPadding(builder, true);
-            builder.append(basicField.toString());
-            builder.append("\n");
+            printLeftPadding(stringBuilder, true);
+            stringBuilder.append(basicField.toString());
+            printNewLine(stringBuilder);
         }
+    }
+
+    private StringBuilder printNewLine(StringBuilder stringBuilder) {
+        return stringBuilder.append("\n");
     }
 
     protected void printBasicElements(StringBuilder stringBuilder) {
@@ -181,7 +183,7 @@ public abstract class SisClass {
             if (i < basicElements.size() - 1) {
                 stringBuilder.append(",");
             } else {
-                stringBuilder.append("\n");
+                printNewLine(stringBuilder);
             }
         }
     }

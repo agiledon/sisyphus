@@ -12,7 +12,7 @@ public class SisCollectionClassTest {
         SisCollectionClass collectionClass = new SisCollectionClass();
         assertThat(collectionClass.toString(), is(
                 "[\n" +
-                "]"));
+                "]\n"));
     }
 
     @Test
@@ -20,7 +20,7 @@ public class SisCollectionClassTest {
         SisCollectionClass collectionClass = new SisCollectionClass("mainClass");
         assertThat(collectionClass.toString(), is(
                 "mainClass = [\n" +
-                "]"));
+                "]\n"));
     }
 
     @Test
@@ -34,7 +34,7 @@ public class SisCollectionClassTest {
         assertThat(collectionClass.toString(), is(
                 "[\n" +
                 "    value1,value2\n" +
-                "]"));
+                "]\n"));
     }
 
     @Test
@@ -51,6 +51,6 @@ public class SisCollectionClassTest {
                 "        fieldName1 = value1\n" +
                 "        fieldName2 = value2\n" +
                 "    }\n" +
-                "]"));
+                "]\n"));
     }
 }

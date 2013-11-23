@@ -17,7 +17,7 @@ public class SisNormalClassTest {
         assertThat(normalClass.toString(), is(
                 "{\n" +
                 "    fieldName1 = value\n" +
-                "}"));
+                "}\n"));
     }
 
     @Test
@@ -28,7 +28,7 @@ public class SisNormalClassTest {
         assertThat(normalClass.toString(), is(
                 "currentField = {\n" +
                 "    fieldName1 = value\n" +
-                "}"));
+                "}\n"));
     }
 
     @Test
@@ -46,7 +46,7 @@ public class SisNormalClassTest {
                 "    childField = {\n" +
                 "        fieldName1 = value\n" +
                 "    }\n" +
-                "}"));
+                "}\n"));
     }
 
     @Test
@@ -71,7 +71,7 @@ public class SisNormalClassTest {
                 "            fieldName2 = value2\n" +
                 "        }\n" +
                 "    ]\n" +
-                "}"));
+                "}\n"));
     }
 
     @Test
@@ -97,6 +97,6 @@ public class SisNormalClassTest {
                 "            fieldName2 = value2\n" +
                 "        }\n" +
                 "    >\n" +
-                "}"));
+                "}\n"));
     }
 }

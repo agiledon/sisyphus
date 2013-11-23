@@ -33,7 +33,7 @@ public class SisCollectionClass extends SisClass {
 
     @Override
     protected void printStartIndicator(StringBuilder stringBuilder) {
-        stringBuilder.append("[\n");
+        stringBuilder.append("[");
     }
 
     @SuppressWarnings("unchecked")

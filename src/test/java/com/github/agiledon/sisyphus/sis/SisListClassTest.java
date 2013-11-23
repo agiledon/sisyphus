@@ -12,7 +12,7 @@ public class SisListClassTest {
         SisListClass listClass = new SisListClass();
         assertThat(listClass.toString(), is(
                 "<\n" +
-                ">"));
+                ">\n"));
     }
 
     @Test
@@ -20,7 +20,7 @@ public class SisListClassTest {
         SisListClass listClass = new SisListClass("mainClass");
         assertThat(listClass.toString(), is(
                 "mainClass = <\n" +
-                ">"));
+                ">\n"));
     }
 
     @Test
@@ -34,7 +34,7 @@ public class SisListClassTest {
         assertThat(listClass.toString(), is(
                 "<\n" +
                 "    value1,value2\n" +
-                ">"));
+                ">\n"));
     }
 
     @Test
@@ -52,6 +52,6 @@ public class SisListClassTest {
                 "        fieldName1 = value1\n" +
                 "        fieldName2 = value2\n" +
                 "    }\n" +
-                ">"));
+                ">\n"));
     }
 }

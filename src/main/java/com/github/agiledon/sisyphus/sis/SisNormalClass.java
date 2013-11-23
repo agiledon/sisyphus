@@ -15,6 +15,6 @@ public class SisNormalClass extends SisClass {
     }
 
     protected void printStartIndicator(StringBuilder builder) {
-        builder.append("{\n");
+        builder.append("{");
     }
 }

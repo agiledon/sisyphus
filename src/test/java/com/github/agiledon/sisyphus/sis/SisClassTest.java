@@ -33,7 +33,6 @@ public class SisClassTest {
                 "                postal = 48046\n" +
                 "        }\n" +
                 "    }\n" +
-                "\n" +
                 "    shipTo = {\n" +
                 "        given = Chris\n" +
                 "        family = Dumars\n" +
@@ -58,6 +57,6 @@ public class SisClassTest {
                 "            price = 2392.00\n" +
                 "        }\n" +
                 "    >\n" +
-                "}"));
+                "}\n"));
     }
 }
