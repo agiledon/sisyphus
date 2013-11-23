@@ -1,6 +1,7 @@
 package com.github.agiledon.sisyphus.sis;
 
 import com.github.agiledon.sisyphus.domain.sis.Invoice;
+import com.github.agiledon.sisyphus.domain.sis.Product;
 import com.github.agiledon.sisyphus.domain.sis.ProductList;
 import com.github.agiledon.sisyphus.exception.FailedSerializationException;
 import org.junit.Before;
@@ -48,7 +49,25 @@ public class SyntaxParserTest {
         SisClass sisClass = parser.parseClassFromObject(invoice);
         assertThat(sisClass, instanceOf(SisNormalClass.class));
         assertThat(sisClass.getBasicFields().size(), is(5));
-        assertThat(sisClass.getChildClasses().size(), is(3));
+
+        List<SisClass> childClasses = sisClass.getChildClasses();
+        assertThat(childClasses.size(), is(3));
+        assertThat(childClasses.get(0), instanceOf(SisNormalClass.class));
+        assertThat(childClasses.get(1), instanceOf(SisNormalClass.class));
+        assertThat(childClasses.get(2), instanceOf(SisListClass.class));
+
+        SisClass personClass = childClasses.get(0);
+        assertThat(personClass.getBasicFields().size(), is(2));
+        assertThat(personClass.getChildClasses().size(), is(1));
+        assertThat(personClass.getChildClasses().get(0), instanceOf(SisNormalClass.class));
+
+        SisClass addressClass = personClass.getChildClasses().get(0);
+        assertThat(addressClass.getBasicFields().size(), is(4));
+        assertThat(addressClass.getChildClasses().size(), is(0));
+
+        SisClass productListClass = childClasses.get(2);
+        assertThat(productListClass.getChildClasses().size(), is(2));
+        assertThat(productListClass.getChildClasses().get(0), instanceOf(SisNormalClass.class));
     }
 
     @Test(expected = FailedSerializationException.class)
@@ -64,11 +83,10 @@ public class SyntaxParserTest {
     }
 
     @Test
-    @Ignore
     public void should_parse_to_SisListClass_from_customized_list_object() {
         SisClass sisClass = parser.parseClassFromObject(new ProductList());
         assertThat(sisClass, instanceOf(SisListClass.class));
-        assertThat(sisClass.getBasicElements().size(), is(1));
+        assertThat(sisClass.getBasicElements().size(), is(0));
     }
 
     @Test

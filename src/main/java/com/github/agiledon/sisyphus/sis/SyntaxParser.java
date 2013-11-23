@@ -2,7 +2,6 @@ package com.github.agiledon.sisyphus.sis;
 
 import com.github.agiledon.sisyphus.exception.FailedDeserializationException;
 import com.github.agiledon.sisyphus.exception.FailedSerializationException;
-import com.github.agiledon.sisyphus.sis.util.BasicFields;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
@@ -40,6 +39,10 @@ public class SyntaxParser {
     }
 
     public <T> SisClass parseClassFromObject(T sourceObject) {
+        return parseClass(sourceObject, null);
+    }
+
+    private <T> SisClass parseClass(T sourceObject, String fieldName) {
         if (sourceObject == null) {
             throw new FailedSerializationException("The target is null");
         }
@@ -47,14 +50,14 @@ public class SyntaxParser {
             return new SisCollectionClass();
         }
         if (isList(sourceObject)) {
-            return createListClass(sourceObject);
+            return createListClass(sourceObject, fieldName);
         }
 
-        return createNormalClass(sourceObject);
+        return createNormalClass(sourceObject, fieldName);
     }
 
-    private <T> SisClass createListClass(T sourceObject) {
-        SisListClass sisListClass = new SisListClass();
+    private <T> SisClass createListClass(T sourceObject, String fieldName) {
+        SisListClass sisListClass = new SisListClass(fieldName);
 
         ArrayList list = (ArrayList) sourceObject;
         if (list == null || list.size() == 0) {
@@ -66,17 +69,17 @@ public class SyntaxParser {
             for (Object element : list) {
                 sisListClass.addBasicElement(new BasicElement(element.toString()));
             }
-        }   else {
+        } else {
             for (Object element : list) {
-                sisListClass.addChildClass(parseClassFromObject(element));
+                sisListClass.addChildClass(parseClass(element, null));
             }
         }
 
         return sisListClass;
     }
 
-    private <T> SisNormalClass createNormalClass(T sourceObject) {
-        SisNormalClass resultClass = new SisNormalClass();
+    private <T> SisNormalClass createNormalClass(T sourceObject, String fieldName) {
+        SisNormalClass resultClass = new SisNormalClass(fieldName);
 
         Field[] declaredFields = sourceObject.getClass().getDeclaredFields();
         for (Field declaredField : declaredFields) {
@@ -88,7 +91,7 @@ public class SyntaxParser {
                 if (isPrimitiveType(fieldValue.getClass().getSimpleName())) {
                     resultClass.addBasicField(new BasicField(declaredField.getName(), fieldValue.toString()));
                 } else {
-                    resultClass.addChildClass(parseClassFromObject(fieldValue));
+                    resultClass.addChildClass(parseClass(fieldValue, declaredField.getName()));
                 }
             } catch (IllegalAccessException e) {
                 continue;
@@ -98,7 +101,10 @@ public class SyntaxParser {
     }
 
     private <T> boolean isList(T sourceObject) {
-        return sourceObject.getClass().getSimpleName().equals("ArrayList");
+        Class<?> sourceClass = sourceObject.getClass();
+        return sourceClass.getSuperclass().getSimpleName().equals("ArrayList") ||
+               sourceClass.getSuperclass().getSimpleName().equals("List") ||
+               sourceClass.getSimpleName().equals("ArrayList");
     }
 
     private <T> boolean isArray(T sourceObject) {
