@@ -39,29 +39,32 @@ public class SyntaxParser {
     }
 
     public <T> SisClass parseClassFromObject(T sourceObject) {
-        return parseClass(sourceObject, null);
+        return parseClass(sourceObject, null, 0);
     }
 
-    private <T> SisClass parseClass(T sourceObject, String fieldName) {
+    private <T> SisClass parseClass(T sourceObject, String fieldName, int level) {
         if (sourceObject == null) {
             throw new FailedSerializationException("The target is null");
         }
         if (isArray(sourceObject)) {
-            return createArrayClass();
+            return createArrayClass(level);
         }
         if (isList(sourceObject)) {
-            return createListClass(sourceObject, fieldName);
+            return createListClass(sourceObject, fieldName, level);
         }
 
-        return createNormalClass(sourceObject, fieldName);
+        return createNormalClass(sourceObject, fieldName, level);
     }
 
-    private SisClass createArrayClass() {
-        return new SisArrayClass();
+    private SisClass createArrayClass(int level) {
+        SisArrayClass sisArrayClass = new SisArrayClass();
+        sisArrayClass.setCurrentLevel(level);
+        return sisArrayClass;
     }
 
-    private <T> SisClass createListClass(T sourceObject, String fieldName) {
+    private <T> SisClass createListClass(T sourceObject, String fieldName, int level) {
         SisListClass sisListClass = new SisListClass(fieldName);
+        sisListClass.setCurrentLevel(level);
 
         ArrayList list = (ArrayList) sourceObject;
         if (list == null || list.size() == 0) {
@@ -75,15 +78,16 @@ public class SyntaxParser {
             }
         } else {
             for (Object element : list) {
-                sisListClass.addChildClass(parseClass(element, null));
+                sisListClass.addChildClass(parseClass(element, null, level + 1));
             }
         }
 
         return sisListClass;
     }
 
-    private <T> SisNormalClass createNormalClass(T sourceObject, String fieldName) {
-        SisNormalClass resultClass = new SisNormalClass(fieldName);
+    private <T> SisNormalClass createNormalClass(T sourceObject, String fieldName, int level) {
+        SisNormalClass sisNormalClass = new SisNormalClass(fieldName);
+        sisNormalClass.setCurrentLevel(level);
 
         Field[] declaredFields = sourceObject.getClass().getDeclaredFields();
         for (Field declaredField : declaredFields) {
@@ -93,22 +97,22 @@ public class SyntaxParser {
                     continue;
                 }
                 if (isPrimitiveType(fieldValue.getClass().getSimpleName())) {
-                    resultClass.addBasicField(new BasicField(declaredField.getName(), fieldValue.toString()));
+                    sisNormalClass.addBasicField(new BasicField(declaredField.getName(), fieldValue.toString()));
                 } else {
-                    resultClass.addChildClass(parseClass(fieldValue, declaredField.getName()));
+                    sisNormalClass.addChildClass(parseClass(fieldValue, declaredField.getName(), level + 1));
                 }
             } catch (IllegalAccessException e) {
                 continue;
             }
         }
-        return resultClass;
+        return sisNormalClass;
     }
 
     private <T> boolean isList(T sourceObject) {
         Class<?> sourceClass = sourceObject.getClass();
         return sourceClass.getSuperclass().getSimpleName().equals("ArrayList") ||
-               sourceClass.getSuperclass().getSimpleName().equals("List") ||
-               sourceClass.getSimpleName().equals("ArrayList");
+                sourceClass.getSuperclass().getSimpleName().equals("List") ||
+                sourceClass.getSimpleName().equals("ArrayList");
     }
 
     private <T> boolean isArray(T sourceObject) {

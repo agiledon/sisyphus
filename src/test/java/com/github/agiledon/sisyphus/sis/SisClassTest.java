@@ -1,7 +1,6 @@
 package com.github.agiledon.sisyphus.sis;
 
 import com.github.agiledon.sisyphus.domain.sis.Invoice;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static com.github.agiledon.sisyphus.Fixture.from;
@@ -11,7 +10,6 @@ import static org.junit.Assert.assertThat;
 public class SisClassTest {
 
     @Test
-    @Ignore
     public void should_generate_string_for_invoice_with_ProductList_object() {
         Invoice invoice = from("invoice.sis").to(Invoice.class);
         SisClass sisClass = new SyntaxParser().parseClassFromObject(invoice);
@@ -27,20 +25,20 @@ public class SisClassTest {
                 "        given = Chris\n" +
                 "        family = Dumars\n" +
                 "        address = {\n" +
-                "                lines  = 458 Walkman Dr. Suite #292\n" +
-                "                city   = Royal Oak\n" +
-                "                state  = MI\n" +
-                "                postal = 48046\n" +
+                "            lines = 458 Walkman Dr. Suite #292\n" +
+                "            city = Royal Oak\n" +
+                "            state = MI\n" +
+                "            postal = 48046\n" +
                 "        }\n" +
                 "    }\n" +
                 "    shipTo = {\n" +
                 "        given = Chris\n" +
                 "        family = Dumars\n" +
                 "        address = {\n" +
-                "                lines = 458 Walkman Dr. Suite #292\n" +
-                "                city  = Royal Oak\n" +
-                "                state = MI\n" +
-                "                postal   = 48046\n" +
+                "            lines = 458 Walkman Dr. Suite #292\n" +
+                "            city = Royal Oak\n" +
+                "            state = MI\n" +
+                "            postal = 48046\n" +
                 "        }\n" +
                 "    }\n" +
                 "    products = <\n" +
@@ -48,13 +46,13 @@ public class SisClassTest {
                 "            sku = BL394D\n" +
                 "            quantity = 4\n" +
                 "            description = Basketball\n" +
-                "            price = 450.00\n" +
+                "            price = 450.0\n" +
                 "        }\n" +
                 "        {\n" +
                 "            sku = BL4438H\n" +
                 "            quantity = 1\n" +
                 "            description = Super Hoop\n" +
-                "            price = 2392.00\n" +
+                "            price = 2392.0\n" +
                 "        }\n" +
                 "    >\n" +
                 "}\n"));
