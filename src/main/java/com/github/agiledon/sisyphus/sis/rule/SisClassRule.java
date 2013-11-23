@@ -2,7 +2,7 @@ package com.github.agiledon.sisyphus.sis.rule;
 
 import com.github.agiledon.sisyphus.sis.SisClass;
 
-public abstract class SisClassRule extends ParsingRule implements SisClassGenerator {
+public abstract class SisClassRule extends ResourceParserRule implements SisClassGenerator {
     @Override
     public SisClass sisClassNode(SisClass currentClass, String line) {
         if (isMainClass(line)) {
