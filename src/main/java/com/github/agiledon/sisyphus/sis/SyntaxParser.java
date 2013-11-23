@@ -47,7 +47,7 @@ public class SyntaxParser {
             throw new FailedSerializationException("The target is null");
         }
         if (isArray(sourceObject)) {
-            return createArrayClass(level);
+            return createArrayClass(sourceObject, fieldName, level);
         }
         if (isList(sourceObject)) {
             return createListClass(sourceObject, fieldName, level);
@@ -56,9 +56,26 @@ public class SyntaxParser {
         return createNormalClass(sourceObject, fieldName, level);
     }
 
-    private SisClass createArrayClass(int level) {
-        SisArrayClass sisArrayClass = new SisArrayClass();
+    private <T> SisClass createArrayClass(T sourceObject, String fieldName, int level) {
+        SisArrayClass sisArrayClass = new SisArrayClass(fieldName);
         sisArrayClass.setCurrentLevel(level);
+
+        Object[] array = (Object[]) sourceObject;
+        if (array == null || array.length == 0) {
+            return sisArrayClass;
+        }
+
+        Object firstElement = array[0];
+        if (isPrimitiveType(firstElement.getClass().getSimpleName())) {
+            for (Object element : array) {
+                sisArrayClass.addBasicElement(new BasicElement(element.toString()));
+            }
+        } else {
+            for (Object element : array) {
+                sisArrayClass.addChildClass(parseClass(element, null, level + 1));
+            }
+        }
+
         return sisArrayClass;
     }
 

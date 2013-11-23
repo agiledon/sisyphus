@@ -1,5 +1,8 @@
 package com.github.agiledon.sisyphus.assist.printer;
 
+import com.github.agiledon.sisyphus.sis.SisClass;
+import com.github.agiledon.sisyphus.sis.SyntaxParser;
+
 public class SisPrinter extends AbstractPrinter {
     @Override
     protected String getExtension() {
@@ -8,6 +11,8 @@ public class SisPrinter extends AbstractPrinter {
 
     @Override
     protected <T> String serialize(T sourceObject) {
-        return null;
+        SyntaxParser syntaxParser = new SyntaxParser();
+        SisClass sisClass = syntaxParser.parseClassFromObject(sourceObject);
+        return sisClass.toString();
     }
 }

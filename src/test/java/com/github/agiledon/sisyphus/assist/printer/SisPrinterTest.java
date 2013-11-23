@@ -1,8 +1,10 @@
-package com.github.agiledon.sisyphus.sis;
+package com.github.agiledon.sisyphus.assist.printer;
 
 import com.github.agiledon.sisyphus.domain.sis.Invoice;
 import com.github.agiledon.sisyphus.domain.sis.InvoiceWithArray;
 import com.github.agiledon.sisyphus.domain.sis.InvoiceWithList;
+import com.github.agiledon.sisyphus.sis.SisClass;
+import com.github.agiledon.sisyphus.sis.SyntaxParser;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,39 +12,36 @@ import static com.github.agiledon.sisyphus.Fixture.from;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class SisClassTest {
+public class SisPrinterTest {
 
-    private SyntaxParser syntaxParser;
+    private SisPrinter sisPrinter;
 
     @Before
     public void setUp() throws Exception {
-        syntaxParser = new SyntaxParser();
+        sisPrinter = new SisPrinter();
     }
 
     @Test
     public void should_generate_string_for_invoice_with_ProductList_object() {
         Invoice invoice = from("invoice.sis").to(Invoice.class);
-        SisClass sisClass = syntaxParser.parseClassFromObject(invoice);
 
-        assertThat(sisClass.toString(), is(
+        assertThat(sisPrinter.serialize(invoice), is(
                 getExpectedContent("<", ">")));
     }
 
     @Test
     public void should_generate_string_for_invoice_with_ArrayList() {
         InvoiceWithList invoice = from("invoiceWithList.sis").to(InvoiceWithList.class);
-        SisClass sisClass = syntaxParser.parseClassFromObject(invoice);
 
-        assertThat(sisClass.toString(), is(
+        assertThat(sisPrinter.serialize(invoice), is(
                 getExpectedContent("<", ">")));
     }
 
     @Test
     public void should_generate_string_for_invoice_with_Array() {
         InvoiceWithArray invoice = from("invoiceWithArray.sis").to(InvoiceWithArray.class);
-        SisClass sisClass = syntaxParser.parseClassFromObject(invoice);
 
-        assertThat(sisClass.toString(), is(
+        assertThat(sisPrinter.serialize(invoice), is(
                 getExpectedContent("[", "]")));
     }
 
