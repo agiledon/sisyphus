@@ -6,7 +6,7 @@ import java.util.Collection;
 
 import static com.google.common.collect.Lists.newArrayList;
 
-public class SisListClass extends SisCollectionClass {
+public class SisListClass extends SisArrayClass {
     private Class<?> elementClass;
 
     public SisListClass() {

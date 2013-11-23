@@ -1,11 +1,9 @@
 package com.github.agiledon.sisyphus.sis;
 
 import com.github.agiledon.sisyphus.domain.sis.Invoice;
-import com.github.agiledon.sisyphus.domain.sis.Product;
 import com.github.agiledon.sisyphus.domain.sis.ProductList;
 import com.github.agiledon.sisyphus.exception.FailedSerializationException;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -106,7 +104,7 @@ public class SyntaxParserTest {
     @Test
     public void should_parse_to_SisCollectionClass_from_array_object() {
         SisClass sisClass = parser.parseClassFromObject(new String[] {"line"});
-        assertThat(sisClass, instanceOf(SisCollectionClass.class));
+        assertThat(sisClass, instanceOf(SisArrayClass.class));
     }
 
     @Test

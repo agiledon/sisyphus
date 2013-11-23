@@ -47,13 +47,17 @@ public class SyntaxParser {
             throw new FailedSerializationException("The target is null");
         }
         if (isArray(sourceObject)) {
-            return new SisCollectionClass();
+            return createArrayClass();
         }
         if (isList(sourceObject)) {
             return createListClass(sourceObject, fieldName);
         }
 
         return createNormalClass(sourceObject, fieldName);
+    }
+
+    private SisClass createArrayClass() {
+        return new SisArrayClass();
     }
 
     private <T> SisClass createListClass(T sourceObject, String fieldName) {

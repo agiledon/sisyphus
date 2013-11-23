@@ -6,10 +6,10 @@ import static com.google.common.collect.Lists.newArrayList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class SisCollectionClassTest {
+public class SisArrayClassTest {
     @Test
     public void should_generate_string_for_collection_indicator_without_field_name() {
-        SisCollectionClass collectionClass = new SisCollectionClass();
+        SisArrayClass collectionClass = new SisArrayClass();
         assertThat(collectionClass.toString(), is(
                 "[\n" +
                 "]\n"));
@@ -17,7 +17,7 @@ public class SisCollectionClassTest {
 
     @Test
     public void should_generate_string_for_collection_indicator_with_field_name() {
-        SisCollectionClass collectionClass = new SisCollectionClass("mainClass");
+        SisArrayClass collectionClass = new SisArrayClass("mainClass");
         assertThat(collectionClass.toString(), is(
                 "mainClass = [\n" +
                 "]\n"));
@@ -25,7 +25,7 @@ public class SisCollectionClassTest {
 
     @Test
     public void should_generate_string_for_collection_with_basic_element() {
-        SisCollectionClass collectionClass = new SisCollectionClass();
+        SisArrayClass collectionClass = new SisArrayClass();
         collectionClass.addBasicElements(newArrayList(
                 new BasicElement("value1"),
                 new BasicElement("value2")
@@ -39,7 +39,7 @@ public class SisCollectionClassTest {
 
     @Test
     public void should_generate_string_for_collection_with_class_element() {
-        SisCollectionClass collectionClass = new SisCollectionClass();
+        SisArrayClass collectionClass = new SisArrayClass();
         SisNormalClass childClass = new SisNormalClass();
         childClass.addBasicField(new BasicField("fieldName1", "value1"));
         childClass.addBasicField(new BasicField("fieldName2", "value2"));

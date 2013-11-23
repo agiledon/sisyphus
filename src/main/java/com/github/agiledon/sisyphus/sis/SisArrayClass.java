@@ -6,18 +6,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Array;
-import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
-import java.util.List;
 
-public class SisCollectionClass extends SisClass {
-    private static Logger logger = LoggerFactory.getLogger(SisCollectionClass.class);
+public class SisArrayClass extends SisClass {
+    private static Logger logger = LoggerFactory.getLogger(SisArrayClass.class);
 
-    public SisCollectionClass() {
+    public SisArrayClass() {
         super();
     }
 
-    public SisCollectionClass(String fieldName) {
+    public SisArrayClass(String fieldName) {
         super(fieldName);
     }
 

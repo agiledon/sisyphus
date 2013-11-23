@@ -3,7 +3,7 @@ package com.github.agiledon.sisyphus.sis.rule;
 import com.github.agiledon.sisyphus.sis.SisClass;
 import com.github.agiledon.sisyphus.sis.SisListClass;
 
-public class ListClassRule extends SisClassRule {
+public class SisListClassRule extends SisClassRule {
     public static final String LIST_INDICATOR = "<";
 
     @Override

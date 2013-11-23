@@ -7,23 +7,23 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class NormalClassRuleTest {
+public class SisNormalClassRuleTest {
 
-    private NormalClassRule normalClassRule;
+    private SisNormalClassRule sisNormalClassRule;
 
     @Before
     public void setUp() throws Exception {
-        normalClassRule = new NormalClassRule();
+        sisNormalClassRule = new SisNormalClassRule();
     }
 
     @Test
     public void should_parse_class_property_given_equal_expression_with_class_name() {
-        SisClass sisClass = normalClassRule.createSisClass("      foo = { ");
+        SisClass sisClass = sisNormalClassRule.createSisClass("      foo = { ");
         assertThat(sisClass.getFieldName(), is("foo"));
     }
 
     @Test
     public void should_be_sequence_class_if_line_contains_sequence_and_equal_character() {
-        assertThat(normalClassRule.match("      foo = { "), is(true));
+        assertThat(sisNormalClassRule.match("      foo = { "), is(true));
     }
 }

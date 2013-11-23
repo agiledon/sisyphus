@@ -52,7 +52,7 @@ public class SisNormalClassTest {
     @Test
     public void should_generate_string_for_normal_class_with_collection_class() {
         SisNormalClass normalClass = new SisNormalClass("currentField");
-        SisCollectionClass collectionClass = new SisCollectionClass("collectionField");
+        SisArrayClass collectionClass = new SisArrayClass("collectionField");
 
         normalClass.addBasicField(basicField);
         normalClass.addChildClass(collectionClass);

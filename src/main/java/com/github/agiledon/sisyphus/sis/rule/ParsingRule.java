@@ -10,14 +10,14 @@ import static com.google.common.collect.Lists.newArrayList;
 public abstract class ParsingRule {
     private static List<ParsingRule> rules = newArrayList(
             new EndingIndicatorRule(),
-            new CollectionClassRule(),
-            new ListClassRule(),
-            new NormalClassRule(),
+            new SisArrayClassRule(),
+            new SisListClassRule(),
+            new SisNormalClassRule(),
             new BasicElementRule());
     private static List<SisClassRule> generators = newArrayList(
-            new CollectionClassRule(),
-            new ListClassRule(),
-            new NormalClassRule());
+            new SisArrayClassRule(),
+            new SisListClassRule(),
+            new SisNormalClassRule());
 
     public static SisClass sisClassTree(SisClass currentClass, String line) {
         for (ParsingRule rule : rules) {
