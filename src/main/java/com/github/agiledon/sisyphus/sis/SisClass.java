@@ -65,6 +65,7 @@ public abstract class SisClass {
 
     protected <T> void setClassField(T currentObject, Class<T> parentClass) throws NoSuchFieldException, IllegalAccessException {
         Field childField = parentClass.getDeclaredField(this.getFieldName());
+        childField.setAccessible(true);
         childField.set(currentObject, this.instantiate(childField.getType()));
     }
 

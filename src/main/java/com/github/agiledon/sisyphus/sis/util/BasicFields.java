@@ -12,9 +12,8 @@ public abstract class BasicFields {
     private static Logger logger = LoggerFactory.getLogger(BasicFields.class);
 
     public static Object getFieldValue(Class<?> fieldType, String value)  {
-        String fieldTypeName = fieldType.getSimpleName();
-        if (isPrimitiveType(fieldTypeName)) {
-            return parseFieldValue(fieldTypeName, value);
+        if (isPrimitiveType(fieldType)) {
+            return parseFieldValue(fieldType, value);
         }
         Object fieldValue;
         try {
@@ -30,11 +29,17 @@ public abstract class BasicFields {
 
     private static void setInnerValueField(Class<?> fieldType, Object mainFieldValue, String innerValue) throws NoSuchFieldException, IllegalAccessException {
         Field valueField = fieldType.getField("value");
-        valueField.set(mainFieldValue, parseFieldValue(valueField.getType().getSimpleName(), innerValue));
+        valueField.set(mainFieldValue, parseFieldValue(fieldType, innerValue));
     }
 
-    private static Object parseFieldValue(String fieldTypeName, String value) {
+    @SuppressWarnings("unchecked")
+    private static Object parseFieldValue(Class<?> fieldType, String value) {
         boolean nullOrEmptyValue = Strings.isNullOrEmpty(value);
+
+        if (isEnum(fieldType)) {
+            return nullOrEmptyValue ? null : Enum.valueOf((Class<Enum>) fieldType, value.trim().toUpperCase());
+        }
+        String fieldTypeName = fieldType.getSimpleName();
 
         if ("String".equals(fieldTypeName)) {
             return nullOrEmptyValue ? "" : value;
@@ -55,14 +60,20 @@ public abstract class BasicFields {
         }
     }
 
-    public static boolean isPrimitiveType(String fieldTypeName) {
-        return "String".equals(fieldTypeName)
+    private static boolean isEnum(Class<?> fieldType) {
+        return fieldType.getSuperclass() != null && "Enum".equals(fieldType.getSuperclass().getSimpleName());
+    }
+
+    public static boolean isPrimitiveType(Class<?> aClass) {
+        String fieldTypeName = aClass.getSimpleName();
+        return  "String".equals(fieldTypeName)
                 || "Boolean".equalsIgnoreCase(fieldTypeName)
                 || "BigInteger".equals(fieldTypeName)
                 || "Integer".equals(fieldTypeName)
                 || "int".equals(fieldTypeName)
                 || "Float".equalsIgnoreCase(fieldTypeName)
                 || "Double".equalsIgnoreCase(fieldTypeName)
-                || "byte[]".equals(fieldTypeName);
+                || "byte[]".equals(fieldTypeName)
+                || isEnum(aClass);
     }
 }

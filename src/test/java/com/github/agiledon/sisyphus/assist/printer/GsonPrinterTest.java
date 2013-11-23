@@ -12,6 +12,6 @@ public class GsonPrinterTest extends UserDataFixture {
         GsonPrinter printer = new GsonPrinter();
         User user = createUser();
         String result = printer.serialize(user);
-        assertThat(result, is("{\"_gender\":\"MALE\",\"_name\":{\"_first\":\"Yi\",\"_last\":\"Zhang\"},\"_isVerified\":true}"));
+        assertThat(result, is("{\"_gender\":\"MALE\",\"_name\":{\"_first\":\"Yi\",\"_last\":\"Zhang\"},\"_isVerified\":true,\"_userImage\":[48,48,48,48,49,49,49,49]}"));
     }
 }

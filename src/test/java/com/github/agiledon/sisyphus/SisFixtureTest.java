@@ -1,5 +1,6 @@
 package com.github.agiledon.sisyphus;
 
+import com.github.agiledon.sisyphus.domain.json.User;
 import com.github.agiledon.sisyphus.domain.sis.Invoice;
 import com.github.agiledon.sisyphus.domain.sis.InvoiceWithArray;
 import com.github.agiledon.sisyphus.domain.sis.InvoiceWithList;
@@ -49,5 +50,16 @@ public class SisFixtureTest {
         assertThat(invoice.products.get(0).description, is("Basketball"));
         assertThat(invoice.billTo.given, is("Chris"));
         assertThat(invoice.tax, is(251.42f));
+    }
+
+    @Test
+    public void should_compose_user_data() {
+        User user = from("user.sis").to(User.class);
+        assertThat(user, not(nullValue()));
+        assertThat(user.getName().getFirst(), is("Yi"));
+        assertThat(user.getName().getLast(), is("Zhang"));
+        assertThat(user.getGender(), is(User.Gender.MALE));
+        assertThat(user.isVerified(), is(true));
+        assertThat(user.getUserImage(), not(nullValue()));
     }
 }

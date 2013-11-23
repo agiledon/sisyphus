@@ -16,7 +16,7 @@ public class SisArrayClassRule extends SisClassRule {
 
     @Override
     public boolean match(String line) {
-        return line.contains(ARRAY_INDICATOR);
+        return line.trim().endsWith(ARRAY_INDICATOR);
     }
 
     @Override

@@ -16,7 +16,7 @@ public class SisListClassRule extends SisClassRule {
 
     @Override
     public boolean match(String line) {
-        return line.contains(LIST_INDICATOR);
+        return line.trim().endsWith(LIST_INDICATOR);
     }
 
     @Override

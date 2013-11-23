@@ -3,8 +3,6 @@ package com.github.agiledon.sisyphus.assist.printer;
 import com.github.agiledon.sisyphus.domain.sis.Invoice;
 import com.github.agiledon.sisyphus.domain.sis.InvoiceWithArray;
 import com.github.agiledon.sisyphus.domain.sis.InvoiceWithList;
-import com.github.agiledon.sisyphus.sis.SisClass;
-import com.github.agiledon.sisyphus.sis.SyntaxParser;
 import org.junit.Before;
 import org.junit.Test;
 

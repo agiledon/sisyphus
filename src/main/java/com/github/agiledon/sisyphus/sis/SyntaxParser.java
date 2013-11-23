@@ -66,7 +66,7 @@ public class SyntaxParser {
         }
 
         Object firstElement = array[0];
-        if (isPrimitiveType(firstElement.getClass().getSimpleName())) {
+        if (isPrimitiveType(firstElement.getClass())) {
             for (Object element : array) {
                 sisArrayClass.addBasicElement(new BasicElement(element.toString()));
             }
@@ -89,7 +89,7 @@ public class SyntaxParser {
         }
 
         Object firstElement = list.get(0);
-        if (isPrimitiveType(firstElement.getClass().getSimpleName())) {
+        if (isPrimitiveType(firstElement.getClass())) {
             for (Object element : list) {
                 sisListClass.addBasicElement(new BasicElement(element.toString()));
             }
@@ -109,11 +109,12 @@ public class SyntaxParser {
         Field[] declaredFields = sourceObject.getClass().getDeclaredFields();
         for (Field declaredField : declaredFields) {
             try {
+                declaredField.setAccessible(true);
                 Object fieldValue = declaredField.get(sourceObject);
                 if (fieldValue == null) {
                     continue;
                 }
-                if (isPrimitiveType(fieldValue.getClass().getSimpleName())) {
+                if (isPrimitiveType(fieldValue.getClass())) {
                     sisNormalClass.addBasicField(new BasicField(declaredField.getName(), fieldValue.toString()));
                 } else {
                     sisNormalClass.addChildClass(parseClass(fieldValue, declaredField.getName(), level + 1));

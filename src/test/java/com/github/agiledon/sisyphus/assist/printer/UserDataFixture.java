@@ -11,6 +11,7 @@ public class UserDataFixture {
         name.setLast("Zhang");
         user.setName(name);
         user.setVerified(true);
+        user.setUserImage("00001111".getBytes());
         return user;
     }
 }

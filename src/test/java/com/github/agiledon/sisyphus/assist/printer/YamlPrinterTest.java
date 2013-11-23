@@ -15,7 +15,8 @@ public class YamlPrinterTest extends UserDataFixture {
         assertThat(result, is("!!com.github.agiledon.sisyphus.domain.json.User\n" +
                 "gender: MALE\n" +
                 "name: {first: Yi, last: Zhang}\n" +
-                "userImage: null\n" +
+                "userImage: !!binary |-\n" +
+                "  MDAwMDExMTE=\n" +
                 "verified: true\n"));
     }
 

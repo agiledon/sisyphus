@@ -6,9 +6,7 @@ import org.junit.Test;
 
 import java.io.File;
 
-import static com.github.agiledon.sisyphus.assist.FixtureAssist.gson;
-import static com.github.agiledon.sisyphus.assist.FixtureAssist.json;
-import static com.github.agiledon.sisyphus.assist.FixtureAssist.yaml;
+import static com.github.agiledon.sisyphus.assist.FixtureAssist.*;
 import static com.google.common.io.Files.getNameWithoutExtension;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
@@ -19,6 +17,7 @@ public class FixtureAssistTest extends UserDataFixture {
     private String yamlFileName = "outputUser.yaml";
     private String gsonFileName = "outputUser.gson";
     private String jsonFileName = "outputUser.json";
+    private String sisFileName = "outputUser.sis";
 
     @Before
     public void setUp() throws Exception {
@@ -54,7 +53,7 @@ public class FixtureAssistTest extends UserDataFixture {
 
     @Test
     public void should_get_SisPrinter_and_pass_object_to_it() {
-        Printer printer = FixtureAssist.sis();
+        Printer printer = sis();
         assertThat(printer, instanceOf(SisPrinter.class));
     }
 
@@ -63,8 +62,9 @@ public class FixtureAssistTest extends UserDataFixture {
         yaml().print(createUser(), getNameWithoutExtension(yamlFileName));
         gson().print(createUser(), getNameWithoutExtension(gsonFileName));
         json().print(createUser(), getNameWithoutExtension(jsonFileName));
+        sis().print(createUser(), getNameWithoutExtension(sisFileName));
 
-        assertFilesExisted(yamlFileName, gsonFileName, jsonFileName);
+        assertFilesExisted(yamlFileName, gsonFileName, jsonFileName, sisFileName);
     }
 
     private void assertFilesExisted(String... dataFileNames) {

@@ -20,6 +20,7 @@ public class BasicField {
     public void setField(Object currentObject, Class<?> aClass) throws IllegalAccessException {
         try {
             Field field = aClass.getDeclaredField(name);
+            field.setAccessible(true);
             field.set(currentObject, getFieldValue(field.getType(), value));
         } catch (NoSuchFieldException ex) {
             logger.warn("Can not find the field with {} and inner exception is {}", name, ex.getMessage());
