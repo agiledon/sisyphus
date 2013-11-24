@@ -2,6 +2,7 @@ package com.github.agiledon.sisyphus.assist;
 
 import com.github.agiledon.sisyphus.assist.printer.*;
 import com.github.agiledon.sisyphus.domain.json.User;
+import com.github.agiledon.sisyphus.domain.sis.Invoice;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -9,9 +10,7 @@ import java.io.File;
 
 import static com.github.agiledon.sisyphus.assist.FixtureAssist.*;
 import static com.google.common.io.Files.getNameWithoutExtension;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertThat;
 
@@ -71,7 +70,7 @@ public class FixtureAssistTest extends UserDataFixture {
     }
 
     @Test
-    public void should_create_default_value_with_given_class() {
+    public void should_create_default_value_with_given_user_class() {
         User user = create().with(User.class);
         assertThat(user, not(nullValue()));
         assertThat(user.getGender(), is(User.Gender.MALE));
@@ -79,6 +78,17 @@ public class FixtureAssistTest extends UserDataFixture {
         assertThat(user.getName().getLast(), is(""));
         assertThat(user.isVerified(), is(false));
         assertThat(user.getUserImage(), not(nullValue()));
+    }
+
+    @Test
+    public void should_create_default_value_with_invoice_class() {
+        Invoice invoice = create().with(Invoice.class);
+
+        assertThat(invoice, not(nullValue()));
+        assertThat(invoice.date, is(""));
+        assertThat(invoice.products.size(), is(0));
+        assertThat(invoice.billTo.given, is(""));
+        assertThat(invoice.tax, is(0f));
     }
 
     private void assertFilesExisted(String... dataFileNames) {
