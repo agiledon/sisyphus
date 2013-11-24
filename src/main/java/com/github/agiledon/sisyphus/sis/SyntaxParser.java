@@ -8,17 +8,28 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.github.agiledon.sisyphus.sis.rule.ParsingRule.sisClassTree;
 import static com.github.agiledon.sisyphus.sis.rule.ParsingRule.createRootClass;
-import static com.github.agiledon.sisyphus.sis.util.BasicFields.isPrimitiveType;
+import static com.github.agiledon.sisyphus.sis.util.Reflection.createInstance;
+import static com.github.agiledon.sisyphus.sis.util.Reflection.getFieldValue;
+import static com.github.agiledon.sisyphus.sis.util.Reflection.isPrimitiveType;
 import static com.google.common.base.Preconditions.checkArgument;
 
 public class SyntaxParser {
     private final Logger logger = LoggerFactory.getLogger(SyntaxParser.class);
     private static final String LINE_BREAK = "\n";
+    private boolean ignoreNullField = true;
+
+    public SyntaxParser() {
+    }
+
+    public SyntaxParser(boolean ignoreNullField) {
+        this.ignoreNullField = ignoreNullField;
+    }
 
     public SisClass parseClassFromResource(String resource) {
         SisClass rootClass;
@@ -108,29 +119,46 @@ public class SyntaxParser {
 
         Field[] declaredFields = sourceObject.getClass().getDeclaredFields();
         for (Field declaredField : declaredFields) {
-            try {
-                declaredField.setAccessible(true);
-                Object fieldValue = declaredField.get(sourceObject);
-                if (fieldValue == null) {
-                    continue;
-                }
-                if (isPrimitiveType(fieldValue.getClass())) {
-                    sisNormalClass.addBasicField(new BasicField(declaredField.getName(), fieldValue.toString()));
-                } else {
-                    sisNormalClass.addChildClass(parseClass(fieldValue, declaredField.getName(), level + 1));
-                }
-            } catch (IllegalAccessException e) {
-                continue;
-            }
+            setOrIgnoreFieldValue(sourceObject, sisNormalClass, declaredField, level);
         }
         return sisNormalClass;
     }
 
+    private <T> void setOrIgnoreFieldValue(T sourceObject, SisNormalClass sisNormalClass, Field declaredField, int level) {
+        try {
+            declaredField.setAccessible(true);
+            Object fieldValue = declaredField.get(sourceObject);
+            if (fieldValue == null && ignoreNullField) {
+                return;
+            }
+            if (isPrimitiveType(declaredField.getType())) {
+                if (fieldValue == null) {
+                    fieldValue = getFieldValue(declaredField.getType(), "");
+                }
+                sisNormalClass.addBasicField(new BasicField(declaredField.getName(), fieldValue.toString()));
+            } else {
+                if (fieldValue == null) {
+                    fieldValue = createInstance(declaredField.getType());
+                }
+                sisNormalClass.addChildClass(parseClass(fieldValue, declaredField.getName(), level + 1));
+            }
+        } catch (IllegalAccessException e) {
+            logAndRethrowException(e);
+        } catch (InstantiationException e) {
+            logAndRethrowException(e);
+        } catch (InvocationTargetException e) {
+            logAndRethrowException(e);
+        } catch (Exception e) {
+            logAndRethrowException(e);
+        }
+    }
+
     private <T> boolean isList(T sourceObject) {
         Class<?> sourceClass = sourceObject.getClass();
-        return sourceClass.getSuperclass().getSimpleName().equals("ArrayList") ||
-                sourceClass.getSuperclass().getSimpleName().equals("List") ||
-                sourceClass.getSimpleName().equals("ArrayList");
+        return sourceClass.getSuperclass() != null &&
+                (sourceClass.getSuperclass().getSimpleName().equals("ArrayList") ||
+                        sourceClass.getSuperclass().getSimpleName().equals("List") ||
+                        sourceClass.getSimpleName().equals("ArrayList"));
     }
 
     private <T> boolean isArray(T sourceObject) {

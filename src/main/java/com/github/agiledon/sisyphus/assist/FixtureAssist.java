@@ -20,4 +20,8 @@ public final class FixtureAssist {
     public static final Printer sis() {
         return new SisPrinter();
     }
+
+    public static final ObjectFactory create() {
+        return new ObjectFactory();
+    }
 }

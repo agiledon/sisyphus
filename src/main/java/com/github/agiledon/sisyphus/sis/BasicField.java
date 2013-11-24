@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 
-import static com.github.agiledon.sisyphus.sis.util.BasicFields.getFieldValue;
+import static com.github.agiledon.sisyphus.sis.util.Reflection.getFieldValue;
 
 public class BasicField {
     private final Logger logger = LoggerFactory.getLogger(BasicField.class);

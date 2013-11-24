@@ -2,14 +2,21 @@ package com.github.agiledon.sisyphus.sis.util;
 
 import com.github.agiledon.sisyphus.exception.FailedDeserializationException;
 import com.google.common.base.Strings;
+import org.apache.commons.lang3.ClassUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
-public abstract class BasicFields {
-    private static Logger logger = LoggerFactory.getLogger(BasicFields.class);
+public final class Reflection {
+    private Reflection() {}
+
+    private static Logger logger = LoggerFactory.getLogger(Reflection.class);
 
     public static Object getFieldValue(Class<?> fieldType, String value)  {
         if (isPrimitiveType(fieldType)) {
@@ -37,7 +44,7 @@ public abstract class BasicFields {
         boolean nullOrEmptyValue = Strings.isNullOrEmpty(value);
 
         if (isEnum(fieldType)) {
-            return nullOrEmptyValue ? null : Enum.valueOf((Class<Enum>) fieldType, value.trim().toUpperCase());
+            return nullOrEmptyValue ? fieldType.getEnumConstants()[0] : Enum.valueOf((Class<Enum>) fieldType, value.trim().toUpperCase());
         }
         String fieldTypeName = fieldType.getSimpleName();
 
@@ -75,5 +82,20 @@ public abstract class BasicFields {
                 || "Double".equalsIgnoreCase(fieldTypeName)
                 || "byte[]".equals(fieldTypeName)
                 || isEnum(aClass);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> T createInstance(Class<T> currentClass) throws IllegalAccessException, InstantiationException, InvocationTargetException {
+        Constructor<?>[] constructors = currentClass.getConstructors();
+        if (constructors.length < 1) {
+            return currentClass.newInstance();
+        }
+        final Constructor<T> constructor = (Constructor<T>) constructors[0];
+        final List<Object> params = new ArrayList<Object>();
+        for (Class<?> parameterType : constructor.getParameterTypes())
+        {
+            params.add((parameterType.isPrimitive()) ? ClassUtils.primitiveToWrapper(parameterType).newInstance() : null);
+        }
+        return constructor.newInstance(params.toArray());
     }
 }

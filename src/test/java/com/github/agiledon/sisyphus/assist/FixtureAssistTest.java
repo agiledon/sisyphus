@@ -1,6 +1,7 @@
 package com.github.agiledon.sisyphus.assist;
 
 import com.github.agiledon.sisyphus.assist.printer.*;
+import com.github.agiledon.sisyphus.domain.json.User;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,6 +11,8 @@ import static com.github.agiledon.sisyphus.assist.FixtureAssist.*;
 import static com.google.common.io.Files.getNameWithoutExtension;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertThat;
 
 public class FixtureAssistTest extends UserDataFixture {
@@ -65,6 +68,17 @@ public class FixtureAssistTest extends UserDataFixture {
         sis().print(createUser(), getNameWithoutExtension(sisFileName));
 
         assertFilesExisted(yamlFileName, gsonFileName, jsonFileName, sisFileName);
+    }
+
+    @Test
+    public void should_create_default_value_with_given_class() {
+        User user = create().with(User.class);
+        assertThat(user, not(nullValue()));
+        assertThat(user.getGender(), is(User.Gender.MALE));
+        assertThat(user.getName().getFirst(), is(""));
+        assertThat(user.getName().getLast(), is(""));
+        assertThat(user.isVerified(), is(false));
+        assertThat(user.getUserImage(), not(nullValue()));
     }
 
     private void assertFilesExisted(String... dataFileNames) {

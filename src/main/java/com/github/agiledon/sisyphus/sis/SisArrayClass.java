@@ -1,7 +1,7 @@
 package com.github.agiledon.sisyphus.sis;
 
 import com.github.agiledon.sisyphus.exception.FailedDeserializationException;
-import com.github.agiledon.sisyphus.sis.util.BasicFields;
+import com.github.agiledon.sisyphus.sis.util.Reflection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,7 +72,7 @@ public class SisArrayClass extends SisClass {
     private void addBasicElements(Collection currentCollection, Class<?> elementClass) {
         for (BasicElement element : getBasicElements()) {
             try {
-                Object filedValue = BasicFields.getFieldValue(elementClass, element.getValue());
+                Object filedValue = Reflection.getFieldValue(elementClass, element.getValue());
                 currentCollection.add(filedValue);
             } catch (Exception e) {
                 logAndRethrowException(elementClass.getClass().getName());
