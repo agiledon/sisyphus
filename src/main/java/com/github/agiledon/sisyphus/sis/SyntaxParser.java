@@ -27,8 +27,8 @@ public class SyntaxParser {
             List<String> lines = splitLines(resource);
             checkArgument(lines != null && lines.size() >= 1, "data file is error");
             rootClass = createRootClass(lines.get(0));
-            for (String line : lines) {
-                rootClass = sisClassTree(rootClass, line);
+            for (int i = 1; i < lines.size(); i++) {
+                rootClass = sisClassTree(rootClass, lines.get(i));
             }
             return rootClass;
         } catch (IllegalArgumentException ex) {

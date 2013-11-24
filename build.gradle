@@ -21,6 +21,7 @@ project.ext {
     st4Version = '4.0.7'
     junitVersion = '4.11'
     slf4jVersion = '1.7.5'
+    commonsLangVersion = '3.1'
 }
 
 dependencies {
@@ -32,6 +33,7 @@ dependencies {
             "com.google.code.gson:gson:$gsonVersion",
             "org.antlr:ST4:$st4Version",
             "org.slf4j:slf4j-api:$slf4jVersion",
+            "org.apache.commons:commons-lang3:$commonsLangVersion",
             "junit:junit:$junitVersion"
     )
 

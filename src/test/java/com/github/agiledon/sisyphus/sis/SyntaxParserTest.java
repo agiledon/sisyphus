@@ -41,6 +41,17 @@ public class SyntaxParserTest {
     }
 
     @Test
+    public void should_parse_completed_segment_for_array_object() {
+        SisClass sisClass = parser.parseClassFromResource(loadResource("standardVariable.sis"));
+        assertThat(sisClass, instanceOf(SisArrayClass.class));
+        assertThat(sisClass.getChildClasses().size(), is(3));
+        assertThat(sisClass.getBasicFields().size(), is(0));
+
+        assertThat(sisClass.getChildClasses().get(0), instanceOf(SisNormalClass.class));
+        assertThat(sisClass.getChildClasses().get(0).getBasicFields().size(), is(2));
+    }
+
+    @Test
     public void should_parse_sis_class_from_invoice_object() {
         Invoice invoice = from("invoice.sis").to(Invoice.class);
 

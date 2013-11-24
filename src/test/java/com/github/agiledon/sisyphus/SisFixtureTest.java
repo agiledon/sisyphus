@@ -1,9 +1,12 @@
 package com.github.agiledon.sisyphus;
 
+import com.github.agiledon.sisyphus.domain.json.StandardVariable;
 import com.github.agiledon.sisyphus.domain.json.User;
 import com.github.agiledon.sisyphus.domain.sis.Invoice;
 import com.github.agiledon.sisyphus.domain.sis.InvoiceWithArray;
 import com.github.agiledon.sisyphus.domain.sis.InvoiceWithList;
+import org.hamcrest.core.IsNull;
+import org.junit.Assert;
 import org.junit.Test;
 
 import static com.github.agiledon.sisyphus.Fixture.from;
@@ -61,5 +64,14 @@ public class SisFixtureTest {
         assertThat(user.getGender(), is(User.Gender.MALE));
         assertThat(user.isVerified(), is(true));
         assertThat(user.getUserImage(), not(nullValue()));
+    }
+
+    @Test
+    public void should_compose_standardVariables_data() {
+        StandardVariable[] standardVariables = from("standardVariable.sis").to(StandardVariable[].class);
+        Assert.assertThat(standardVariables, not(IsNull.nullValue()));
+        Assert.assertThat(standardVariables[0].result, is("0"));
+        Assert.assertThat(standardVariables[1].result, is("1"));
+        Assert.assertThat(standardVariables[2].result, is("2"));
     }
 }

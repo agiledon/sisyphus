@@ -1,11 +1,16 @@
 package com.github.agiledon.sisyphus.sis;
 
 import com.github.agiledon.sisyphus.exception.FailedDeserializationException;
+import org.apache.commons.lang3.ClassUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.github.agiledon.sisyphus.util.StringUtil.spaces;
 import static com.google.common.collect.Lists.newArrayList;
@@ -42,12 +47,23 @@ public abstract class SisClass {
         return currentObject;
     }
 
-    protected <T> T newInstance(Class<T> currentClass) throws InstantiationException, IllegalAccessException, NoSuchFieldException {
+    protected <T> T newInstance(Class<T> currentClass) throws InstantiationException, IllegalAccessException, NoSuchFieldException, InvocationTargetException {
         T currentObject;
-        currentObject = currentClass.newInstance();
+        currentObject = createInstance(currentClass);
         setBasicFields(currentObject, currentClass);
         setClassFields(currentObject, currentClass);
         return currentObject;
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T createInstance(Class<T> currentClass) throws IllegalAccessException, InstantiationException, InvocationTargetException {
+        final Constructor<T> constructor = (Constructor<T>) currentClass.getConstructors()[0];
+        final List<Object> params = new ArrayList<Object>();
+        for (Class<?> parameterType : constructor.getParameterTypes())
+        {
+            params.add((parameterType.isPrimitive()) ? ClassUtils.primitiveToWrapper(parameterType).newInstance() : null);
+        }
+        return constructor.newInstance(params.toArray());
     }
 
     protected final <T> void setBasicFields(T currentObject, Class<T> currentClass) throws IllegalAccessException {

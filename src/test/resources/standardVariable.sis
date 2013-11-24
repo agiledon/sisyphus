@@ -1,0 +1,14 @@
+[
+    {
+        result = 0
+        id = id0
+    }
+    {
+        result = 1
+        id = id1
+    }
+    {
+        result = 2
+        id = id2
+    }
+]
