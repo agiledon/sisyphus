@@ -11,6 +11,8 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 public final class Reflection {
     private Reflection() {}
 
@@ -81,6 +83,9 @@ public final class Reflection {
         if (currentClass.isArray()) {
             return (T) Array.newInstance(currentClass.getComponentType(), 0);
         }
+        if (isList(currentClass)) {
+            return (T) newArrayList();
+        }
         Constructor<?>[] constructors = currentClass.getConstructors();
         if (constructors.length < 1) {
             return currentClass.newInstance();
@@ -94,11 +99,15 @@ public final class Reflection {
     }
 
     public static Class<?> getElementTypeForList(Field childField) {
-        ParameterizedType integerListType = (ParameterizedType) childField.getGenericType();
-        return (Class<?>) integerListType.getActualTypeArguments()[0];
+        ParameterizedType listType = (ParameterizedType) childField.getGenericType();
+        return (Class<?>) listType.getActualTypeArguments()[0];
     }
 
     public static <T> Class<?> getElementTypeForArray(Class<T> currentClass) throws ClassNotFoundException {
         return currentClass.getComponentType();
+    }
+
+    public static <T> boolean isList(Class<T> currentClass) {
+        return currentClass.getSimpleName().equals("List");
     }
 }

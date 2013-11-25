@@ -1,10 +1,13 @@
 package com.github.agiledon.sisyphus.sis;
 
+import com.github.agiledon.sisyphus.sis.util.Reflection;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 
 import static com.github.agiledon.sisyphus.sis.util.Reflection.getElementTypeForList;
+import static com.github.agiledon.sisyphus.sis.util.Reflection.isList;
 import static com.google.common.collect.Lists.newArrayList;
 
 public class SisListClass extends SisArrayClass {
@@ -44,10 +47,6 @@ public class SisListClass extends SisArrayClass {
         T currentObject = currentClass.newInstance();
         addElementsForCustomizedList(currentObject);
         return currentObject;
-    }
-
-    private <T> boolean isList(Class<T> currentClass) {
-        return currentClass.getSimpleName().equals("List");
     }
 
     @SuppressWarnings("unchecked")
