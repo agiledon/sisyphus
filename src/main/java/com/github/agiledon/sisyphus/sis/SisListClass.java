@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 
+import static com.github.agiledon.sisyphus.sis.util.Reflection.getElementTypeForList;
 import static com.google.common.collect.Lists.newArrayList;
 
 public class SisListClass extends SisArrayClass {
@@ -25,15 +26,10 @@ public class SisListClass extends SisArrayClass {
     protected <T> void setClassField(T currentObject, Class<T> currentClass) throws NoSuchFieldException, IllegalAccessException {
         Field field = currentClass.getDeclaredField(this.getFieldName());
         if (isList(field.getType())) {
-            this.setElementClass(getListElementClass(field));
+            this.setElementClass(getElementTypeForList(field));
         }
 
         field.set(currentObject, this.instantiate(field.getType()));
-    }
-
-    private Class<?> getListElementClass(Field childField) {
-        ParameterizedType integerListType = (ParameterizedType) childField.getGenericType();
-        return (Class<?>) integerListType.getActualTypeArguments()[0];
     }
 
     @Override

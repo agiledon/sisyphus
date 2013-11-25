@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Array;
 import java.util.Collection;
 
+import static com.github.agiledon.sisyphus.sis.util.Reflection.getElementTypeForArray;
+
 public class SisArrayClass extends SisClass {
     private static Logger logger = LoggerFactory.getLogger(SisArrayClass.class);
 
@@ -49,11 +51,6 @@ public class SisArrayClass extends SisClass {
             logger.error(e.getMessage());
             throw new FailedDeserializationException(e);
         }
-    }
-
-    private <T> String getElementTypeForArray(Class<T> currentClass) {
-        String canonicalName = currentClass.getCanonicalName();
-        return canonicalName.substring(0, canonicalName.length() - 2);
     }
 
     protected void addElements(Collection currentCollection, Class<?> elementClass) {

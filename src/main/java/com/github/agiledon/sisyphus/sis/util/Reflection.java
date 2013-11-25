@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -97,5 +98,15 @@ public final class Reflection {
             params.add((parameterType.isPrimitive()) ? ClassUtils.primitiveToWrapper(parameterType).newInstance() : null);
         }
         return constructor.newInstance(params.toArray());
+    }
+
+    public static <T> String getElementTypeForArray(Class<T> currentClass) {
+        String canonicalName = currentClass.getCanonicalName();
+        return canonicalName.substring(0, canonicalName.length() - 2);
+    }
+
+    public static Class<?> getElementTypeForList(Field childField) {
+        ParameterizedType integerListType = (ParameterizedType) childField.getGenericType();
+        return (Class<?>) integerListType.getActualTypeArguments()[0];
     }
 }
