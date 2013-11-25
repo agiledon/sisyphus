@@ -71,7 +71,7 @@ public class FixtureAssistTest extends UserDataFixture {
 
     @Test
     public void should_create_default_value_with_given_user_class() {
-        User user = create().with(User.class);
+        User user = stub(User.class);
         assertThat(user, not(nullValue()));
         assertThat(user.getGender(), is(User.Gender.MALE));
         assertThat(user.getName().getFirst(), is(""));
@@ -82,7 +82,7 @@ public class FixtureAssistTest extends UserDataFixture {
 
     @Test
     public void should_create_default_value_with_invoice_class() {
-        Invoice invoice = create().with(Invoice.class);
+        Invoice invoice = stub(Invoice.class);
 
         assertThat(invoice, not(nullValue()));
         assertThat(invoice.date, is(""));

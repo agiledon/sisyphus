@@ -1,6 +1,12 @@
 package com.github.agiledon.sisyphus.assist;
 
 import com.github.agiledon.sisyphus.assist.printer.*;
+import com.github.agiledon.sisyphus.sis.SisClass;
+import com.github.agiledon.sisyphus.sis.SyntaxParser;
+
+import java.lang.reflect.InvocationTargetException;
+
+import static com.github.agiledon.sisyphus.sis.util.Reflection.createInstance;
 
 public final class FixtureAssist {
     private FixtureAssist() {}
@@ -21,7 +27,18 @@ public final class FixtureAssist {
         return new SisPrinter();
     }
 
-    public static final ObjectFactory create() {
-        return new ObjectFactory();
+    public static final <T> T stub(Class<T> sourceClass) {
+        try {
+            T instance = createInstance(sourceClass);
+            SisClass sisClass = new SyntaxParser(false).parseClassFromObject(instance);
+            return sisClass.instantiate(sourceClass);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
