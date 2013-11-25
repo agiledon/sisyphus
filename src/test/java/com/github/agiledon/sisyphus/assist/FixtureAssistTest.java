@@ -3,6 +3,7 @@ package com.github.agiledon.sisyphus.assist;
 import com.github.agiledon.sisyphus.assist.printer.*;
 import com.github.agiledon.sisyphus.domain.json.User;
 import com.github.agiledon.sisyphus.domain.sis.Invoice;
+import com.github.agiledon.sisyphus.domain.sis.InvoiceWithArray;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -81,12 +82,23 @@ public class FixtureAssistTest extends UserDataFixture {
     }
 
     @Test
-    public void should_create_default_value_with_invoice_class() {
+    public void should_create_default_value_with_Invoice_class() {
         Invoice invoice = stub(Invoice.class);
 
         assertThat(invoice, not(nullValue()));
         assertThat(invoice.date, is(""));
         assertThat(invoice.products.size(), is(0));
+        assertThat(invoice.billTo.given, is(""));
+        assertThat(invoice.tax, is(0f));
+    }
+
+    @Test
+    public void should_create_default_value_with_InvoiceWithArray_class() {
+        InvoiceWithArray invoice = stub(InvoiceWithArray.class);
+
+        assertThat(invoice, not(nullValue()));
+        assertThat(invoice.date, is(""));
+        assertThat(invoice.products.length, is(1));
         assertThat(invoice.billTo.given, is(""));
         assertThat(invoice.tax, is(0f));
     }

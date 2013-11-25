@@ -6,10 +6,7 @@ import org.apache.commons.lang3.ClassUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.*;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,18 +23,12 @@ public final class Reflection {
         Object fieldValue;
         try {
             fieldValue = fieldType.newInstance();
-            setInnerValueField(fieldType, fieldValue, value);
         } catch (Throwable t) {
             String errorMessage = String.format("Failed to set the failed value for %s with %s", fieldType.getName(), value);
             logger.error(errorMessage);
             throw new FailedDeserializationException(errorMessage);
         }
         return fieldValue;
-    }
-
-    private static void setInnerValueField(Class<?> fieldType, Object mainFieldValue, String innerValue) throws NoSuchFieldException, IllegalAccessException {
-        Field valueField = fieldType.getField("value");
-        valueField.set(mainFieldValue, parseFieldValue(fieldType, innerValue));
     }
 
     @SuppressWarnings("unchecked")
@@ -87,14 +78,16 @@ public final class Reflection {
 
     @SuppressWarnings("unchecked")
     public static <T> T createInstance(Class<T> currentClass) throws IllegalAccessException, InstantiationException, InvocationTargetException {
+        if (currentClass.isArray()) {
+            return (T) Array.newInstance(currentClass.getComponentType(), 0);
+        }
         Constructor<?>[] constructors = currentClass.getConstructors();
         if (constructors.length < 1) {
             return currentClass.newInstance();
         }
         final Constructor<T> constructor = (Constructor<T>) constructors[0];
         final List<Object> params = new ArrayList<Object>();
-        for (Class<?> parameterType : constructor.getParameterTypes())
-        {
+        for (Class<?> parameterType : constructor.getParameterTypes()) {
             params.add((parameterType.isPrimitive()) ? ClassUtils.primitiveToWrapper(parameterType).newInstance() : null);
         }
         return constructor.newInstance(params.toArray());
@@ -106,7 +99,6 @@ public final class Reflection {
     }
 
     public static <T> Class<?> getElementTypeForArray(Class<T> currentClass) throws ClassNotFoundException {
-        String canonicalName = currentClass.getCanonicalName();
-        return Class.forName(canonicalName.substring(0, canonicalName.length() - 2));
+        return currentClass.getComponentType();
     }
 }

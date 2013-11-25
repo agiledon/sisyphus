@@ -14,9 +14,7 @@ import java.util.List;
 
 import static com.github.agiledon.sisyphus.sis.rule.ParsingRule.sisClassTree;
 import static com.github.agiledon.sisyphus.sis.rule.ParsingRule.createRootClass;
-import static com.github.agiledon.sisyphus.sis.util.Reflection.createInstance;
-import static com.github.agiledon.sisyphus.sis.util.Reflection.getFieldValue;
-import static com.github.agiledon.sisyphus.sis.util.Reflection.isPrimitiveType;
+import static com.github.agiledon.sisyphus.sis.util.Reflection.*;
 import static com.google.common.base.Preconditions.checkArgument;
 
 public class SyntaxParser {
@@ -76,18 +74,30 @@ public class SyntaxParser {
             return sisArrayClass;
         }
 
-        Object firstElement = array[0];
-        if (isPrimitiveType(firstElement.getClass())) {
-            for (Object element : array) {
-                sisArrayClass.addBasicElement(new BasicElement(element.toString()));
+        try {
+            Class<?> elementType = getElementTypeForArray(sourceObject.getClass());
+            if (isPrimitiveType(elementType)) {
+                if (array == null || array.length == 0) {
+                    sisArrayClass.addBasicElement(new BasicElement(""));
+                    return sisArrayClass;
+                }
+                for (Object element : array) {
+                    sisArrayClass.addBasicElement(new BasicElement(element.toString()));
+                }
+                return sisArrayClass;
             }
-        } else {
+            if (array == null || array.length == 0) {
+                sisArrayClass.addChildClass(parseClass(getFieldValue(elementType, ""), null, level + 1));
+                return sisArrayClass;
+            }
             for (Object element : array) {
                 sisArrayClass.addChildClass(parseClass(element, null, level + 1));
             }
+            return sisArrayClass;
+        } catch (ClassNotFoundException e) {
+            logger.warn(e.getMessage());
+            return sisArrayClass;
         }
-
-        return sisArrayClass;
     }
 
     private <T> SisClass createListClass(T sourceObject, String fieldName, int level) {
@@ -162,7 +172,7 @@ public class SyntaxParser {
     }
 
     private <T> boolean isArray(T sourceObject) {
-        return sourceObject.getClass().getSimpleName().endsWith("[]");
+        return sourceObject.getClass().isArray();
     }
 
     private SisClass logAndRethrowException(Exception ex) {
