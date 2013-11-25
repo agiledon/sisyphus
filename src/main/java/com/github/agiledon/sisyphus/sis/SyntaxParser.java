@@ -72,7 +72,7 @@ public class SyntaxParser {
         sisArrayClass.setCurrentLevel(level);
 
         Object[] array = (Object[]) sourceObject;
-        if (array == null || array.length == 0) {
+        if (ignoreNullField && (array == null || array.length == 0)) {
             return sisArrayClass;
         }
 

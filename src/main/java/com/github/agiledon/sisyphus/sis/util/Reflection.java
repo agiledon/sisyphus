@@ -100,13 +100,13 @@ public final class Reflection {
         return constructor.newInstance(params.toArray());
     }
 
-    public static <T> String getElementTypeForArray(Class<T> currentClass) {
-        String canonicalName = currentClass.getCanonicalName();
-        return canonicalName.substring(0, canonicalName.length() - 2);
-    }
-
     public static Class<?> getElementTypeForList(Field childField) {
         ParameterizedType integerListType = (ParameterizedType) childField.getGenericType();
         return (Class<?>) integerListType.getActualTypeArguments()[0];
+    }
+
+    public static <T> Class<?> getElementTypeForArray(Class<T> currentClass) throws ClassNotFoundException {
+        String canonicalName = currentClass.getCanonicalName();
+        return Class.forName(canonicalName.substring(0, canonicalName.length() - 2));
     }
 }

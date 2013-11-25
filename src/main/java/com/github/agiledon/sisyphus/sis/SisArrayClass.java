@@ -39,7 +39,7 @@ public class SisArrayClass extends SisClass {
     @SuppressWarnings("unchecked")
     private <T> T newArrayInstance(Class<T> currentClass) {
         try {
-            Class<?> elementClass = Class.forName(getElementTypeForArray(currentClass));
+            Class<?> elementClass = getElementTypeForArray(currentClass);
             int elementCounts = this.getChildClasses().size();
             Object[] array = (Object[]) Array.newInstance(elementClass, elementCounts);
             for (int i = 0; i < elementCounts; i++) {
