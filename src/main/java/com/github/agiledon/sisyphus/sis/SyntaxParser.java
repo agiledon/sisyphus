@@ -77,26 +77,34 @@ public class SyntaxParser {
         try {
             Class<?> elementType = getElementTypeForArray(sourceObject.getClass());
             if (isPrimitiveType(elementType)) {
-                if (array == null || array.length == 0) {
-                    sisArrayClass.addBasicElement(new BasicElement(""));
-                    return sisArrayClass;
-                }
-                for (Object element : array) {
-                    sisArrayClass.addBasicElement(new BasicElement(element.toString()));
-                }
-                return sisArrayClass;
-            }
-            if (array == null || array.length == 0) {
-                sisArrayClass.addChildClass(parseClass(getFieldValue(elementType, ""), null, level + 1));
-                return sisArrayClass;
-            }
-            for (Object element : array) {
-                sisArrayClass.addChildClass(parseClass(element, null, level + 1));
+                addElements(sisArrayClass, array);
+            } else {
+                addChildClasses(level, sisArrayClass, array, elementType);
             }
             return sisArrayClass;
         } catch (ClassNotFoundException e) {
             logger.warn(e.getMessage());
             return sisArrayClass;
+        }
+    }
+
+    private void addChildClasses(int level, SisArrayClass sisArrayClass, Object[] array, Class<?> elementType) {
+        if (array == null || array.length == 0) {
+            sisArrayClass.addChildClass(parseClass(getFieldValue(elementType, ""), null, level + 1));
+        } else {
+            for (Object element : array) {
+                sisArrayClass.addChildClass(parseClass(element, null, level + 1));
+            }
+        }
+    }
+
+    private void addElements(SisArrayClass sisArrayClass, Object[] array) {
+        if (array == null || array.length == 0) {
+            sisArrayClass.addBasicElement(new BasicElement(""));
+        } else {
+            for (Object element : array) {
+                sisArrayClass.addBasicElement(new BasicElement(element.toString()));
+            }
         }
     }
 
