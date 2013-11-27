@@ -8,7 +8,7 @@ import static com.google.common.base.CharMatcher.anyOf;
 import static com.google.common.collect.Iterables.getFirst;
 import static com.google.common.collect.Iterables.getLast;
 
-public class BasicFieldRule extends ParsingRule {
+public class BasicFieldRule extends ResourceParserRule {
     @Override
     public boolean match(String line) {
         return false;

@@ -9,7 +9,7 @@ import com.google.common.collect.Lists;
 
 import java.util.List;
 
-public class BasicElementRule extends ParsingRule{
+public class BasicElementRule extends ResourceParserRule {
     public BasicElementRule() {
     }
 

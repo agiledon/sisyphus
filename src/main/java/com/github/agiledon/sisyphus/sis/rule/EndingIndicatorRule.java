@@ -2,7 +2,7 @@ package com.github.agiledon.sisyphus.sis.rule;
 
 import com.github.agiledon.sisyphus.sis.SisClass;
 
-public class EndingIndicatorRule extends ParsingRule {
+public class EndingIndicatorRule extends ResourceParserRule {
     public boolean match(String line) {
         return line.trim().startsWith("}") || line.trim().startsWith("]") || line.trim().startsWith(">");
     }

@@ -12,8 +12,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.agiledon.sisyphus.sis.rule.ParsingRule.sisClassTree;
-import static com.github.agiledon.sisyphus.sis.rule.ParsingRule.createRootClass;
+import static com.github.agiledon.sisyphus.sis.rule.ResourceParserRule.sisClassTree;
+import static com.github.agiledon.sisyphus.sis.rule.ResourceParserRule.createRootClass;
 import static com.github.agiledon.sisyphus.sis.util.Reflection.*;
 import static com.google.common.base.Preconditions.checkArgument;
 
