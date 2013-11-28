@@ -30,10 +30,11 @@ public class ListObjectParser extends ObjectParser {
             }
         } else {
             for (Object element : list) {
-                sisListClass.addChildClass(parser(element, isIgnoreNullField()).parseClass(element, null, level + 1));
+                sisListClass.addChildClass(parseChildClass(element, null, level + 1));
             }
         }
 
         return sisListClass;
     }
+
 }

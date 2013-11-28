@@ -2,6 +2,8 @@ package com.github.agiledon.sisyphus.sis;
 
 import com.github.agiledon.sisyphus.sis.util.Reflection;
 
+import static com.github.agiledon.sisyphus.sis.util.Reflection.getElementTypeForArray;
+
 public class ArrayObjectParser extends ObjectParser {
     public ArrayObjectParser(boolean ignoreNullField) {
         super(ignoreNullField);
@@ -22,7 +24,7 @@ public class ArrayObjectParser extends ObjectParser {
         }
 
         try {
-            Class<?> elementType = Reflection.getElementTypeForArray(sourceObject.getClass());
+            Class<?> elementType = getElementTypeForArray(sourceObject.getClass());
             if (Reflection.isPrimitiveType(elementType)) {
                 addElements(sisArrayClass, array);
             } else {
@@ -38,10 +40,10 @@ public class ArrayObjectParser extends ObjectParser {
     private void addChildClasses(int level, SisArrayClass sisArrayClass, Object[] array, Class<?> elementType) {
         if (array == null || array.length == 0) {
             Object fieldValue = Reflection.getFieldValue(elementType, "");
-            sisArrayClass.addChildClass(parser(fieldValue, isIgnoreNullField()).parseClass(fieldValue, null, level + 1));
+            sisArrayClass.addChildClass(parseChildClass(fieldValue, null, level + 1));
         } else {
             for (Object element : array) {
-                sisArrayClass.addChildClass(parser(element, isIgnoreNullField()).parseClass(element, null, level + 1));
+                sisArrayClass.addChildClass(parseChildClass(element, null, level + 1));
             }
         }
     }

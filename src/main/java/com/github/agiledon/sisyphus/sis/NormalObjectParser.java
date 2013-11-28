@@ -42,7 +42,7 @@ public class NormalObjectParser extends ObjectParser {
                 if (fieldValue == null) {
                     fieldValue = Reflection.createInstance(declaredField.getType());
                 }
-                sisNormalClass.addChildClass(parser(fieldValue, isIgnoreNullField()).parseClass(fieldValue, declaredField.getName(), level + 1));
+                sisNormalClass.addChildClass(parseChildClass(fieldValue, declaredField.getName(), level));
             }
         } catch (IllegalAccessException e) {
             logAndRethrowException(e);
@@ -54,4 +54,5 @@ public class NormalObjectParser extends ObjectParser {
             logAndRethrowException(e);
         }
     }
+
 }

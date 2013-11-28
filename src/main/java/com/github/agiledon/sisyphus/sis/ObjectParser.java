@@ -49,4 +49,8 @@ public abstract class ObjectParser {
     private static <T> boolean isArray(T sourceObject) {
         return sourceObject.getClass().isArray();
     }
+
+    protected SisClass parseChildClass(Object childObject, String fieldName, int level) {
+        return parser(childObject, isIgnoreNullField()).parseClass(childObject, fieldName, level + 1);
+    }
 }
