@@ -11,10 +11,6 @@ public class ListObjectParser extends ObjectParser {
 
     @Override
     public <T> SisClass parseClass(T sourceObject, String fieldName, int level) {
-        return createListClass(sourceObject, fieldName, level);
-    }
-
-    private <T> SisClass createListClass(T sourceObject, String fieldName, int level) {
         SisListClass sisListClass = new SisListClass(fieldName);
         sisListClass.setCurrentLevel(level);
 

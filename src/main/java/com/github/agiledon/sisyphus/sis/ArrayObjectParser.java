@@ -11,10 +11,6 @@ public class ArrayObjectParser extends ObjectParser {
 
     @Override
     public <T> SisClass parseClass(T sourceObject, String fieldName, int level) {
-        return createArrayClass(sourceObject, fieldName, level);
-    }
-
-    private <T> SisClass createArrayClass(T sourceObject, String fieldName, int level) {
         SisArrayClass sisArrayClass = new SisArrayClass(fieldName);
         sisArrayClass.setCurrentLevel(level);
 

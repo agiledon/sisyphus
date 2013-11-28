@@ -12,21 +12,17 @@ public class NormalObjectParser extends ObjectParser {
 
     @Override
     public <T> SisClass parseClass(T sourceObject, String fieldName, int level) {
-        return createNormalClass(sourceObject, fieldName, level);
-    }
-
-    private <T> SisNormalClass createNormalClass(T sourceObject, String fieldName, int level) {
         SisNormalClass sisNormalClass = new SisNormalClass(fieldName);
         sisNormalClass.setCurrentLevel(level);
 
         Field[] declaredFields = sourceObject.getClass().getDeclaredFields();
         for (Field declaredField : declaredFields) {
-            setOrIgnoreFieldValue(sourceObject, sisNormalClass, declaredField, level);
+            setOrIgnoreFieldValue(sisNormalClass, sourceObject, declaredField, level);
         }
         return sisNormalClass;
     }
 
-    private <T> void setOrIgnoreFieldValue(T sourceObject, SisNormalClass sisNormalClass, Field declaredField, int level) {
+    private <T> void setOrIgnoreFieldValue(SisNormalClass sisNormalClass, T sourceObject, Field declaredField, int level) {
         try {
             declaredField.setAccessible(true);
             Object fieldValue = declaredField.get(sourceObject);
