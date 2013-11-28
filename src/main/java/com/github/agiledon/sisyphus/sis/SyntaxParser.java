@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+import static com.github.agiledon.sisyphus.sis.ObjectParser.parser;
 import static com.github.agiledon.sisyphus.sis.rule.ResourceParserRule.sisClassTree;
 import static com.github.agiledon.sisyphus.sis.rule.ResourceParserRule.createRootClass;
 import static com.google.common.base.Preconditions.checkArgument;
@@ -43,7 +44,7 @@ public class SyntaxParser {
     }
 
     public <T> SisClass parseClassFromObject(T sourceObject) {
-        return new ObjectParser(ignoreNullField).parseClass(sourceObject, null, 0);
+        return parser(sourceObject, ignoreNullField).parseClass(sourceObject, null, 0);
     }
 
     private SisClass logAndRethrowException(Exception ex) {
