@@ -19,6 +19,10 @@ public class ListObjectParser extends ObjectParser {
             return sisListClass;
         }
 
+        return addElementsOrChildClasses(level, sisListClass, list);
+    }
+
+    private SisClass addElementsOrChildClasses(int level, SisListClass sisListClass, ArrayList list) {
         Object firstElement = list.get(0);
         if (Reflection.isPrimitiveType(firstElement.getClass())) {
             for (Object element : list) {

@@ -5,6 +5,9 @@ import com.github.agiledon.sisyphus.sis.util.Reflection;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
+import static com.github.agiledon.sisyphus.sis.util.Reflection.getFieldValue;
+import static com.github.agiledon.sisyphus.sis.util.Reflection.isPrimitiveType;
+
 public class NormalObjectParser extends ObjectParser {
     public NormalObjectParser(boolean ignoreNullField) {
         super(ignoreNullField);
@@ -29,26 +32,38 @@ public class NormalObjectParser extends ObjectParser {
             if (fieldValue == null && isIgnoreNullField()) {
                 return;
             }
-            if (Reflection.isPrimitiveType(declaredField.getType())) {
-                if (fieldValue == null) {
-                    fieldValue = Reflection.getFieldValue(declaredField.getType(), "");
-                }
-                sisNormalClass.addBasicField(new BasicField(declaredField.getName(), fieldValue.toString()));
+            if (isPrimitiveType(declaredField.getType())) {
+                addBasicField(sisNormalClass, declaredField, fieldValue);
             } else {
-                if (fieldValue == null) {
-                    fieldValue = Reflection.createInstance(declaredField.getType());
-                }
-                sisNormalClass.addChildClass(parseChildClass(fieldValue, declaredField.getName(), level));
+                addChildClass(sisNormalClass, declaredField, level, fieldValue);
             }
+        } catch (IllegalAccessException e) {
+            logAndRethrowException(e);
+        } catch (Exception e) {
+            logAndRethrowException(e);
+        }
+    }
+
+    private void addChildClass(SisNormalClass sisNormalClass, Field declaredField, int level, Object fieldValue) {
+        try {
+            if (fieldValue == null) {
+                fieldValue = Reflection.createInstance(declaredField.getType());
+            }
+            sisNormalClass.addChildClass(parseChildClass(fieldValue, declaredField.getName(), level));
         } catch (IllegalAccessException e) {
             logAndRethrowException(e);
         } catch (InstantiationException e) {
             logAndRethrowException(e);
         } catch (InvocationTargetException e) {
             logAndRethrowException(e);
-        } catch (Exception e) {
-            logAndRethrowException(e);
         }
+    }
+
+    private void addBasicField(SisNormalClass sisNormalClass, Field declaredField, Object fieldValue) {
+        if (fieldValue == null) {
+            fieldValue = getFieldValue(declaredField.getType(), "");
+        }
+        sisNormalClass.addBasicField(new BasicField(declaredField.getName(), fieldValue.toString()));
     }
 
 }

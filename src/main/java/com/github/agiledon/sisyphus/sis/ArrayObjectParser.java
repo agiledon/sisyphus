@@ -19,12 +19,16 @@ public class ArrayObjectParser extends ObjectParser {
             return sisArrayClass;
         }
 
+        return addElementsOrChildClass(sisArrayClass, sourceObject, array, level);
+    }
+
+    private <T> SisClass addElementsOrChildClass(SisArrayClass sisArrayClass, T sourceObject, Object[] array, int level) {
         try {
             Class<?> elementType = getElementTypeForArray(sourceObject.getClass());
             if (Reflection.isPrimitiveType(elementType)) {
                 addElements(sisArrayClass, array);
             } else {
-                addChildClasses(level, sisArrayClass, array, elementType);
+                addChildClass(level, sisArrayClass, array, elementType);
             }
             return sisArrayClass;
         } catch (ClassNotFoundException e) {
@@ -33,7 +37,7 @@ public class ArrayObjectParser extends ObjectParser {
         }
     }
 
-    private void addChildClasses(int level, SisArrayClass sisArrayClass, Object[] array, Class<?> elementType) {
+    private void addChildClass(int level, SisArrayClass sisArrayClass, Object[] array, Class<?> elementType) {
         if (array == null || array.length == 0) {
             Object fieldValue = Reflection.getFieldValue(elementType, "");
             sisArrayClass.addChildClass(parseChildClass(fieldValue, null, level + 1));
