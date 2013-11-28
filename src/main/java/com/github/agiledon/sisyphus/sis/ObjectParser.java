@@ -27,11 +27,7 @@ public abstract class ObjectParser {
         return new NormalObjectParser(ignoreNullField);
     }
 
-    public <T> SisClass parseClass(T sourceObject, String fieldName, int level) {
-        return createSisClass(sourceObject, fieldName, level);
-    }
-
-    protected abstract <T> SisClass createSisClass(T sourceObject, String fieldName, int level);
+    public abstract <T> SisClass parseClass(T sourceObject, String fieldName, int level);
 
     protected SisClass logAndRethrowException(Exception ex) {
         logger.error(ex.getMessage());

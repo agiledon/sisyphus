@@ -10,7 +10,8 @@ public class NormalObjectParser extends ObjectParser {
         super(ignoreNullField);
     }
 
-    protected <T> SisClass createSisClass(T sourceObject, String fieldName, int level) {
+    @Override
+    public <T> SisClass parseClass(T sourceObject, String fieldName, int level) {
         return createNormalClass(sourceObject, fieldName, level);
     }
 

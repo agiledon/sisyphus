@@ -7,7 +7,8 @@ public class ArrayObjectParser extends ObjectParser {
         super(ignoreNullField);
     }
 
-    protected <T> SisClass createSisClass(T sourceObject, String fieldName, int level) {
+    @Override
+    public <T> SisClass parseClass(T sourceObject, String fieldName, int level) {
         return createArrayClass(sourceObject, fieldName, level);
     }
 

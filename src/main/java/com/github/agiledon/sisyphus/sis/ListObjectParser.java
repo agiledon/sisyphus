@@ -9,7 +9,8 @@ public class ListObjectParser extends ObjectParser {
         super(ignoreNullField);
     }
 
-    protected <T> SisClass createSisClass(T sourceObject, String fieldName, int level) {
+    @Override
+    public <T> SisClass parseClass(T sourceObject, String fieldName, int level) {
         return createListClass(sourceObject, fieldName, level);
     }
 
