@@ -4,6 +4,17 @@ apply plugin: 'maven'
 apply plugin: 'signing'
 apply plugin: 'sonar-runner'
 
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url "https://oss.sonatype.org/content/groups/public"}
+    }
+    dependencies {
+        classpath 'com.github.townsfolk:gradle-release:1.2'
+    }
+}
+apply plugin: 'release'
+
 group = 'com.github.agiledon'
 version = '0.1-SNAPSHOT'
 sourceCompatibility = 1.6
@@ -12,6 +23,7 @@ targetCompatibility = 1.6
 repositories {
     mavenCentral();
 }
+
 
 project.ext {
     guavaVersion = '15.0'
