@@ -12,7 +12,7 @@ public class StringUtilTest {
     }
 
     @Test
-    public void should_generate_space_string_if_count_equal_to_zero() {
+    public void should_generate_space_string_if_count_equal_to_five() {
         assertThat(StringUtil.spaces(5), is("     "));
     }
 }
