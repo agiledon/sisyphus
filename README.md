@@ -26,7 +26,7 @@ repositories {
 dependencies {
     test (
             'junit:junit:4.11',
-            'com.github.agiledon:sisyphus:0.1-SNAPSHOT'
+            'com.github.agiledon:sisyphus:1.0-SNAPSHOT'
         )
 }
 ```
