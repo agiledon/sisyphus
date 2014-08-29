@@ -11,6 +11,8 @@ import static com.github.agiledon.sisyphus.Fixture.from;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.nullValue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 public class JsonFixtureTest {
@@ -18,8 +20,7 @@ public class JsonFixtureTest {
     public void should_compose_User_data_with_json_format() {
         User user = Fixture.from("user.json").to(User.class);
         assertThat(user, not(nullValue()));
-        assertThat(user.getName().getFirst(), is("Joe"));
-        assertThat(user.getName().getLast(), is("Sixpack"));
+        assertUserName(user, "Joe", "Sixpack");
         assertThat(user.getGender(), is(User.Gender.MALE));
         assertThat(user.isVerified(), is(false));
     }
@@ -75,7 +76,9 @@ public class JsonFixtureTest {
 
     @Test
     public void should_compose_User_data_from_cache_with_gson_format() {
-        StandardVariable[] standardVariables = Fixture.from("standardVariable.gson").to(StandardVariable[].class);
+        StandardVariable[] standardVariables =
+                Fixture.from("standardVariable.gson")
+                       .to(StandardVariable[].class);
         assertThat(standardVariables, not(nullValue()));
 
         StandardVariable[] cachedStandardVariables = Fixture.from("standardVariable.gson").to(StandardVariable[].class);
@@ -90,20 +93,26 @@ public class JsonFixtureTest {
                 .withTemplate("template/user.template")
                 .to(User.class);
         assertThat(user, not(nullValue()));
-        assertThat(user.getName().getFirst(), is("Joe"));
-        assertThat(user.getName().getLast(), is("Sixpack"));
+        assertUserName(user, "Joe", "Sixpack");
     }
 
     @Test
     public void should_compose_multi_user_data_by_parsing_template_file() {
         List<User> users = Fixture.from("userWithMultiSections.json")
-                .withTemplate("template/user.template")
-                .toList(User.class);
+                                  .withTemplate("template/user.template")
+                                  .toList(User.class);
         assertThat(users, not(nullValue()));
-        assertThat(users.get(0).getName().getFirst(), is("Joe"));
-        assertThat(users.get(0).getName().getLast(), is("Sixpack"));
-        assertThat(users.get(2).getName().getFirst(), is("Yi"));
-        assertThat(users.get(2).getName().getLast(), is("Zhang"));
+
+        User firstUser = users.get(0);
+        assertUserName(firstUser, "Joe", "Sixpack");
+
+        User thirdUser = users.get(2);
+        assertUserName(thirdUser, "Yi", "Zhang");
+    }
+
+    private void assertUserName(User thirdUser, String yi, String zhang) {
+        assertThat(thirdUser.getName().getFirst(), is(yi));
+        assertThat(thirdUser.getName().getLast(), is(zhang));
     }
 
 
@@ -113,5 +122,7 @@ public class JsonFixtureTest {
                 .withTemplate("template/user.template")
                 .to(User.class);
         assertThat(user, is(nullValue()));
+
+        assertNotNull(user);
     }
 }
