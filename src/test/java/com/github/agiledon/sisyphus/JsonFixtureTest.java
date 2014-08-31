@@ -122,7 +122,5 @@ public class JsonFixtureTest {
                 .withTemplate("template/user.template")
                 .to(User.class);
         assertThat(user, is(nullValue()));
-
-        assertNotNull(user);
     }
 }
